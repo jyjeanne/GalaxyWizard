@@ -1,0 +1,51 @@
+# Poetry files
+poetry.lock
+
+# Build artifacts (adjust based on your build tool)
+dist/
+build/
+*.egg-info/
+
+# IDE and OS specific files
+.idea/*
+.vscode/*
+.DS_Store*
+
+# Coverage reports
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# PyInstaller cache (if using PyInstaller)
+pyinstaller/
+
+# Temporary test, log or cache files
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Pytype cache
+.mypy_cache/
+
+# Sphinx documentation build directory
+docs/_build/
+
+# Twisted log files (if using Twisted)
+*.log
+
+# Exclude legacy build tools (if not using)
+*.egg
+MANIFEST
+
+# Exclude legacy dependency management (if not using)
+pip-requirements.txt
