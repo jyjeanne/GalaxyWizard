@@ -40,6 +40,9 @@ pyinstaller/
 # Sphinx documentation build directory
 docs/_build/
 
+# python 2to3 convertion files
+*.bak
+
 # Twisted log files (if using Twisted)
 *.log
 
