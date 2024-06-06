@@ -4,15 +4,16 @@ import os
 
 class Translate:
 
-    def getLanguageDict(self, lang):
+    @staticmethod
+    def getLanguageDict(lang):
         return gettext.translation('GalaxyWizard', os.path.join(os.getcwd(), 'locale'), languages=[lang])
 
     def __init__(self):
-        # fill our language dictionnary with each language
-        # self.langDict= { 'sp': self.getLanguageDict('sp'),
-        #             'fr': self.getLanguageDict('fr'),
-        #         'en': self.getLanguageDict('en'),
-        #                 'nl': self.getLanguageDict('nl')}
+        # fill our language dictionary with each language
+        self.langDict = {'sp': self.getLanguageDict('sp'),
+                         'fr': self.getLanguageDict('fr'),
+                         'en': self.getLanguageDict('en'),
+                         'nl': self.getLanguageDict('nl')}
 
         #and install current langauge
         #gettext.install('GalaxyWizard', unicode=1)
@@ -24,5 +25,3 @@ class Translate:
             self.langDict[lang].install(str=1)
         else:  # install default language
             gettext.install('GalaxyWizard', str=1)
-
-

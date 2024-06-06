@@ -1,57 +1,19 @@
 import os
-import sys
 import logging
-import platform
 import optparse
+import pygame
+from translate import Translate
 import numpy as np
 
 __version__ = "0.1.0"
 
-
-def dependencycheck():
-    logging.debug('Platform: ' + platform.platform())
-    logging.debug('Python version ' + sys.version)
-    try:
-        logging.debug('Numpy version ' + np.__version__)
-    except ImportError as err:
-        logging.error('Loading dependency "Numpy" failed: ' + str(err))
-        sys.exit(1)
-
-    try:
-        import pygame
-        logging.debug('pygame version ' + pygame.ver)
-    except ImportError as err:
-        logging.error('Loading dependency "pygame" failed: ' + str(err))
-        sys.exit(1)
-
-    try:
-        import OpenGL.GL
-        logging.debug('PyOpenGL version ' + OpenGL.__version__)
-    except ImportError as err:
-        logging.error('Loading dependency "OpenGL.GL" failed: ' + str(err))
-        sys.exit(1)
-
-    try:
-        import OpenGL.GLU
-    except ImportError as err:
-        logging.error('Loading dependency "OpenGL.GLU" failed: ' + str(err))
-        sys.exit(1)
-
-    try:
-        import twisted
-        logging.debug('Twisted version ' + twisted.__version__)
-    except ImportError as err:
-        logging.error('Loading dependency "twisted" failed: ' + str(err))
-        sys.exit(1)
-
-
 def main():
-    print('GalaxyWizard', __version__)
+    print('Start GalaxyWizard', __version__)
 
     # init translate
-    from translate import Translate
-    translateConfig = Translate()
+    translate_config = Translate()
 
+    # init game config
     parser = optparse.OptionParser(description="Cross-platform, open-source tactical RPG.")
     parser.add_option("--fullscreen", "-f", action="store_true", default=False)
     parser.add_option("--quiet", "-q", action="store_true", default=False)
@@ -65,11 +27,9 @@ def main():
 
     logging.basicConfig(level=logging.INFO - options.verbose * 10)
 
-    translateConfig.setLanguage(options.lang)
+    translate_config.setLanguage(options.lang)
 
-    dependencycheck()
-
-    import pygame
+    # init pygame config
     pygame.display.init()
     pygame.font.init()
     pygame.joystick.init()

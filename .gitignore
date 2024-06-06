@@ -28,6 +28,8 @@ pyinstaller/
 *.py[cod]
 *$py.class
 
+*.spec
+
 # C extensions
 *.so
 

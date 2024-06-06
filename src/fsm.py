@@ -18,7 +18,6 @@
 # 02110-1301, USA.
 
 
-
 class FSM(object):
     def __init__(self, states):
         """states[0] is the initial state."""

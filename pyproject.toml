@@ -1,10 +1,12 @@
 [tool.poetry]
 name = "galaxywizard"
+scripts = { "galaxywizard" = "src.main:main" }
 version = "0.1.0"
 description = "GalaxyWizard is an open-source tactical RPG written with python"
 authors = ["jeremy jeanne <jyjeanne@gmail.com>"]
 license = "GPL-2.0 license"
 readme = "README.md"
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
@@ -17,6 +19,3 @@ pyinstaller = "^6.6.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-build-exe = "pyinstaller src/main.py --add-data 'src/assets:assets' --windowed"

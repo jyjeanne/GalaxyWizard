@@ -1,4 +1,3 @@
-
 import logging
 import pygame
 import os
@@ -10,6 +9,7 @@ import random
 
 logger = logging.getLogger('reso')
 
+
 # getFilename("images", "arch-mage.png") ->
 # "campaigns/common/images/arch-mage.png"
 def _getFilename(base, name):
@@ -18,7 +18,7 @@ def _getFilename(base, name):
     if sep == '\\':
         sep = r'\\'
     base = re.sub(r'/', sep, base)
-    name = re.sub(r'/', sep, name)   
+    name = re.sub(r'/', sep, name)
     result = os.path.join("data", campaign, base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
@@ -34,15 +34,16 @@ def _getFilename(base, name):
     logger.debug('no suitable file found')
     return None
 
-class FontLoader(object):   
+
+class FontLoader(object):
     def __init__(self):
         self.fonts = {}
-        self.files = { "sans": { False: "vera/Vera.ttf",
-                                 True: "vera/VeraBd.ttf"},
-                       "serif": { False: "vera/VeraSe.ttf",
-                                  True: "vera/VeraSeBd.ttf"},
-                       "mono": { False: "vera/VeraMono.ttf",
-                                 True: "vera/VeraMoBd.ttf"}}
+        self.files = {"sans": {False: "vera/Vera.ttf",
+                               True: "vera/VeraBd.ttf"},
+                      "serif": {False: "vera/VeraSe.ttf",
+                                True: "vera/VeraSeBd.ttf"},
+                      "mono": {False: "vera/VeraMono.ttf",
+                               True: "vera/VeraMoBd.ttf"}}
 
     def __call__(self, family="sans", size=16, bold=True):
         key = (family, size, bold)
@@ -58,6 +59,7 @@ class FontLoader(object):
             self.fonts[key] = f
         return self.fonts[key]
 
+
 class MapLoader(object):
     def __call__(self, mapName):
         import engine.Map as Map
@@ -71,10 +73,11 @@ class MapLoader(object):
             raise Exception('Map file "%s" not found' % filename)
         return Map.MapIO.load(mapName)
 
+
 class ImageLoader(object):
     def __init__(self):
         self.cache = {}
-    
+
     def __call__(self, imageName, dirName="images"):
         if imageName not in self.cache:
             filename = imageName + ".png"
@@ -86,6 +89,7 @@ class ImageLoader(object):
             if pygame.display.get_surface() != None:
                 self.cache[imageName] = self.cache[imageName].convert_alpha()
         return self.cache[imageName]
+
 
 class TextureLoader(object):
     def __init__(self):
@@ -127,7 +131,7 @@ class ScenarioLoader(object):
 class AbilityLoader(object):
     def __init__(self):
         self.cache = {}
-    
+
     def __call__(self, abilityName):
         if abilityName not in self.cache:
             import engine.Ability as Ability
@@ -157,17 +161,16 @@ class AbilityLoader(object):
             module = compile("from engine.Effect import *",
                              "Effect.py", "exec")
             eval(module, globalVars)
-                       
+
             compiled = compile(abilityText, abilityName + ".py", 'exec')
             eval(compiled, globalVars, localVars)
             abilityData = localVars
-            
+
             if abilityData['VERSION'] != 1:
                 raise Exception("Ability version not recognized")
 
             if abilityData['ABILITY_TYPE'] != Ability.ACTION:
                 raise Exception("Only action abilities are supported")
-            
 
             name = _(abilityData['NAME'])
             targetType = abilityData['TARGET_TYPE']
@@ -188,13 +191,13 @@ class AbilityLoader(object):
                 sound = abilityData['SOUND']
 
             description = _(abilityData['DESCRIPTION'])
-                
+
             ability = Ability.Ability(name, description, cost, targetType,
                                       requiredWeapons,
                                       range_, aoe, effects, sound)
             self.cache[abilityName] = ability
         return self.cache[abilityName]
-        
+
 
 class ClassLoader(object):
     def __init__(self):
@@ -256,6 +259,7 @@ class ClassLoader(object):
         if classname not in self.cache:
             self._loadClass(classname)
         return self.cache[classname]
+
 
 class UnitLoader(object):
     def __call__(self, unitName):
@@ -320,7 +324,6 @@ class UnitLoader(object):
             armor = equipment(Equipment.ARMOR, unitData['ARMOR'])
             unit.equipArmor(armor)
 
-
         # Sprites (if specified)
         spriteRoot = latestClass.spriteRoot()
         if 'SPRITE_ROOT' in unitData:
@@ -328,6 +331,7 @@ class UnitLoader(object):
         unit._spriteRoot = spriteRoot
 
         return unit
+
 
 class EquipmentLoader(object):
     def __init__(self):
@@ -341,7 +345,7 @@ class EquipmentLoader(object):
                 subdir = 'weapons'
             elif type_ == Equipment.ARMOR:
                 subdir = 'armor'
-            
+
             filename = equipmentName + ".py"
             equipmentFilename = _getFilename("items/" + subdir, filename)
             if equipmentFilename == None:
@@ -376,13 +380,13 @@ class EquipmentLoader(object):
             stats['speed'] = equipmentData.get('SPEED', 0)
 
             if type_ == Equipment.WEAPON:
-                weaponType = equipmentData['TYPE']            
+                weaponType = equipmentData['TYPE']
                 self.cache[equipmentName] = Equipment.Weapon(name,
                                                              stats,
                                                              weaponType)
             elif type_ == Equipment.ARMOR:
                 self.cache[equipmentName] = Equipment.Armor(name, stats)
-    
+
             #Sprites (if specified)
             #spriteRoot = latestClass.spriteRoot()
             spriteName = None
@@ -394,12 +398,9 @@ class EquipmentLoader(object):
                 spriteName = None
                 #spriteName = "%s-%s-%s-%d" % (spriteRoot, "unisex", "standing", 1)
             self.cache[equipmentName].setSprites({'standing': [spriteName]})
-            
 
-
-    
         return self.cache[equipmentName]
-    
+
 
 class MusicLoader(object):
     def __call__(self, musicName, loop=True):
@@ -418,6 +419,7 @@ class MusicLoader(object):
         except pygame.error as e:
             return
 
+
 class TextLoader(object):
     def __call__(self, textName):
         filename = textName + ".txt"
@@ -429,10 +431,11 @@ class TextLoader(object):
         f.close()
         return text
 
+
 class SoundLoader(object):
     def __init__(self):
         self.cache = {}
-    
+
     def __call__(self, soundName):
         if soundName == None:
             return None
@@ -440,12 +443,13 @@ class SoundLoader(object):
             soundFile = _getFilename("sounds", soundName + ".ogg")
             if soundFile == None:
                 soundFile = _getFilename("sounds", soundName + ".wav")
-            try:                
+            try:
                 s = pygame.mixer.Sound(soundFile)
             except pygame.error as e:
                 return None
             self.cache[soundName] = s
         return self.cache[soundName]
+
 
 class SpriteConfigLoader(object):
     def __init__(self):
@@ -456,38 +460,39 @@ class SpriteConfigLoader(object):
             spriteConfigFile = file(spriteConfigFilename, "rU")
             spriteConfigText = spriteConfigFile.read()
             spriteConfigFile.close()
-            
+
             localVars = {}
-            
+
             compiled = compile(spriteConfigText, spriteConfigFilename, 'exec')
             eval(compiled, localVars)
-            
+
             self._hand = {}
             self._grip = {}
             self._spriteTypes = None
-            
+
             if 'HAND' in localVars:
                 self._hand = localVars['HAND']
             if 'GRIP' in localVars:
                 self._grip = localVars['GRIP']
             if 'SPRITE_TYPES' in localVars:
                 self._spriteTypes = localVars['SPRITE_TYPES']
-        
+
     def spriteTypes(self):
         return self._spriteTypes
-            
+
     def hand(self, sprite):
         if sprite in self._hand:
             return self._hand[sprite]
         else:
             return None
-        
+
     def grip(self, sprite):
         if sprite in self._grip:
             return self._grip[sprite]
         else:
             return None
-    
+
+
 def setCampaign(c):
     global campaign, font, map, image, texture, scenario, class_, ability, weapon, spriteConfig
     logger.debug('Set campaign to "%s"' % c)
@@ -505,7 +510,8 @@ def setCampaign(c):
     sound = SoundLoader()
     equipment = EquipmentLoader()
     spriteConfig = SpriteConfigLoader()
-    
+
+
 campaign = 'demo'
 font = FontLoader()
 map = MapLoader()

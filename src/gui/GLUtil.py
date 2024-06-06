@@ -23,7 +23,7 @@ import pygame
 from . import ScenarioGUI
 from . import MainWindow
 import math
-from Constants import Z_HEIGHT
+from ./constants import Z_HEIGHT
 import logging
 import Resources
 import time
