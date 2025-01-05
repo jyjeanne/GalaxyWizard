@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Resources
+from src import resources as Resources
 from twisted.spread import pb
 
 WEAPON = 0

@@ -28,7 +28,8 @@ class Point3D(object):
     def asTuple(self):
         return (self.x, self.y, self.z)
 
-def rotate2d((x, y), angle):
+def rotate2d(pos, angle):
+    x, y = pos
     s = math.sin(angle)
     c = math.cos(angle)
     return (c * x - s * y,

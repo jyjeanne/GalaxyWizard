@@ -17,8 +17,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Faction
-import engine.Equipment as Equipment
+from src.engine import Faction
+from src.engine import Equipment as Equipment
 from twisted.spread import pb
 
 # FIXME: move these variables into Faction?

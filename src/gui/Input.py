@@ -287,7 +287,7 @@ class Input(object):
 
 
     def buttonPressed(self, timeElapsed, button, pressed):
-        if not self._eventRepeatTime.has_key(button):
+        if button not in self._eventRepeatTime:
             self._eventRepeatTime[button] = -1.0
         if pressed:
             generateEvent = False

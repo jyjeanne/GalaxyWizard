@@ -27,21 +27,23 @@ from OpenGL.GLU import *
 from twisted.python import util
 from twisted.internet import reactor
 
-import Constants
-import Resources
-import Clock
-import Camera
-import Sprite
-import Cursor
-import GLUtil
-import gui.MainWindow as MainWindow
-import Util
-import Sound
-import engine.Class as Class
-import engine.Unit as Unit
-import gui.Input as Input
-import engine.Faction
-import FSM
+from src import constants as Constants
+from src import resources as Resources
+from src.gui import Clock
+from src.gui import Camera
+from src.gui import Sprite
+from src.gui import Cursor
+from src.gui import GLUtil
+from src.gui import MainWindow as MainWindow
+from src import util as Util
+from src import sound as Sound
+from src.engine import Class as Class
+from src.engine import Ability
+from src.engine import Effect
+from src.engine import Unit as Unit
+from src.gui import Input as Input
+from src.engine import Faction
+from src import fsm as FSM
 
 def get():
     return _gui
@@ -63,8 +65,8 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
 
         self.m = scenario.map()
         m = self.m
-        for j in xrange(0, m.height):
-            for i in xrange(0, m.width):
+        for j in range(0, m.height):
+            for i in range(0, m.width):
                 self.compileMapSquareList(m.squares[i][j])
 
         self._highlightAlpha = 1.0  
@@ -190,8 +192,8 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
 
     def __del__(self):
         m = self.m
-        for j in xrange(0, m.height):
-            for i in xrange(0, m.width):
+        for j in range(0, m.height):
+            for i in range(0, m.width):
                 sq = m.squares[i][j]
                 if sq.guiData.has_key("listID"):
                     try:
@@ -242,7 +244,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         self.chatBox5.setText(text)
 
     def showActionPerformed(self, abilityID):
-        action = engine.Ability.Ability.get[abilityID]
+        action = Ability.get[abilityID]
         unit = self.unit
         self.setTopText(action.name())
         Sound.action(action.sound(unit.attack()))
@@ -262,21 +264,21 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
     def showEffect(self, targetID, effect, delay):
         target = self.scenario.unitFromID(targetID)
         ud = self.unitDisplayer(target)
-        if isinstance(effect, engine.Effect.MissResult):
+        if isinstance(effect, Effect.MissResult):
             dd = Sprite.DamageDisplayer(_("Miss"), Sprite.NEUTRAL, delay)
             ud.addAnimation(dd)
-        elif (isinstance(effect, engine.Effect.DamageResult) or
-              isinstance(effect, engine.Effect.DamageSPResult)):
+        elif (isinstance(effect, Effect.DamageResult) or
+              isinstance(effect, Effect.DamageSPResult)):
             dd = Sprite.DamageDisplayer(effect.damage, Sprite.NEGATIVE, delay)
             ud.addAnimation(dd)
-        elif isinstance(effect, engine.Effect.HealResult):
+        elif isinstance(effect, Effect.HealResult):
             dd = Sprite.DamageDisplayer(effect.damage, Sprite.BENEFICIAL,
                                         delay)
             ud.addAnimation(dd)
-        elif isinstance(effect, engine.Effect.StatusResult):
-            effectName = engine.Effect.Status.effectNames[effect.type]
+        elif isinstance(effect, Effect.StatusResult):
+            effectName = Effect.Status.effectNames[effect.type]
             effectType = Sprite.NEGATIVE
-            if engine.Effect.Status.beneficial(effect):
+            if Effect.Status.beneficial(effect):
                 effectType = Sprite.BENEFICIAL
             dd = Sprite.DamageDisplayer(effectName, effectType, delay)
             ud.addAnimation(dd)
@@ -335,7 +337,8 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
     def highlightAlpha(self):
         return self._highlightAlpha
 
-    def scrollTo(self, (x, y)):
+    def scrollTo(self, pos):
+        x, y = pos
         zx = int(x)
         zy = int(y)
         zx = max(0, zx)
@@ -444,7 +447,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
 
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, self.lightEnv.ambientLight())
         lightIndex = GL_LIGHT0
-        for light in xrange(GL_LIGHT0, GL_LIGHT7+1):
+        for light in range(GL_LIGHT0, GL_LIGHT7+1):
             glDisable(light)
         for l in self.lightEnv.lights():
             if lightIndex > GL_LIGHT7:
@@ -472,7 +475,8 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         else:
             glDisable(GL_FOG)
 
-    def resize(self, (width, height)):
+    def resize(self, dimensions):
+        width, height = dimensions
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
@@ -550,8 +554,8 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         if cameraRotation != self.lastCameraRotation:
             self.lastCameraRotation = cameraRotation
             squares = []
-            for j in xrange(0, m.height):
-                for i in xrange(0, m.width):
+            for j in range(0, m.height):
+                for i in range(0, m.width):
                     squares.append(m.squares[i][j])
             self.camera.sortSprites(squares)
             self.sortedMapSquares = squares
@@ -655,7 +659,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
             if event.key == pygame.K_r:
                 self.camera.reset()
             elif event.key == pygame.K_SCROLLOCK:
-                print self.m.loadString()
+                print(self.m.loadString())
             elif event.key == pygame.K_w:
                 self.battle.playerGaveUp()
 

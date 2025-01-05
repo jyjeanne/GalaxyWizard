@@ -18,17 +18,17 @@
 # 02110-1301, USA.
 
 #import GLUtil
-import Resources
+from src import resources as Resources
 #import Clock
 #from OpenGL.GL import *
 #from OpenGL.GLU import *
-import MapEditorGUI as GUI
+from src.gui import MapEditorGUI as GUI
 #import engine.Faction as Faction
 #import engine.Effect as Effect
 #import math
-import Sprite
+from src.gui import Sprite
 import pygame
-import Input
+from src.gui import Input
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -225,8 +225,8 @@ class TileInfoDisplayer(Sprite.TextDisplayerBox):
         self.displayers = [self.title]
         
         self.numBoxes = 8
-        self.outputBoxes = [Sprite.TextDisplayer() for i in xrange(0,self.numBoxes)]
-        self.outputTitles = [Sprite.TextDisplayer() for i in xrange(0,self.numBoxes)]
+        self.outputBoxes = [Sprite.TextDisplayer() for i in range(0,self.numBoxes)]
+        self.outputTitles = [Sprite.TextDisplayer() for i in range(0,self.numBoxes)]
         self.outputTitles[0].setText("Tag:")
         self.outputTitles[1].setText("Top Texture:")
         self.outputTitles[2].setText("Top Color:")
@@ -236,7 +236,7 @@ class TileInfoDisplayer(Sprite.TextDisplayerBox):
         self.outputTitles[6].setText("")
         self.outputTitles[7].setText("")
         
-        for i in xrange(0,len(self.outputBoxes)):
+        for i in range(0,len(self.outputBoxes)):
             if len(self.outputTitles[i].getText()) > 0:
                 self.displayers.append(self.outputTitles[i])
             self.displayers.append(self.outputBoxes[i])
@@ -275,7 +275,7 @@ class TileInfoDisplayer(Sprite.TextDisplayerBox):
             
             topcolorstr = "(%1.2f, %1.2f, %1.2f)" % (sq.color[0][0],sq.color[0][1],sq.color[0][2])
             self.outputBoxes[2].setText(topcolorstr)
-            for i in xrange(1,5):
+            for i in range(1,5):
                 sidecolorstr = ("(%1.2f, %1.2f, %1.2f)" % (sq.color[i][0],sq.color[i][1],sq.color[i][2]))
                 self.outputBoxes[3+i].setText(sidecolorstr)
             
@@ -294,7 +294,7 @@ class Dialog(Sprite.TextDisplayerBox):
         self.inputBoxes = inputBoxes
         self.inputTitles = inputTitles
         self.displayers = [title]
-        for i in xrange(0,len(inputBoxes)):
+        for i in range(0,len(inputBoxes)):
             if len(inputTitles[i].getText()) > 0:
                 self.displayers.append(inputTitles[i])
             self.displayers.append(inputBoxes[i])
@@ -354,8 +354,8 @@ class AddTagDialog(Dialog):
         self.numBoxes = 8
         title = Sprite.TextDisplayer()
         title.setText("Add Tag Dialog")
-        inputBoxes = [InputBox() for i in xrange(0,self.numBoxes)]
-        inputTitles= [Sprite.TextDisplayer() for i in xrange(0,self.numBoxes)]
+        inputBoxes = [InputBox() for i in range(0,self.numBoxes)]
+        inputTitles= [Sprite.TextDisplayer() for i in range(0,self.numBoxes)]
         inputTitles[0].setText("Name:")
         inputTitles[1].setText("Texture:")
         inputTitles[2].setText("Color:")
@@ -392,8 +392,8 @@ class EditTagDialog(Dialog):
         self.numBoxes = 7
         title = Sprite.TextDisplayer()
         title.setText("Edit Tag Dialog")
-        inputBoxes = [InputBox() for i in xrange(0,self.numBoxes)]
-        inputTitles= [Sprite.TextDisplayer() for i in xrange(0,self.numBoxes)]
+        inputBoxes = [InputBox() for i in range(0,self.numBoxes)]
+        inputTitles= [Sprite.TextDisplayer() for i in range(0,self.numBoxes)]
         inputTitles[0].setText("Texture:")
         inputTitles[1].setText("Color:")
         inputTitles[2].setText("")
@@ -418,14 +418,14 @@ class EditTagDialog(Dialog):
             color = tag['color']
             if type(color) == type([]):
                 color = color[0]
-            print str(color)
+            print(str(color))
             self.inputBoxes[1].setText(str(color[0]))
             self.inputBoxes[2].setText(str(color[1]))
             self.inputBoxes[3].setText(str(color[2]))
             colorVar = tag['colorVar']
             if type(colorVar) == type([]):
                 colorVar = colorVar[0]
-            print str(colorVar)
+            print(str(colorVar))
             self.inputBoxes[4].setText(str(colorVar[0]))
             self.inputBoxes[5].setText(str(colorVar[1]))
             self.inputBoxes[6].setText(str(colorVar[2]))
@@ -460,8 +460,8 @@ class SaveDialog(Dialog):
         self.numBoxes = 1
         title = Sprite.TextDisplayer()
         title.setText("Add Tag Dialog")
-        inputBoxes = [InputBox() for i in xrange(0,self.numBoxes)]
-        inputTitles= [Sprite.TextDisplayer() for i in xrange(0,self.numBoxes)]
+        inputBoxes = [InputBox() for i in range(0,self.numBoxes)]
+        inputTitles= [Sprite.TextDisplayer() for i in range(0,self.numBoxes)]
         inputTitles[0].setText("Filename:")
         Dialog.__init__(self, title, inputBoxes, inputTitles, posn, width)
         self.state = 0

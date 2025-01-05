@@ -9,12 +9,12 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
-numpy = "^1.26.4"
-PyOpenGL = "^3.1.7"
+python = "^3.11"
+numpy = "==1.24.1"
+PyOpenGL = "==3.1.7"
 pygame = "^2.5.2"
 Twisted = "^24.3.0"
-pyinstaller = "^6.6.0"
+PyOpenGL_accelerate = "==3.1.7"
 
 [build-system]
 requires = ["poetry-core"]

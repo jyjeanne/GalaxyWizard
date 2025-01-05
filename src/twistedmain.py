@@ -1,10 +1,11 @@
 from twisted.internet import reactor, defer
 from twisted.spread import pb
 from twisted.cred import checkers, portal, credentials
-from zope import interface
+from zope.interface import implementer
 
-import gui.MainWindow
-import gui.ScenarioGUI
+from src.gui.MainWindow import MainWindow
+from src.gui import ScenarioChooser
+from src.gui.ScenarioGUI import ScenarioGUI
 import logging
 import resources
 import main
@@ -202,7 +203,7 @@ class InteractiveClient(GameClient):
 
     def remote_startGame(self, scenario):
         GameClient.remote_startGame(self, scenario)
-        self.scenarioGUI = gui.ScenarioGUI.ScenarioGUI(self,
+        self.scenarioGUI = ScenarioGUI(self,
                                                        scenario,
                                                        self.faction)
         self.window.setDelegate(self.scenarioGUI)
@@ -429,7 +430,7 @@ class GameState(object):
     def unitAct(self, client, abilityID, x, y):
         if not self.unitController(client):
             return False
-        ability = engine.Ability.Ability.get[abilityID]
+        ability = engine.netsupport.Ability.get[abilityID]
         result = self.scenario.battle().unitActed(ability, x, y)
         if not result:
             return False
@@ -479,8 +480,9 @@ class ClientInfo(object):
     def __str__(self):
         return "%s (%s:%s)" % (self.name, self.address.host, self.address.port)
 
+@implementer(checkers.ICredentialsChecker)
 class UsernameChecker(object):
-    interface.implements(checkers.ICredentialsChecker)
+    #interface.implements(checkers.ICredentialsChecker)
     credentialInterfaces = (credentials.IUsernamePassword,
                             credentials.IUsernameHashedPassword)
 
@@ -496,9 +498,8 @@ class UsernameChecker(object):
         self.users[name] = True
         return defer.succeed(name)
 
+@implementer(portal.IRealm)
 class GameServer(object):
-    interface.implements(portal.IRealm)
-    
     def __init__(self, port):
         self.port = port
         self.state = GameState(self)
@@ -602,11 +603,11 @@ def runMapEditor(main, mapName):
 def startGame(server, port=None, user=None, scenario=None,
               multiplayer=None):
     if port == None:
-        port = options.port
+        port = opts.port
     if user == None:
-        user = options.user
+        user = opts.user
     if multiplayer == None:
-        multiplayer = options.multiplayer
+        multiplayer = opts.multiplayer
         
     # Configure the server
     if server == None:
@@ -623,14 +624,14 @@ def startGame(server, port=None, user=None, scenario=None,
                                    aiPlayers,
                                    window)
 
-def run(opts):
-    global window, options
-    options = opts
-    window = gui.MainWindow.MainWindow(options.fullscreen,
-                                       options.width)
+def run(options):
+    global window
+    global opts
+    opts = options
+    window = MainWindow(opts.fullscreen,opts.width)
     window.update()
-    if options.edit_map:
-        runMapEditor(window, options.edit_map)
+    if opts.edit_map:
+        runMapEditor(window, opts.edit_map)
     else:
         window.setDelegate(gui.ScenarioChooser.ScenarioChooser())
     try:        

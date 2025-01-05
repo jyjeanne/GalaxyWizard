@@ -25,18 +25,18 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-import Resources
-import Clock
-import Camera
-import Sprite
-import MapEditorSprite
-import MapEditorCursor as MapEditorCursor
-import GLUtil
-import MainWindow
-import Util
-import Sound
-import engine.Light as Light
-import gui.Input as Input
+from src import resources as Resources
+from src.gui import Clock
+from src.gui import Camera
+from src.gui import Sprite
+from src.gui import MapEditorSprite
+from src.gui import MapEditorCursor as MapEditorCursor
+from src.gui import GLUtil
+from src.gui import MainWindow
+from src import util as Util
+from src import sound as Sound
+from src.engine import Light
+from src.gui import Input
 
 is_map_editor = True
 
@@ -60,8 +60,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
 
         self.m = m
         
-        for j in xrange(0, m.height):
-            for i in xrange(0, m.width):
+        for j in range(0, m.height):
+            for i in range(0, m.width):
                 self.compileMapSquareList(m.squares[i][j])
 
         self._highlightAlpha = 1.0  
@@ -167,8 +167,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
 
     def __del__(self):
         m = self.m
-        for j in xrange(0, m.height):
-            for i in xrange(0, m.width):
+        for j in range(0, m.height):
+            for i in range(0, m.width):
                 sq = m.squares[i][j]
                 if sq.guiData.has_key("listID"):
                     try:
@@ -233,7 +233,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
     def highlightAlpha(self):
         return self._highlightAlpha
 
-    def scrollTo(self, (x, y)):
+    def scrollTo(self, pos):
+        x, y = pos
         self.camera.scrollTo((x, y, self.m.squares[int(x)][int(y)].z))
 
     def scrolling(self):
@@ -311,7 +312,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         else:
             glDisable(GL_FOG)
 
-    def resize(self, (width, height)):
+    def resize(self, size):
+        width, height = size
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
@@ -391,8 +393,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         m = self.m
         glBindTexture(GL_TEXTURE_2D, 0)
         glPushMatrix()
-        for j in xrange(0, m.height):
-            for i in xrange(0, m.width):
+        for j in range(0, m.height):
+            for i in range(0, m.width):
                 z = m.squares[i][j].z
                 if z != 0:
                     glCallList(m.squares[i][j].guiData["listID"])
@@ -469,12 +471,12 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
 
     def updateMap(self):
         self._tagMenu.setOptions(self.m.tags.keys())
-        for j in xrange(0, self.m.height):
-            for i in xrange(0, self.m.width):
+        for j in range(0, self.m.height):
+            for i in range(0, self.m.width):
                 self.m.squares[i][j].setTag()#keeps same tag, but rerandomizes color
         self.m.smoothColors()
-        for j in xrange(0, self.m.height):
-            for i in xrange(0, self.m.width):
+        for j in range(0, self.m.height):
+            for i in range(0, self.m.width):
                 self.compileMapSquareList(self.m.squares[i][j])
                 
     def handleEvent(self, event):
@@ -499,8 +501,8 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
                 if event.key == pygame.K_r:
                     self.camera.reset()
                 elif event.key == pygame.K_SCROLLOCK:
-                    print self.m.loadString()
-#                elif event.key == pygame.K_w:
+                    print(self.m.loadString())
+            #                elif event.key == pygame.K_w:
 #                    self.battle.playerGaveUp()
             elif event.type == Input.TRANSLATE_CAMERA:
                 (x, y) = event.amount

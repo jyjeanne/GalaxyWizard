@@ -18,13 +18,13 @@
 # 02110-1301, USA.
 
 import time
-import Faction
-import Sound
+from src.engine import Faction
+from src import sound as Sound
 import threading
 import logging
-import FSM
-import engine.Effect
-import Constants
+from src import fsm as FSM
+from src.engine import Effect
+from src import constants as Constants
 from twisted.spread import pb
 
 logger = logging.getLogger('batt')
@@ -186,7 +186,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         endingCondition = LastTeamStanding()
         result = endingCondition(self)
         return result
-#         for i in xrange(0, len(self.endingConditions)):
+#         for i in range(0, len(self.endingConditions)):
 #             c = self.endingConditions[i]
 #             if c(self):
 #                 return i

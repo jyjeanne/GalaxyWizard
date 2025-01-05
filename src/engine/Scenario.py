@@ -19,12 +19,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Resources
-import Light
-import Battle
+from src import resources as Resources
+from src.engine import Light
+from src.engine import Battle
 import random
-from Faction import PLAYER_FACTION, NPC_FRIENDLY_FACTION, NPC_HOSTILE_FACTION
-import engine.Map
+from src.engine.Faction import PLAYER_FACTION, NPC_FRIENDLY_FACTION, NPC_HOSTILE_FACTION
+from src.engine import Map
 from twisted.spread import pb
 
 class Scenario(pb.Copyable, pb.RemoteCopy):
@@ -81,7 +81,7 @@ def generateRandom(additionalAIUnits):
         units = []
         nUnits = random.randint(4, 8)
         startColumn = random.randint(0, map_.width - (nUnits + 1) / 2)
-        for i in xrange(0, nUnits):
+        for i in range(0, nUnits):
             u = generateUnit(PLAYER_FACTION)
             if i < nUnits / 2:
                 row = map_.height-1
@@ -93,7 +93,7 @@ def generateRandom(additionalAIUnits):
             units.append(u)
         nUnits += additionalAIUnits
         startColumn = random.randint(0, map_.width - (nUnits + 1) / 2)
-        for i in xrange(0, nUnits):
+        for i in range(0, nUnits):
             u = generateUnit(NPC_HOSTILE_FACTION)
             if i < nUnits / 2:
                 row = 0
@@ -134,7 +134,7 @@ def generateRandom(additionalAIUnits):
 
 class ScenarioIO(object):
     def load(scenarioFilename):
-        scenarioFile = file(scenarioFilename, "rU")
+        scenarioFile = open(scenarioFilename, "rU")
         scenarioText = scenarioFile.read()
         scenarioFile.close()
 

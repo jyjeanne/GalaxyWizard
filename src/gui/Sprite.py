@@ -20,18 +20,18 @@
 import string
 import time
 
-import Constants
-import Resources
-import engine.Effect
-import engine.Faction as Faction
-import gui.Input
+from src import constants as Constants
+from src import resources as Resources
+from src.engine import Effect
+from src.engine import Faction as Faction
+from src.gui import Input
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-import Clock
-import GLUtil
-import ScenarioGUI
+from src.gui import Clock
+from src.gui import GLUtil
+from src.gui import ScenarioGUI
 
 
 class Sprite(object):
@@ -174,8 +174,8 @@ class UnitDisplayer(Sprite):
                 if self._textureStatus >= len(unitStatus.texture()):
                     self._textureStatus = 0
             try:
-                if engine.Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]] != None:
-                    GLUtil.makeStatus(engine.Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]], self._color)
+                if Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]] != None:
+                    GLUtil.makeStatus(Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]], self._color)
             except:
                 # when the status is over this can happen
                 pass
@@ -190,8 +190,8 @@ class UnitDisplayer(Sprite):
                 if self._colorStatus >= len(unitStatus.color()):
                     self._colorStatus = 0
             try:
-                if engine.Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]] != None:
-                    statuscolor = engine.Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]]
+                if Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]] != None:
+                    statuscolor = Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]]
             except :
                 pass
 
@@ -623,7 +623,7 @@ class TextMenu(Sprite):
         self.options = []
         self.enabledOptions = []
         self.posn = posn
-        for i in xrange(nOptions):
+        for i in range(nOptions):
             td = TextDisplayer()
             td.setText("")
             td.setFont(Resources.font(size=16, bold=True))
@@ -664,8 +664,8 @@ class TextMenu(Sprite):
     def setOptions(self, options):
         self.selectedOption = 0
         self.options = options
-        self.enabledOptions = [True for i in xrange(0, len(options))]
-        for i in xrange(0, len(self.displayers)):
+        self.enabledOptions = [True for i in range(0, len(options))]
+        for i in range(0, len(self.displayers)):
             text = ""
             if i < len(options):
                 text = "    " + options[i]
@@ -787,7 +787,7 @@ class SpecialMenu(TextMenu):
             self.setShowing(False)
             return
         self._abilities = u.abilities()
-        self._abilities.sort(lambda x, y: cmp(x.name(), y.name()))
+        self._abilities.sort(key=lambda x: x.name())
         self.setOptions([a.name() for a in self._abilities])
         self.setEnabled(False)
         self.setShowing(False)
@@ -802,7 +802,7 @@ class SpecialMenu(TextMenu):
     def update(self, time):
         if self.selectedUnit != None:
             enabled = False
-            for i in xrange(0, len(self.options)):
+            for i in range(0, len(self.options)):
                 enoughSP = (self.selectedUnit.sp() >=
                             self._abilities[i].cost())
                 correctWeapon = self._abilities[i].correctWeapon(
@@ -960,9 +960,9 @@ class TextEntry(TextDisplayer):
     def setEnabled(self, enabled):
         TextDisplayer.setEnabled(self, enabled)
         if enabled:
-            gui.Input.get().setInDialog(True)
+            Input.get().setInDialog(True)
         else:
-            gui.Input.get().setInDialog(False)
+            Input.get().setInDialog(False)
             self.setText("> ")
             self._result = None
             

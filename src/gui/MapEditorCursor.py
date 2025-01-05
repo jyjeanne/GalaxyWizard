@@ -17,19 +17,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Sprite
-import MapEditorGUI
-import Util
-import GLUtil
-import Resources
-import Sound
-import Input
+from src.gui import Sprite
+from src.gui import MapEditorGUI
+from src import util as Util
+from src.gui import GLUtil
+from src import resources as Resources
+from src import sound as Sound
+from src.gui import Input
+from src.gui import ScenarioGUI
 #import engine.Battle as Battle
 
 from OpenGL.GL import *
 
 # Added for GuiMapEditor
-import MapEditorGUI as GUI
+from src.gui import MapEditorGUI as GUI
 # End Added for GuiMapEditor
 
 # FIXME: let the user undo a move if they've not yet acted
@@ -128,8 +129,8 @@ class MapEditorCursor(Sprite.Sprite):
             GUI.get().clearTopText() # from special menu
             GUI.get().clearHighlights()
         else:
-            print 'Error: unhandled unclick() call in MapEditorCursor'
-    
+            print('Error: unhandled unclick() call in MapEditorCursor')
+
     def click(self):
         if self.state == MapEditorCursor.DISABLED:
             return
@@ -162,7 +163,7 @@ class MapEditorCursor(Sprite.Sprite):
             #    GUI.get().saveMapDialog().setEnabled(True)
             #    GUI.get().saveMapDialog().setShowing(True)
             else:
-                print "ERROR: menu option %s not implemented yet" % choice
+                print("ERROR: menu option %s not implemented yet" % choice)
         elif self.state == MapEditorCursor.SETTING_TAG:
             tagNum = GUI.get().tagMenu().getSelection()
             tags = GUI.get().m.tags
@@ -220,7 +221,7 @@ class MapEditorCursor(Sprite.Sprite):
         #elif self.state == MapEditorCursor.UNIT_MOVING:
         #    return
         else:
-            print 'Error: unhandled click() call in MapEditorCursor'
+            print('Error: unhandled click() call in MapEditorCursor')
 
     def update(self, timeElapsed):
 #        if self.visible():
@@ -233,7 +234,8 @@ class MapEditorCursor(Sprite.Sprite):
     def canMove(self):
         return (self.state == MapEditorCursor.FREE)
     
-    def move(self, (x,y)):
+    def move(self, pos):
+        x, y = pos
         while x > 0:
             self.moveRight()
             x -= 1

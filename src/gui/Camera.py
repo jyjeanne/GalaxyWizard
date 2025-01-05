@@ -17,9 +17,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Geometry
+from src.gui import Geometry
 import math
-import Clock
+from src.gui import Clock
 
 class Camera(object):
 

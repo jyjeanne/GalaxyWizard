@@ -1,10 +1,10 @@
 import logging
 import pygame
 import os
-from gui import GLUtil
+from src.gui import GLUtil
 import re
-from engine import Effect
-from engine import Range
+from src.engine import Effect
+from src.engine import Range
 import random
 
 logger = logging.getLogger('reso')
@@ -139,7 +139,7 @@ class AbilityLoader(object):
             f = _getFilename("abilities", filename)
             if f == None:
                 raise Exception('Ability file "%s" not found' % f)
-            abilityFile = file(f, "rU")
+            abilityFile = open(f, "rU")
 
             abilityText = abilityFile.read()
             abilityFile.close()
@@ -208,7 +208,7 @@ class ClassLoader(object):
         filename = _getFilename("classes", className + ".py")
         if filename == None:
             raise Exception('Class file "%s" not found' % filename)
-        classFile = file(filename, "rU")
+        classFile = open(filename, "rU")
         classText = classFile.read()
         classFile.close()
 
@@ -269,7 +269,7 @@ class UnitLoader(object):
         unitFilename = _getFilename("units", filename)
         if unitFilename == None:
             raise Exception('Unit file "%s" not found' % filename)
-        unitFile = file(unitFilename, "rU")
+        unitFile = open(unitFilename, "rU")
         unitText = unitFile.read()
         unitFile.close()
 
@@ -350,7 +350,7 @@ class EquipmentLoader(object):
             equipmentFilename = _getFilename("items/" + subdir, filename)
             if equipmentFilename == None:
                 raise Exception('Equipment file "%s" not found' % filename)
-            equipmentFile = file(equipmentFilename, "rU")
+            equipmentFile = open(equipmentFilename, "rU")
             equipmentText = equipmentFile.read()
             equipmentFile.close()
 
@@ -426,7 +426,7 @@ class TextLoader(object):
         textFile = _getFilename("text", filename)
         if textFile == None:
             raise Exception('Text file "%s" not found' % filename)
-        f = file(textFile, "rU")
+        f = open(textFile, "rU")
         text = f.readlines()
         f.close()
         return text
@@ -457,7 +457,7 @@ class SpriteConfigLoader(object):
         self._grip = {}
         spriteConfigFilename = _getFilename("images", "spriteconfig.py")
         if spriteConfigFilename != None:
-            spriteConfigFile = file(spriteConfigFilename, "rU")
+            spriteConfigFile = open(spriteConfigFilename, "r", newline=None)
             spriteConfigText = spriteConfigFile.read()
             spriteConfigFile.close()
 

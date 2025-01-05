@@ -23,9 +23,9 @@ import pygame
 from . import ScenarioGUI
 from . import MainWindow
 import math
-from ./constants import Z_HEIGHT
+from ..constants import Z_HEIGHT
 import logging
-import Resources
+from src import resources as Resources
 import time
 
 logger = logging.getLogger("gui")
@@ -94,8 +94,8 @@ def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor,
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR) 
-	
-	glBegin(GL_QUADS)
+
+    glBegin(GL_QUADS)
     # Back
     glNormal3f(0.0, 1.0, 0.0)
     glColor4f(cc[2][0][0], cc[2][0][1], cc[2][0][2], cc[2][0][3])
@@ -428,7 +428,7 @@ def makeTexture(textureSurface, backgroundColor = None, textureID = -1):
             newSurface.fill(backgroundColor)
         newSurface.blit(textureSurface, (0, 0))
         textureSurface = newSurface
-    textureData = pygame.image.tostring(textureSurface, "RGBA", 1)
+    textureData = pygame.image.tostring(textureSurface, "RGBA", True)
     if textureID == -1:
         textureID = glGenTextures(1)
         if textureID > maxTextureID:

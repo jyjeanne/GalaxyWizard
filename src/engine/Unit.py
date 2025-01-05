@@ -17,13 +17,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Name
-import Resources
-import engine.Equipment as Equipment
-import engine.Effect as Effect
+from src.engine import Name
+from src import resources as Resources
+from src.engine import Equipment
+from src.engine import Effect
 import logging
-import gui.ScenarioGUI # FIXME PB: remove ScenarioGUI from this
-import Constants
+from src.gui import ScenarioGUI # FIXME PB: remove ScenarioGUI from this
+from src import constants as Constants
 import random
 from twisted.spread import pb
 
@@ -477,13 +477,13 @@ class Unit(pb.Copyable, pb.RemoteCopy):
 class StatusEffects(pb.Copyable, pb.RemoteCopy):
     def __init__(self):
         self._effects = [
-            None for i in xrange(0, Effect.Status.NUM_TYPES)]
+            None for i in range(0, Effect.Status.NUM_TYPES)]
         self._colorStatus = []
         self._textureStatus = []
         
     def clear(self):
         self._effects = [
-            None for i in xrange(0, Effect.Status.NUM_TYPES)]
+            None for i in range(0, Effect.Status.NUM_TYPES)]
         self._colorStatus = []
         self._textureStatus = []
 
@@ -509,7 +509,7 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
 
     def update(self):
         # Decrement status-effect counters
-        for i in xrange(0, len(self._effects)):
+        for i in range(0, len(self._effects)):
             e = self._effects[i]
             if e == None:
                 continue

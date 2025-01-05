@@ -25,7 +25,7 @@ def main():
     parser.add_option("--user", default=os.environ.get('USER', 'Player'))
     (options, args) = parser.parse_args()
 
-    logging.basicConfig(level=logging.INFO - options.verbose * 10)
+    logging.basicConfig(level=logging.DEBUG - options.verbose * 10)
 
     translate_config.setLanguage(options.lang)
 
@@ -42,16 +42,16 @@ def main():
 
     import resources
     # TODO finish to convert
-    # import Sound
-    # import twistedmain
+    import sound
+    import twistedmain
 
     resources.texture.setTextureSize(64)
     # TODO finish to convert
-    # Sound.setQuiet(options.quiet)
+    sound.setQuiet(options.quiet)
 
 
-# TODO finish to convert
-# twistedmain.run(options)
+    # TODO finish to convert
+    twistedmain.run(options)
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@
 # 02110-1301, USA.
 
 import random
-import Unit
+from src.engine import Unit
 from twisted.spread import pb
 
 class Class(pb.Copyable, pb.RemoteCopy):

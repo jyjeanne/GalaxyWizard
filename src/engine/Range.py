@@ -24,14 +24,16 @@ class Range(pb.Copyable, pb.RemoteCopy):
     def __init__(self):
         self._zdiff = 8
     
-    def __call__(self, map, unit, (x, y, z)):
+    def __call__(self, map, unit, pos):
+        x, y, z = pos
         result = self.affectedSquares(map, unit, (x, y, z))
         result = [(x,y) for (x,y) in result
                   if (map.squareExists(x, y) and
                       abs(map.squares[x][y].z - z) <= self._zdiff)]
         return result
 
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         return []
 
 class Line(Range):
@@ -39,19 +41,20 @@ class Line(Range):
         self._length = length
         self._zdiff = zdiff
 
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         result = []
         if ((x - unit.x()) < 0 and (y - unit.y()) == 0):
-            for i in xrange(0, self._length):
+            for i in range(0, self._length):
                 result.append((x-i, y))
         elif ((x - unit.x()) > 0 and (y - unit.y()) == 0):
-            for i in xrange(0, self._length):
+            for i in range(0, self._length):
                 result.append((x+i, y))
         elif ((x - unit.x()) == 0 and (y - unit.y()) < 0):
-            for i in xrange(0, self._length):
+            for i in range(0, self._length):
                 result.append((x, y-i))
         elif ((x - unit.x()) == 0 and (y - unit.y()) > 0):
-            for i in xrange(0, self._length):
+            for i in range(0, self._length):
                 result.append((x, y+i))
         return result
 
@@ -61,9 +64,10 @@ class Cross(Range):
         self._max = max
         self._zdiff = zdiff
 
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         result = {}
-        for i in xrange(self._min, self._max+1):
+        for i in range(self._min, self._max+1):
             result[(x+i, y)] = True
             result[(x-i, y)] = True
             result[(x, y+i)] = True
@@ -77,10 +81,11 @@ class Diamond(Range):
         self._max = max
         self._zdiff = zdiff
         
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         result = {}
-        for i in xrange(0, self._max+1):
-            for j in xrange(0, self._max+1-i):
+        for i in range(0, self._max+1):
+            for j in range(0, self._max+1-i):
                 if self._min <= (i+j) <= self._max:
                     result[(x+j,y+i)] = True
                     result[(x+j,y-i)] = True
@@ -97,13 +102,15 @@ class DiamondExtend(Diamond):
         self._amount = amount
         self._zdiff = 0
 
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         r = copy.copy(unit.attack().rangeObject())
         r._max += self._amount
         self._zdiff = r._zdiff
         return r.affectedSquares(map, unit, (x, y, z))
 
 class Single(Range):
-    def affectedSquares(self, map, unit, (x, y, z)):
+    def affectedSquares(self, map, unit, pos):
+        x, y, z = pos
         return [(x,y)]
         

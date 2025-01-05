@@ -17,14 +17,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Resources
-import gui.Sprite
-import gui.ScenarioGUI
+from src import resources as Resources
+from  src.gui import Sprite
+from src.gui import ScenarioGUI
 import random
 import math
-import engine.Faction as Faction
-import gui.GLUtil
-import Constants
+from src.engine import Faction
+from src.gui import GLUtil
+from src import constants as Constants
 from twisted.spread import pb
 
 # DAMAGE TYPES:
@@ -138,8 +138,8 @@ class Effect(pb.Copyable, pb.RemoteCopy):
         if isPhysicalDamage(self._damageType):
             for u in target.defenders():
                 if u.posn() in adjacent and random.random() > 0.3:
-                    ud = gui.ScenarioGUI.get().unitDisplayer(target)
-                    ud.addAnimation(gui.Sprite.DamageDisplayer("Defended", gui.Sprite.NEUTRAL))
+                    ud = ScenarioGUI.get().unitDisplayer(target)
+                    ud.addAnimation(Sprite.DamageDisplayer("Defended", Sprite.NEUTRAL))
                     return u
         return target
 
@@ -362,7 +362,7 @@ class Status(Effect):
                    ("Poison"),
                    ("Tripped")]
 
-    effectTextures = [None for i in xrange(0, NUM_TYPES)]
+    effectTextures = [None for i in range(0, NUM_TYPES)]
     effectTextures[FREEZE] = (0.0,0.6,0.9,1.0)
     effectTextures[POISON] = (0.2,0.8,0.1,1.0)
 

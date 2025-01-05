@@ -19,11 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import numpy.oldnumeric as Numeric
+import numpy as Numeric
 import random
 import math
-import Util
-import engine.Map as Map
+from src import util as Util
+from src.engine import Map as Map
 
 m = None
 mt = None
@@ -32,8 +32,8 @@ t = ''
 def foreach(filter, op):
     global m, mt
     (w, h) = m.shape
-    for i in xrange(0, w):
-        for j in xrange(0, h):
+    for i in range(0, w):
+        for j in range(0, h):
             if filter(i, j, m[i,j]):
                 old = m[i,j]
                 m[i,j] = op(m[i,j])
@@ -70,8 +70,8 @@ def newMap(width, height):
     m = Numeric.zeros((width, height))     
     mt = Numeric.zeros((width, height), 'O')
     (w, h) = m.shape
-    for i in xrange(0, w):
-        for j in xrange(0, h):
+    for i in range(0, w):
+        for j in range(0, h):
             mt[i,j] = t
             
 def raiseBy(amount, shape):
@@ -93,8 +93,8 @@ def normalize():
     global m, t
     minval = 1000000
     (w, h) = m.shape
-    for i in xrange(0, w):
-        for j in xrange(0, h):
+    for i in range(0, w):
+        for j in range(0, h):
             if m[i,j] < minval:
                 minval = m[i,j]
     oldT = t
@@ -105,13 +105,13 @@ def normalize():
 
 def hill(height, steepness, x, y, radius):
     global m
-    for r in xrange(0, radius):
+    for r in range(0, radius):
         raiseTo(height, FilledCircle(x, y, r))
         height -= steepness
 
 def valley(depth, steepness, x, y, radius):
     global m
-    for r in xrange(0, radius):
+    for r in range(0, radius):
         lowerTo(depth, OutlinedCircle(x, y, r))
         depth += steepness
 
@@ -243,8 +243,8 @@ TILE_PROPERTIES = {
     
 LAYOUT = '''
 """ % (w, h, max(0, raiseAmount-random.randint(1,8)))
-    for j in xrange(0, h):
-        for i in xrange(0, w):
+    for j in range(0, h):
+        for i in range(0, w):
             s = "%d%s " % (m[i,j], mt[i,j])
             r += "%-10s" % s
         r += "\n"
@@ -253,7 +253,8 @@ LAYOUT = '''
 
 
 def generateRandom():    
-    def addHill(result, (w,h)):
+    def addHill(result, size):
+        w, h = size
         steepness = random.randint(3, 8)
         radius = random.randint(3, 10)
         height = steepness * radius
@@ -266,7 +267,8 @@ def generateRandom():
             height, steepness, x, y, radius)
         return result
     
-    def addRiver(result, (w,h)):
+    def addRiver(result, size):
+        w, h = size
         depth = random.randint(2, 12)
         x = random.randrange(0, w)
         y = random.randrange(0, h)
@@ -277,7 +279,8 @@ def generateRandom():
     
         return result
     
-    def addBuilding(result, (w,h)):
+    def addBuilding(result, size):
+        w, h = size
         zHeight = random.randint(4, 12)
         width = random.randint(2, 4)
         height = random.randint(2, 4)
@@ -290,8 +293,8 @@ def generateRandom():
     
         return result
     
-    def addCastle(result, (w,h)):
-        
+    def addCastle(result, size):
+        w, h = size
         zHeight = random.randint(8, 24)
         width = random.randint(5, 10)
         height = random.randint(5, 10)
@@ -367,19 +370,19 @@ def generateRandom():
         result += "properties('grass')\n"
         result += "newMap(%d,%d)\n" % (mapWidth, mapHeight)
         
-        for i in xrange(0, nHills):
+        for i in range(0, nHills):
             result = addHill(result, size)
     
         result += "properties(None)\n"
         result += "erode(%d, 0, All())\n" % random.randint(2,4)
     
-        for i in xrange(0, nRivers):
+        for i in range(0, nRivers):
             result = addRiver(result, size)
     
-        for i in xrange(0, nBuildings):
+        for i in range(0, nBuildings):
             result = addBuilding(result, size)
     
-        for i in xrange(0, nCastles):
+        for i in range(0, nCastles):
             result = addCastle(result, size)
     
         result += "MAP = save()\n"

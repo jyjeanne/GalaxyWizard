@@ -17,8 +17,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Resources
-import Unit
+from src import resources as Resources
+from src.engine import Unit
 import random as random_
 import re
 
@@ -46,7 +46,7 @@ def _load():
     # FIXME: maintain a neuter file at some point
     _neuterNames = Resources.text("names-male")
     for n in [_maleNames, _femaleNames, _neuterNames]:
-        for i in xrange(0, len(n)):
+        for i in range(0, len(n)):
             n[i] = n[i].strip()
 
 _loaded = False

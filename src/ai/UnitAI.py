@@ -22,11 +22,11 @@ import random
 import copy
 import logging
 import traceback
-import engine.Battle as Battle
-import engine.Faction as Faction
-import engine.Ability as Ability
-import engine.Effect as Effect
-import Constants
+from src.engine import Battle as Battle
+from src.engine import Faction as Faction
+from src.engine import Ability
+from src.engine import Effect
+from src import constants as Constants
 
 logger = logging.getLogger('ai')
 #logger.setLevel(logging.DEBUG)
@@ -83,7 +83,7 @@ class HealWeakest(TurnEvaluator):
                 Faction.friendly(unit.faction(), t.faction()) and
                 t.hp() < t.mhp()):
                 targets.append(t)
-        targets.sort(lambda x,y: cmp(x.hp(), y.hp()))
+        targets.sort(key=lambda t: t.hp())
         
         # Get all turns that heal the weakest possible target
         
@@ -143,7 +143,7 @@ class DamageWeakest(TurnEvaluator):
         for t in battle.units():
             if t.alive() and Faction.hostile(unit.faction(), t.faction()):
                 targets.append(t)
-        targets.sort(lambda x,y: cmp(x.hp(), y.hp()))
+        targets.sort(key=lambda t: t.hp())
         
         # Get all turns that hit the weakest possible target
         
@@ -230,7 +230,7 @@ class MoveToWeakest(TurnEvaluator):
         for t in battle.units():
             if t.alive() and Faction.hostile(unit.faction(), t.faction()):
                 targets.append(t)
-        targets.sort(lambda x,y: cmp(x.hp(), y.hp()))
+        targets.sort(key=lambda t: t.hp())
 
         # Get as close as possible to the weakest target
         map_.fillDistances(unit, targets[0].posn())

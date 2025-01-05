@@ -19,17 +19,17 @@
 
 import time
 import pygame
-import Resources
-import Clock
-import Sprite
-import Sound
+from src import resources as Resources
+from src.gui import Clock
+from src.gui import Sprite
+from src import sound as Sound
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import logging
 import platform
-import gui.Input as Input
+from src.gui import Input as Input
 from twisted.internet import reactor
-import Main
+from src import main as Main
 
 log = logging.getLogger("gui")
 
@@ -158,10 +158,10 @@ class MainWindow(object):
             self._delegate.resize(self._size)
         
     def _initOpenGL(self):
-        log.debug('OpenGL version: ' + glGetString(GL_VERSION))
-        log.debug('OpenGL renderer: ' + glGetString(GL_VENDOR) + " " +
-                 glGetString(GL_RENDERER))
-        log.debug('OpenGL extensions: ' + glGetString(GL_EXTENSIONS))
+        log.debug('OpenGL version: ' + glGetString(GL_VERSION).decode('utf-8'))
+        log.debug('OpenGL renderer: ' + glGetString(GL_VENDOR).decode('utf-8') + " " +
+                 glGetString(GL_RENDERER).decode('utf-8'))
+        log.debug('OpenGL extensions: ' + glGetString(GL_EXTENSIONS).decode('utf-8'))
         
         glEnable(GL_POLYGON_OFFSET_FILL)
         glEnable(GL_TEXTURE_2D)

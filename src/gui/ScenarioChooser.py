@@ -18,14 +18,14 @@
 # 02110-1301, USA.
 
 import pygame
-import gui.Sprite as Sprite
-import gui.MainWindow as MainWindow
-import gui.Input as Input
-import Resources
-import Main
-import twistedmain
-import FSM
-import gui.MapEditorSprite
+from src.gui import Sprite
+from src.gui import MainWindow
+from src.gui import Input
+from src import resources as Resources
+from src import main as Main
+from src import twistedmain
+from src import fsm as FSM
+from src.gui import MapEditorSprite
 from OpenGL.GL import *
 
 class ScenarioChooser(MainWindow.MainWindowDelegate):
@@ -44,7 +44,7 @@ class ScenarioChooser(MainWindow.MainWindowDelegate):
         self.addressEntry = Sprite.TextEntry()
         self.resize(MainWindow.get().size())
         self.fsm = ScenarioChooserFSM(self)
-            
+
         self.scenario = None
         self.multiplayer = None
         self.serverAddress = None
@@ -99,13 +99,14 @@ class ScenarioChooser(MainWindow.MainWindowDelegate):
             self.readyToStart = False
             self.fsm.trans('done')
             self._menu.setShowing(False)
-            self._label.setText(("Waiting for game to begin..."))
+            self._label.setText("Waiting for game to begin...")
             twistedmain.startGame(server=self.serverAddress,
                                   scenario=self.scenario,
                                   multiplayer=self.multiplayer)
         return True
 
-    def resize(self, (width, height)):
+    def resize(self, size):
+        width, height = map(int,size)
         glViewport(0, 0, width, height)
         menuW, menuH = self._menu.size()
         menuX = width/2 - menuW/2
@@ -160,14 +161,14 @@ class ScenarioChooserFSM(FSM.FSM):
         menu.results = ["random", "hill-ravine", "wall", "castle"]
 
     def enter_hostGame(self, *args):
-        self.chooser._label.setText(_("Host a game?"))
+        self.chooser._label.setText(("Host a game?"))
         menu = self.chooser._menu
-        menu.setOptions([_("Host new game"), _("Join existing game")])
+        menu.setOptions([("Host new game"), ("Join existing game")])
         menu.results = [True, False]
         
     def enter_serverAddress(self, *args):
         self.chooser.addressEntry.setEnabled(True)
-        self.chooser._label.setText(_("Type in the server address:"))
+        self.chooser._label.setText(("Type in the server address:"))
         menu = self.chooser._menu
         menu.setShowing(False)
         Input.get().setInDialog(True)

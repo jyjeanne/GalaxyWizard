@@ -17,18 +17,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Sprite
-import ScenarioGUI
-import Util
-import GLUtil
-import Resources
-import Constants
+from src.gui.Sprite import Sprite
+from src.gui import ScenarioGUI
+from src import util as Util
+from src.gui import GLUtil
+from src import resources as Resources
+from src import constants as Constants
 
 from OpenGL.GL import *
 
-class Cursor(Sprite.Sprite):
+class Cursor(Sprite):
     def __init__(self, map):
-        Sprite.Sprite.__init__(self)
+        Sprite.__init__(self)
         self.map = map
         self.x = map.width / 2
         self.y = map.height / 2
@@ -74,7 +74,8 @@ class Cursor(Sprite.Sprite):
     def setFacingMode(self, facingMode):
         self.facingMode = facingMode
 
-    def move(self, (x,y)):
+    def move(self, pos):
+        x, y= pos
         while x > 0:
             self.moveRight()
             x -= 1

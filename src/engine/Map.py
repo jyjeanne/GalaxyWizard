@@ -19,13 +19,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-
-import numpy.oldnumeric as Numeric
-import cPickle
+import numpy as Numeric
+import pickle as cPickle
 import gzip
 import re
 import random
-import Faction
+from src.engine import Faction
 from OpenGL.GL import *
 from twisted.spread import pb
 
@@ -313,9 +312,9 @@ class Map(pb.Copyable, pb.RemoteCopy):
         self.width = width
         self.height = height
         self.squares = []
-        for x in xrange(0, width):
+        for x in range(0, width):
             self.squares.append([])
-            for y in xrange(0, height):
+            for y in range(0, height):
                 props = tileProperties[x,y]
                 tag = {}
                 if tags_.has_key(props['tag']):
@@ -497,7 +496,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
                             if not smoothed:
                                 cornerHeights[0] = left.z+left.cornerHeights[1]-z[x,y]
                             smoothed = True
-#                     for i in xrange(4):
+#                     for i in range(4):
 #                        if cornerHeights[i] < -8 or cornerHeights[i] > 8:
 #                            cornerHeights[i] = 0 # make a step
 
@@ -517,8 +516,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
         # Normalize z-heights of smoothed squares a bit, so that the
         # middle of the square is has a z-height in the middle of the
         # corner heights.
-        for x in xrange(0, width):
-            for y in xrange(0, height):
+        for x in range(0, width):
+            for y in range(0, height):
                 sq = self.squares[x][y]
                 if not sq.smooth:
                     continue
@@ -526,7 +525,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
                 ch.sort()
                 zDiff = (ch[0] + ch[1] + ch[2] + ch[3] + 3) / 4
                 sq.z += zDiff
-                for i in xrange(0, 4):
+                for i in range(0, 4):
                     sq.cornerHeights[i] -= zDiff
 
         self.smoothColors()
@@ -534,8 +533,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
         # If a square doesn't have a water height, but one of its
         # neighbors does, and this square was smoothed, inherit the
         # water height of its neighbor.
-        for x in xrange(0, width):
-            for y in xrange(0, height):
+        for x in range(0, width):
+            for y in range(0, height):
                 sq = self.squares[x][y]
                 if sq.waterHeight != 0: # or not sq.smoothed:
                     continue
@@ -568,8 +567,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
     def smoothColors(self):
         # Smooth colors between squares with the same tag. The idea is
         # to make the colorVar smooth instead of on a per-square basis.
-        for x in xrange(0, self.width):
-            for y in xrange(0, self.height):
+        for x in range(0, self.width):
+            for y in range(0, self.height):
                 sq = self.squares[x][y]
                 #smooth topsides
                 smoothedUp = False 
@@ -639,8 +638,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
                     r += "\t\t    '%s': %s,\n" % (k, repr(v))
             r = r[:-2] + "\n    },\n"
         r += "}\n\nLAYOUT = '''\n"
-        for y in xrange(0, self.height):
-            for x in xrange(0, self.width):
+        for y in range(0, self.height):
+            for x in range(0, self.width):
                 sq = self.squares[x][y]
                 s = "%d" % sq.height()
                 if (((not sq.tag.has_key('cornerHeights')) and
@@ -662,8 +661,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
 
     def resetSearchCosts(self):
         sq = self.squares
-        for x in xrange(0, self.width):
-            for y in xrange(0, self.height):
+        for x in range(0, self.width):
+            for y in range(0, self.height):
                 sq[x][y].search = None
 
     def getPotentialConnections(self, square):
@@ -789,18 +788,18 @@ class Map(pb.Copyable, pb.RemoteCopy):
         return y * self.width + x
 
     def __repr__(self):
-	result = ''
+        result = ''
         sq = self.squares
-        for y in xrange(0, self.height):
-            for x in xrange(0, self.width):
+        for y in range(0, self.height):
+            for x in range(0, self.width):
                 result = result + '%s ' % sq[x][y].z
             result = result + '\n'
-	return result
+        return result
    
 class MapIO(object):
 
     def load(mapname):
-        mapfile = file(mapname, 'rU')
+        mapfile = open(mapname, 'rU')
         text = mapfile.read()
         mapfile.close()
         return MapIO.loadString(mapname, text)
@@ -841,7 +840,7 @@ class MapIO(object):
             if re.match(re.compile(r'^\s*$'), line):
                 continue
             tiles = re.split(re.compile(r'\s+(?!-?\d+,)(?!-?\d+\])'), line)
-            for x in xrange(0, width):
+            for x in range(0, width):
                 tileData = tiles[x]
                 tileProperties[x,y] = {}
                 m = re.match(re.compile(

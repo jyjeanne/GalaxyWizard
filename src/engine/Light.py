@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import Constants
+from src import constants as Constants
 import random
 from twisted.spread import pb
 
@@ -109,7 +109,8 @@ class Environment(pb.Copyable, pb.RemoteCopy):
         self._fogStart = start
         self._fogEnd = end
 
-    def setAmbientLight(self, (r, g, b, a)):
+    def setAmbientLight(self, color):
+        r, g, b, a = color
         self._ambientLight = (r, g, b, a)
         
     def lights(self):
