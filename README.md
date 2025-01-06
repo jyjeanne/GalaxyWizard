@@ -1,7 +1,7 @@
 #### GalaxyWizard: an open-source tactical RPG made with python.
 
 contributors :
- - Jeremy Jeanne <jyjeanne@gmail.com> and
+ - Jeremy Jeanne <jyjeanne@gmail.com> 
 
 #### INSTALLATION
 
@@ -18,15 +18,7 @@ We use poetry to manage dependencies :
 
  - To run locally use command : **poetry run python src/main.py**
 
- - For building the executable, use:
-
- - Windows: **poetry run pyinstaller --onefile --windowed src/main.py** 
-
- - Linux: **poetry run pyinstaller --onefile src/main.py**
-
-Users of graphical file managers can probably double-click the
-GalaxyWizard.exe  to achieve the same effect.
-
+ 
 #### DEPENDENCIES
 
 You'll need a Python interpreter for your platform. See
@@ -43,8 +35,6 @@ following Python libraries:
 * PyGame
 
 * Twisted
-
-* pyinstaller
 
 
 #### PLAYING THE GAME
