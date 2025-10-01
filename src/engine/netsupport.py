@@ -1,15 +1,15 @@
 from twisted.spread import pb
-from src.engine import Light
-from src.engine import Map
-from src.engine import Unit
-from src.engine import Ability
-from src.engine import Class
-from src.engine import Scenario
-from src.engine import Range
-from src.engine import Effect
-from src.engine import Light
-from src.engine import Equipment
-from src.engine import Battle
+from engine import Light
+from engine import Map
+from engine import Unit
+from engine import Ability
+from engine import Class
+from engine import Scenario
+from engine import Range
+from engine import Effect
+from engine import Light
+from engine import Equipment
+from engine import Battle
 
 pb.setUnjellyableForClass(Light.Light, Light.Light)
 pb.setUnjellyableForClass(Map.MapSquare, Map.MapSquare)

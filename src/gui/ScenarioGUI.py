@@ -1,19 +1,19 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
@@ -27,23 +27,23 @@ from OpenGL.GLU import *
 from twisted.python import util
 from twisted.internet import reactor
 
-from src import constants as Constants
-from src import resources as Resources
-from src.gui import Clock
-from src.gui import Camera
-from src.gui import Sprite
-from src.gui import Cursor
-from src.gui import GLUtil
-from src.gui import MainWindow as MainWindow
-from src import util as Util
-from src import sound as Sound
-from src.engine import Class as Class
-from src.engine import Ability
-from src.engine import Effect
-from src.engine import Unit as Unit
-from src.gui import Input as Input
-from src.engine import Faction
-from src import fsm as FSM
+import constants as Constants
+import resources as Resources
+from gui import Clock
+from gui import Camera
+from gui import Sprite
+from gui import Cursor
+from gui import GLUtil
+from gui import MainWindow as MainWindow
+import util as Util
+import sound as Sound
+from engine import Class as Class
+from engine import Ability
+from engine import Effect
+from engine import Unit as Unit
+from gui import Input as Input
+from engine import Faction
+import fsm as FSM
 
 def get():
     return _gui
@@ -191,20 +191,34 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         self.scrollTo((self.m.width/2.0, self.m.height/2.0))
 
     def __del__(self):
-        m = self.m
-        for j in range(0, m.height):
-            for i in range(0, m.width):
-                sq = m.squares[i][j]
-                if sq.guiData.has_key("listID"):
-                    try:
-                        glDeleteLists(sq.guiData['listID'], 1)
-                    except:
-                        pass
-                if sq.guiData.has_key("topListID"):
-                    try:
-                        glDeleteLists(sq.guiData['topListID'], 1)
-                    except:
-                        pass
+        try:
+            m = self.m
+            for j in range(0, m.height):
+                for i in range(0, m.width):
+                    sq = m.squares[i][j]
+                    if "listID" in sq.guiData:
+                        try:
+                            glDeleteLists(sq.guiData['listID'], 1)
+                            del sq.guiData['listID']
+                        except (NameError, AttributeError) as e:
+                            import logging
+                            logging.warning(f"Failed to delete display list for square ({i},{j}): {e}")
+                        except Exception as e:
+                            import logging
+                            logging.error(f"Unexpected error deleting display list for square ({i},{j}): {e}")
+                    if "topListID" in sq.guiData:
+                        try:
+                            glDeleteLists(sq.guiData['topListID'], 1)
+                            del sq.guiData['topListID']
+                        except (NameError, AttributeError) as e:
+                            import logging
+                            logging.warning(f"Failed to delete top display list for square ({i},{j}): {e}")
+                        except Exception as e:
+                            import logging
+                            logging.error(f"Unexpected error deleting top display list for square ({i},{j}): {e}")
+        except (AttributeError, TypeError) as e:
+            import logging
+            logging.warning(f"Failed to access map data during ScenarioGUI cleanup: {e}")
 
     def moveUnit(self, x, y):
         u = self.unit
@@ -244,7 +258,11 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         self.chatBox5.setText(text)
 
     def showActionPerformed(self, abilityID):
-        action = Ability.get[abilityID]
+        action = Ability.Ability.get.get(abilityID)
+        if action is None:
+            import logging
+            logging.error(f"Ability with ID {abilityID} not found")
+            return
         unit = self.unit
         self.setTopText(action.name())
         Sound.action(action.sound(unit.attack()))
@@ -263,6 +281,10 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
 
     def showEffect(self, targetID, effect, delay):
         target = self.scenario.unitFromID(targetID)
+        if target is None:
+            import logging
+            logging.warning(f"Cannot show effect for unknown unit ID {targetID}")
+            return
         ud = self.unitDisplayer(target)
         if isinstance(effect, Effect.MissResult):
             dd = Sprite.DamageDisplayer(_("Miss"), Sprite.NEUTRAL, delay)
@@ -314,7 +336,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         for s in ability.aoe(self.m,
                              unit,
                              posn):
-            if highlights.has_key(s):
+            if s in highlights:
                 if highlights[s] == (1.0, 1.0, 0.0, 0.75):
                     highlights[s] = (1.0, 0.0, 0.0, 0.75)
             else:
@@ -407,7 +429,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
             self.nextUnitMovePosn = sq
 
     def compileMapSquareList(self, sq):
-        if sq.guiData.has_key("listID"):
+        if "listID" in sq.guiData:
             glDeleteLists(sq.guiData["listID"], 1)
 
           

@@ -1,19 +1,19 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
@@ -22,11 +22,11 @@ import random
 import copy
 import logging
 import traceback
-from src.engine import Battle as Battle
-from src.engine import Faction as Faction
-from src.engine import Ability
-from src.engine import Effect
-from src import constants as Constants
+from engine import Battle as Battle
+from engine import Faction as Faction
+from engine import Ability
+from engine import Effect
+import constants as Constants
 
 logger = logging.getLogger('ai')
 #logger.setLevel(logging.DEBUG)
@@ -230,6 +230,11 @@ class MoveToWeakest(TurnEvaluator):
         for t in battle.units():
             if t.alive() and Faction.hostile(unit.faction(), t.faction()):
                 targets.append(t)
+
+        # If no targets, return empty list
+        if not targets:
+            return []
+
         targets.sort(key=lambda t: t.hp())
 
         # Get as close as possible to the weakest target
@@ -337,6 +342,11 @@ class Exhaustive(Base):
         for t in battle.units():
             if t.alive() and Faction.hostile(u.faction(), t.faction()):
                 targets.append(t)
+
+        # If no targets, return None (no valid facing direction)
+        if not targets:
+            return None
+
         centroidX = 0.0
         centroidY = 0.0
         for t in targets:

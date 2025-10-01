@@ -1,29 +1,29 @@
 ## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by 
 
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import numpy as Numeric
 import random
 import math
-from src import util as Util
-from src.engine import Map as Map
+import util as Util
+from engine import Map as Map
 
 m = None
 mt = None
@@ -185,10 +185,10 @@ def river(startX, startY, depth):
         mt[x, y] = t
         riverSquares.append((x, y))
         probs = []
-        probs.extend(['n'] * pn)
-        probs.extend(['s'] * ps)
-        probs.extend(['e'] * pe)
-        probs.extend(['w'] * pw)
+        probs.extend(['n'] * int(pn))
+        probs.extend(['s'] * int(ps))
+        probs.extend(['e'] * int(pe))
+        probs.extend(['w'] * int(pw))
         if len(probs) == 0:
             break
         direction = random.choice(probs)
@@ -354,12 +354,12 @@ def generateRandom():
                                         random.randint(15,25))
         #size = (mapWidth, mapHeight) = (8, 8)
         squares = mapWidth * mapHeight
-        nHills = random.randint(0, squares / 150 + 1)
-        nRivers = random.randint(0, squares / 50 + 1)
+        nHills = random.randint(0, squares // 150 + 1)
+        nRivers = random.randint(0, squares // 50 + 1)
         #nRivers = 0
         #nBuildings = random.randint(0, squares / 100 + 1)
         nBuildings = 0
-        nCastles = random.randint(0, squares / 600 + 1)
+        nCastles = random.randint(0, squares // 600 + 1)
     
     #     print "hills:", nHills
     #     print "rivers:", nRivers

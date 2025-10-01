@@ -1,29 +1,29 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from src.engine import Name
-from src import resources as Resources
-from src.engine import Equipment
-from src.engine import Effect
+from engine import Name
+import resources as Resources
+from engine import Equipment
+from engine import Effect
 import logging
-from src.gui import ScenarioGUI # FIXME PB: remove ScenarioGUI from this
-from src import constants as Constants
+from gui import ScenarioGUI # FIXME PB: remove ScenarioGUI from this
+import constants as Constants
 import random
 from twisted.spread import pb
 
@@ -162,7 +162,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def getSprites(self, spriteName):
         if self._sprites == None:
             self._loadSprites()
-        if self._sprites.has_key(spriteName):
+        if spriteName in self._sprites:
             return self._sprites[spriteName]
         else:
             return []
@@ -173,7 +173,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def getOverSprites(self, spriteName):
         if self._overSprites == None:
             self._loadSprites()
-        if self._overSprites.has_key(spriteName):
+        if spriteName in self._overSprites:
             return self._overSprites[spriteName]
         else:
             return []
@@ -209,7 +209,14 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._hasAct = True
         self._hasMove = True
         self._hasCancel = False
-        
+
+    def canceled(self):
+        """Called when a unit's turn is canceled."""
+        # Reset unit's turn state as if the turn never started
+        self._hasAct = False
+        self._hasMove = False
+        self._hasCancel = True
+
     def x(self):
         return self._x
 
@@ -351,7 +358,8 @@ class Unit(pb.Copyable, pb.RemoteCopy):
             self._defenders.append(unit)
                 
     def removeDefender(self, unit):
-        self._defenders.remove(unit)
+        if unit in self._defenders:
+            self._defenders.remove(unit)
                
     def defenders(self):
         return self._defenders
@@ -390,19 +398,19 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         return self._name
 
     def addAbility(self, abilityName):
-        if self._abilities.has_key(abilityName):
+        if abilityName in self._abilities:
             return
         ability = Resources.ability(abilityName)
         self._abilities[abilityName] = ability
 
     def incrementClassLevel(self, className):
-        if not self._classLevels.has_key(className):
+        if className not in self._classLevels:
             self._classLevels[className] = 0
         self._classLevels[className] += 1
         self._level += 1
 
     def classLevel(self, className):
-        if not self._classLevels.has_key(className):
+        if className not in self._classLevels:
             self._classLevels[className] = 0       
         return self._classLevels[className]
 
@@ -410,7 +418,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         return self._abilities.values()
 
     def allAbilities(self):
-        result = self.abilities()
+        result = list(self.abilities())
         result.append(self.attack())
         return result
 
@@ -519,9 +527,11 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
                 logger.debug(("Removed status effect (type=%d)") % i)
                 newE = None
                 if Effect.Status.isColor(i):
-                    self._colorStatus.remove(i)
+                    if i in self._colorStatus:
+                        self._colorStatus.remove(i)
                 else:
-                    self._textureStatus.remove(i)
+                    if i in self._textureStatus:
+                        self._textureStatus.remove(i)
             else:
                 newE = (duration, power)
             self._effects[i] = newE

@@ -1,10 +1,8 @@
 import logging
 import pygame
 import os
-from src.gui import GLUtil
+from gui import GLUtil
 import re
-from src.engine import Effect
-from src.engine import Range
 import random
 
 logger = logging.getLogger('reso')
@@ -97,19 +95,47 @@ class TextureLoader(object):
         self._textureSize = 64
 
     def setTextureSize(self, textureSize):
+        """Set texture size and clear cache."""
+        self.clear()  # Properly clear old textures before resizing
         self._textureSize = textureSize
-        self.cache = {}
 
     def __call__(self, textureName):
         if textureName not in self.cache:
             i = image(textureName, "textures")
             i = pygame.transform.scale(i, (self._textureSize,
                                            self._textureSize))
-            # FIXME: delete these textures when the cache is cleared
-            # (and/or in __del__), or we get a memory leak
             textureID = GLUtil.makeTexture(i)[0]
             self.cache[textureName] = textureID
         return self.cache[textureName]
+
+    def clear(self):
+        """Clear texture cache and free OpenGL resources."""
+        if not self.cache:
+            return
+
+        try:
+            from OpenGL.GL import glDeleteTextures, glIsTexture
+            for textureName, textureID in list(self.cache.items()):
+                try:
+                    if glIsTexture(textureID):
+                        glDeleteTextures([textureID])
+                except Exception as e:
+                    import logging
+                    logging.warning(f"Failed to delete texture {textureName}: {e}")
+            self.cache = {}
+        except Exception as e:
+            import logging
+            logging.error(f"Error clearing texture cache: {e}")
+            # Still clear cache dict even if GL cleanup failed
+            self.cache = {}
+
+    def __del__(self):
+        """Cleanup textures when loader is destroyed."""
+        try:
+            self.clear()
+        except:
+            # Ignore errors during shutdown
+            pass
 
 
 class ScenarioLoader(object):
@@ -139,10 +165,8 @@ class AbilityLoader(object):
             f = _getFilename("abilities", filename)
             if f == None:
                 raise Exception('Ability file "%s" not found' % f)
-            abilityFile = open(f, "rU")
-
-            abilityText = abilityFile.read()
-            abilityFile.close()
+            with open(f, "r") as abilityFile:
+                abilityText = abilityFile.read()
 
             globalVars = {}
             localVars = {}
@@ -172,7 +196,7 @@ class AbilityLoader(object):
             if abilityData['ABILITY_TYPE'] != Ability.ACTION:
                 raise Exception("Only action abilities are supported")
 
-            name = _(abilityData['NAME'])
+            name = abilityData['NAME']
             targetType = abilityData['TARGET_TYPE']
             range_ = abilityData['RANGE']
             aoe = abilityData['AOE']
@@ -190,7 +214,7 @@ class AbilityLoader(object):
             if 'SOUND' in abilityData:
                 sound = abilityData['SOUND']
 
-            description = _(abilityData['DESCRIPTION'])
+            description = abilityData['DESCRIPTION']
 
             ability = Ability.Ability(name, description, cost, targetType,
                                       requiredWeapons,
@@ -208,9 +232,8 @@ class ClassLoader(object):
         filename = _getFilename("classes", className + ".py")
         if filename == None:
             raise Exception('Class file "%s" not found' % filename)
-        classFile = open(filename, "rU")
-        classText = classFile.read()
-        classFile.close()
+        with open(filename, "r") as classFile:
+            classText = classFile.read()
 
         globalVars = {}
         localVars = {}
@@ -228,7 +251,7 @@ class ClassLoader(object):
 
         spriteRoot = classData['SPRITE_ROOT']
 
-        self.cache[className] = Class_.Class(_(classData['NAME']),
+        self.cache[className] = Class_.Class(classData['NAME'],
                                              abilities,
                                              spriteRoot,
                                              classData['MOVE'],
@@ -269,16 +292,14 @@ class UnitLoader(object):
         unitFilename = _getFilename("units", filename)
         if unitFilename == None:
             raise Exception('Unit file "%s" not found' % filename)
-        unitFile = open(unitFilename, "rU")
-        unitText = unitFile.read()
-        unitFile.close()
+        with open(unitFilename, "r") as unitFile:
+            unitText = unitFile.read()
 
         globalVars = {}
         localVars = {}
 
         # Load required modules
-        module = compile("from engine.Unit import numpy.oldnumeric.ma as MALE, FEMALE, NEUTER, " +
-                         "FEMALE_OR_MALE",
+        module = compile("from engine.Unit import MALE, FEMALE, NEUTER, FEMALE_OR_MALE",
                          "Unit.py", "exec")
         eval(module, globalVars)
 
@@ -350,9 +371,8 @@ class EquipmentLoader(object):
             equipmentFilename = _getFilename("items/" + subdir, filename)
             if equipmentFilename == None:
                 raise Exception('Equipment file "%s" not found' % filename)
-            equipmentFile = open(equipmentFilename, "rU")
-            equipmentText = equipmentFile.read()
-            equipmentFile.close()
+            with open(equipmentFilename, "r") as equipmentFile:
+                equipmentText = equipmentFile.read()
 
             globalVars = {}
             localVars = {}
@@ -426,9 +446,8 @@ class TextLoader(object):
         textFile = _getFilename("text", filename)
         if textFile == None:
             raise Exception('Text file "%s" not found' % filename)
-        f = open(textFile, "rU")
-        text = f.readlines()
-        f.close()
+        with open(textFile, "r") as f:
+            text = f.readlines()
         return text
 
 
@@ -457,9 +476,8 @@ class SpriteConfigLoader(object):
         self._grip = {}
         spriteConfigFilename = _getFilename("images", "spriteconfig.py")
         if spriteConfigFilename != None:
-            spriteConfigFile = open(spriteConfigFilename, "r", newline=None)
-            spriteConfigText = spriteConfigFile.read()
-            spriteConfigFile.close()
+            with open(spriteConfigFilename, "r", newline=None) as spriteConfigFile:
+                spriteConfigText = spriteConfigFile.read()
 
             localVars = {}
 

@@ -1,24 +1,24 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from src import resources as Resources
-from src.engine import Unit
+import resources as Resources
+from engine import Unit
 import random as random_
 import re
 
@@ -28,7 +28,7 @@ def random(gender):
     name = ''
     # We loop here just in case the names file has a blank line or
     # something... don't want to return an empty name
-    while re.search('\w+', name) == None:
+    while re.search(r'\w+', name) == None:
         if gender == Unit.MALE:
             name = random_.choice(_maleNames)
         elif gender == Unit.FEMALE:
