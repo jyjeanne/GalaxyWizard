@@ -55,7 +55,7 @@ GalaxyWizard is a tactical role-playing game inspired by classic strategy RPGs. 
 
 ### Prerequisites
 
-- **Python 3.8+** - [Download Python](https://www.python.org/downloads/)
+- **Python 3.11+** - [Download Python](https://www.python.org/downloads/)
 - **Poetry** - [Install Poetry](https://python-poetry.org/docs/#installation)
 
 ### Quick Setup
@@ -240,7 +240,7 @@ We welcome contributions from the community! Here's how you can help:
 
 ### Development Guidelines
 
-- **Python 3.8+** compatibility required
+- **Python 3.11+** compatibility required
 - **Follow PEP 8** style guidelines
 - **Write tests** for new features
 - **Update documentation** for user-facing changes
