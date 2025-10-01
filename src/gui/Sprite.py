@@ -98,16 +98,17 @@ class UnitDisplayer(Sprite):
     def __del__(self):
         try:
             if hasattr(self, '_UnitDisplayer__texture') and self.__texture != -1:
-                glDeleteTextures([self.__texture])
+                # Check if OpenGL context is still valid before deleting
+                from OpenGL.GL import glIsTexture
+                if glIsTexture(self.__texture):
+                    glDeleteTextures([self.__texture])
                 self.__texture = -1
-        except (NameError, AttributeError) as e:
-            # OpenGL context may be destroyed or module unloaded during shutdown
-            import logging
-            logging.warning(f"Failed to delete texture in UnitDisplayer: {e}")
-        except Exception as e:
-            # Log unexpected errors but don't crash
-            import logging
-            logging.error(f"Unexpected error deleting texture in UnitDisplayer: {e}")
+        except (NameError, AttributeError):
+            # OpenGL context destroyed or module unloaded during shutdown - safe to ignore
+            pass
+        except Exception:
+            # OpenGL context already destroyed - safe to ignore during shutdown
+            pass
 
     def update(self, elapsedTime):
         (r, g, b, a) = (1.0, 1.0, 1.0, 1.0)
@@ -316,25 +317,25 @@ class TextDisplayer(Sprite):
     def __del__(self):
         try:
             if hasattr(self, 'texture') and self.texture != -1:
-                glDeleteTextures([self.texture])
+                from OpenGL.GL import glIsTexture
+                if glIsTexture(self.texture):
+                    glDeleteTextures([self.texture])
                 self.texture = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete texture in TextDisplayer: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting texture in TextDisplayer: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
         try:
             if hasattr(self, 'listID') and self.listID != -1:
-                glDeleteLists(self.listID, 1)
+                from OpenGL.GL import glIsList
+                if glIsList(self.listID):
+                    glDeleteLists(self.listID, 1)
                 self.listID = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete display list in TextDisplayer: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting display list in TextDisplayer: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
     # Override this method to return the text you want to display
     def getText(self):
@@ -604,25 +605,25 @@ class TextDisplayerBox(Sprite):
     def __del__(self):
         try:
             if hasattr(self, 'borderListID') and self.borderListID != -1:
-                glDeleteLists(self.borderListID, 1)
+                from OpenGL.GL import glIsList
+                if glIsList(self.borderListID):
+                    glDeleteLists(self.borderListID, 1)
                 self.borderListID = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete border display list in TextDisplayerBox: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting border display list in TextDisplayerBox: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
         try:
             if hasattr(self, 'borderTexture') and self.borderTexture != -1:
-                glDeleteTextures([self.borderTexture])
+                from OpenGL.GL import glIsTexture
+                if glIsTexture(self.borderTexture):
+                    glDeleteTextures([self.borderTexture])
                 self.borderTexture = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete border texture in TextDisplayerBox: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting border texture in TextDisplayerBox: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
     def size(self):
         return (self.width, self.height)
@@ -714,14 +715,14 @@ class TextMenu(Sprite):
     def __del__(self):
         try:
             if hasattr(self, 'cursorTexture') and self.cursorTexture != -1:
-                glDeleteTextures([self.cursorTexture])
+                from OpenGL.GL import glIsTexture
+                if glIsTexture(self.cursorTexture):
+                    glDeleteTextures([self.cursorTexture])
                 self.cursorTexture = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete cursor texture: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting cursor texture: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
     def setSelectedOption(self, option):
         self.selectedOption = 0
@@ -915,14 +916,14 @@ class DamageDisplayer(Animation):
     def __del__(self):
         try:
             if hasattr(self, '_texture') and self._texture != -1:
-                glDeleteTextures([self._texture])
+                from OpenGL.GL import glIsTexture
+                if glIsTexture(self._texture):
+                    glDeleteTextures([self._texture])
                 self._texture = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete effect texture: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting effect texture: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
     def update(self, elapsedTime):
         self._time += elapsedTime
@@ -987,18 +988,20 @@ class AttackDisplayer(Animation):
 
     def __del__(self):
         try:
+            from OpenGL.GL import glIsTexture
             if hasattr(self, '_texture') and isinstance(self._texture, list):
-                glDeleteTextures(self._texture)
+                valid_textures = [t for t in self._texture if glIsTexture(t)]
+                if valid_textures:
+                    glDeleteTextures(valid_textures)
                 self._texture = []
             elif hasattr(self, '_texture') and self._texture != -1:
-                glDeleteTextures([self._texture])
+                if glIsTexture(self._texture):
+                    glDeleteTextures([self._texture])
                 self._texture = -1
-        except (NameError, AttributeError) as e:
-            import logging
-            logging.warning(f"Failed to delete animated effect texture: {e}")
-        except Exception as e:
-            import logging
-            logging.error(f"Unexpected error deleting animated effect texture: {e}")
+        except (NameError, AttributeError):
+            pass  # OpenGL context destroyed - safe to ignore
+        except Exception:
+            pass  # OpenGL context invalid - safe to ignore during shutdown
 
     def update(self, elapsedTime):
         self._time += elapsedTime

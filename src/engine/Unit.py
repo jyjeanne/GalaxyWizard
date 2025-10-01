@@ -22,7 +22,7 @@ import resources as Resources
 from engine import Equipment
 from engine import Effect
 import logging
-from gui import ScenarioGUI # FIXME PB: remove ScenarioGUI from this
+from gui import ScenarioGUI
 import constants as Constants
 import random
 from twisted.spread import pb
