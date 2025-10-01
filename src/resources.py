@@ -8,6 +8,9 @@ import random
 
 logger = logging.getLogger('reso')
 
+# Cache for file lookups to avoid repeated filesystem checks and log spam
+_filename_cache = {}
+
 
 # Determine the base path for data files
 # When running as PyInstaller executable, use sys._MEIPASS
@@ -25,6 +28,11 @@ def _get_base_path():
 # getFilename("images", "arch-mage.png") ->
 # "campaigns/common/images/arch-mage.png"
 def _getFilename(base, name):
+    # Check cache first to avoid repeated filesystem checks and log spam
+    cache_key = (campaign, base, name)
+    if cache_key in _filename_cache:
+        return _filename_cache[cache_key]
+
     logger.debug('finding file for (%s, %s)' % (str(base), str(name)))
     sep = os.path.sep
     if sep == '\\':
@@ -37,16 +45,23 @@ def _getFilename(base, name):
     result = os.path.join(base_path, "data", campaign, base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
+        _filename_cache[cache_key] = result
         return result
     result = os.path.join(base_path, "data", "extra", base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
+        _filename_cache[cache_key] = result
         return result
     result = os.path.join(base_path, "data", "core", base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
+        _filename_cache[cache_key] = result
         return result
+
+    # Cache the negative result to avoid repeated lookups
+    # Only log once per missing file to reduce spam
     logger.debug('no suitable file found')
+    _filename_cache[cache_key] = None
     return None
 
 
@@ -532,6 +547,8 @@ def setCampaign(c):
     global campaign, font, map, image, texture, scenario, class_, ability, weapon, spriteConfig
     logger.debug('Set campaign to "%s"' % c)
     campaign = c
+    # Clear filename cache when campaign changes
+    _filename_cache.clear()
     font = FontLoader()
     map = MapLoader()
     image = ImageLoader()

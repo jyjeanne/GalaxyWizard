@@ -369,12 +369,56 @@ class GameState(object):
         self.factions = {}
         self.clientCommandQueue = []
         
+    def _validate_name(self, name, name_type):
+        """
+        Validate campaign/scenario names to prevent directory traversal attacks.
+
+        Args:
+            name: The name to validate
+            name_type: 'campaign' or 'scenario' (for error messages)
+
+        Returns:
+            The validated name
+
+        Raises:
+            ValueError: If the name contains invalid characters
+        """
+        import re
+
+        if not name:
+            raise ValueError(f"{name_type} name cannot be empty")
+
+        # Check for reserved names first (before regex check)
+        if name in ['.', '..', 'CON', 'PRN', 'AUX', 'NUL']:
+            raise ValueError(f"Reserved {name_type} name '{name}' is not allowed")
+
+        # Only allow alphanumeric characters, hyphens, and underscores
+        # This prevents directory traversal attacks (../, ./, /etc)
+        if not re.match(r'^[a-zA-Z0-9_-]+$', name):
+            raise ValueError(
+                f"Invalid {name_type} name '{name}'. "
+                f"Only alphanumeric characters, hyphens, and underscores are allowed."
+            )
+
+        return name
+
     def setScenario(self, campaign, scenario):
-        # FIXME SECURITY: scenarios and campaigns should only be a
-        # simple string; for security reasons we need to make sure
-        # they don't contain weird characters like "..", "/", or "."
-        resources.setCampaign(campaign)
-        self.scenario = resources.scenario(scenario)
+        """
+        Set the current scenario for the game.
+
+        Args:
+            campaign: Campaign name (validated for security)
+            scenario: Scenario name (validated for security)
+
+        Raises:
+            ValueError: If campaign or scenario names contain invalid characters
+        """
+        # Validate input to prevent directory traversal attacks
+        validated_campaign = self._validate_name(campaign, 'campaign')
+        validated_scenario = self._validate_name(scenario, 'scenario')
+
+        resources.setCampaign(validated_campaign)
+        self.scenario = resources.scenario(validated_scenario)
         self.scenario.numPlayers = 2 # FIXME: should be defined by the scenario
 
     def update(self):

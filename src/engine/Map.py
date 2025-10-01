@@ -24,9 +24,12 @@ import pickle as cPickle
 import gzip
 import re
 import random
+import logging
 from engine import Faction
 from OpenGL.GL import *
 from twisted.spread import pb
+
+logger = logging.getLogger('map')
 
 
 # Helper functions for color/texture parsing
@@ -784,10 +787,10 @@ class MapIO(object):
                     except (ValueError, SyntaxError) as e:
                         raise ValueError(f"Invalid map data for {var_name}: {e}")
 
-        except Exception as e:
+        except Exception:
             # Fallback to old method for backward compatibility
-            import logging
-            logging.warning(f"Failed to parse map with safe method, falling back to eval(): {e}")
+            # This is expected for map files with Python code (variable definitions)
+            logger.debug(f"Map '{mapname}' uses Python code, parsing with eval()")
             try:
                 compiled = compile(text, mapname, 'exec')
                 localVars = {}
@@ -822,6 +825,7 @@ class MapIO(object):
         zdata = Numeric.zeros((width, height))
         tileProperties = Numeric.zeros((width, height), dtype=object)
         y = 0
+        padded_lines = 0  # Track irregular map shape
         for line in layoutLines:
             if re.match(re.compile(r'^\s*$'), line):
                 continue
@@ -831,11 +835,10 @@ class MapIO(object):
             # Filter out empty strings from the split
             tiles = [t for t in tiles if t.strip()]
 
-            # If we have fewer tiles than expected, it's likely a malformed line
-            # Skip this line and log a warning
+            # If we have fewer tiles than expected, pad with defaults
+            # This is expected for triangular or irregular-shaped maps
             if len(tiles) < width:
-                import logging
-                logging.warning(f"Map layout line {y} has fewer tiles than expected (expected {width}, got {len(tiles)}), using default values for missing tiles")
+                padded_lines += 1
                 # Pad with default tile data
                 tiles.extend(['0'] * (width - len(tiles)))
 
@@ -854,6 +857,11 @@ class MapIO(object):
                 if m.group(7) != None:
                     tileProperties[x,y]['waterHeight'] = int(m.group(8))
             y += 1
+
+        # Log map shape summary if irregular
+        if padded_lines > 0:
+            logger.debug(f"Loaded irregular map: {mapname} ({width}x{height}, {padded_lines} padded rows)")
+
         m = Map(width, height, zdata, tileProperties, waterHeight, waterColor, tags)
         m.setLoadString(text)
         return m
