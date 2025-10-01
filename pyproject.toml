@@ -1,6 +1,5 @@
 [tool.poetry]
 name = "galaxywizard"
-scripts = { "galaxywizard" = "src.main:main" }
 version = "0.1.0"
 description = "GalaxyWizard is an open-source tactical RPG written with python"
 authors = ["jeremy jeanne <jyjeanne@gmail.com>"]
@@ -8,8 +7,12 @@ license = "GPL-2.0 license"
 readme = "README.md"
 packages = [{include = "src"}]
 
+[tool.poetry.scripts]
+galaxywizard = "src.main:main"
+galaxywizard-build = "build_scripts:build_exe"
+
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 numpy = "==1.24.1"
 PyOpenGL = "==3.1.7"
 pygame = "^2.5.2"
@@ -19,6 +22,11 @@ PyOpenGL_accelerate = "==3.1.7"
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
+pyinstaller = "^6.3.0"
+
+[tool.poetry.build]
+script = "build.py"
+generate-setup-file = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

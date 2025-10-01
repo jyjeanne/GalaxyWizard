@@ -202,12 +202,18 @@ poetry run python src/test/TestSuite.py -v
 ### Building Executable
 
 ```bash
-# Install PyInstaller
-poetry add --group dev pyinstaller
+# Using Poetry script
+poetry run galaxywizard-build
 
-# Build executable
-poetry run pyinstaller GalaxyWizard.spec
+# Or directly with PyInstaller
+poetry run pyinstaller main.spec --clean
+
+# Output: dist/GalaxyWizard.exe
 ```
+
+**Note:** The `poetry install` step may fail due to missing C++ build tools for PyOpenGL-accelerate. To build the executable, you'll need to either:
+- Install [Microsoft Visual C++ 14.0+ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), or
+- Remove `PyOpenGL_accelerate` from dependencies (it's optional - only provides performance improvements)
 
 ### Development Setup
 
