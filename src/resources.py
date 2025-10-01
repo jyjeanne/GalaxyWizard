@@ -1,11 +1,25 @@
 import logging
 import pygame
 import os
+import sys
 from gui import GLUtil
 import re
 import random
 
 logger = logging.getLogger('reso')
+
+
+# Determine the base path for data files
+# When running as PyInstaller executable, use sys._MEIPASS
+# When running normally, use the directory containing this file
+def _get_base_path():
+    """Get the base path for the application (handles PyInstaller)."""
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        # Running as PyInstaller executable
+        return sys._MEIPASS
+    else:
+        # Running normally
+        return os.path.dirname(os.path.abspath(__file__))
 
 
 # getFilename("images", "arch-mage.png") ->
@@ -17,15 +31,18 @@ def _getFilename(base, name):
         sep = r'\\'
     base = re.sub(r'/', sep, base)
     name = re.sub(r'/', sep, name)
-    result = os.path.join("data", campaign, base, name)
+
+    base_path = _get_base_path()
+
+    result = os.path.join(base_path, "data", campaign, base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
         return result
-    result = os.path.join("data", "extra", base, name)
+    result = os.path.join(base_path, "data", "extra", base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
         return result
-    result = os.path.join("data", "core", base, name)
+    result = os.path.join(base_path, "data", "core", base, name)
     if os.path.exists(result):
         logger.debug('found ' + result)
         return result

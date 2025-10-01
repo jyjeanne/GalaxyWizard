@@ -215,6 +215,11 @@ poetry run pyinstaller main.spec --clean
 - Install [Microsoft Visual C++ 14.0+ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), or
 - Remove `PyOpenGL_accelerate` from dependencies (it's optional - only provides performance improvements)
 
+**Technical Details:**
+- The executable uses PyInstaller's `sys._MEIPASS` to locate bundled data files
+- All game data from `src/data/` is bundled into the executable
+- Resource paths are automatically resolved for both normal and executable modes
+
 ### Development Setup
 
 1. **Fork and clone** the repository
