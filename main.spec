@@ -19,6 +19,7 @@ data_files += [
 
 # Collect hidden imports for dynamic modules
 hiddenimports = [
+    # Main dependencies
     'pygame',
     'OpenGL',
     'OpenGL.GL',
@@ -39,16 +40,26 @@ hiddenimports = [
     'twisted.python',
     'twisted.python.log',
     'zope.interface',
+    # Root src modules
+    'translate',
+    'resources',
+    'sound',
+    'util',
+    'constants',
+    'fsm',
+    'log',
+    'twistedmain',
 ]
 
 # Collect all submodules from engine, gui, ai packages
-hiddenimports += collect_submodules('src.engine')
-hiddenimports += collect_submodules('src.gui')
-hiddenimports += collect_submodules('src.ai')
+hiddenimports += collect_submodules('engine')
+hiddenimports += collect_submodules('gui')
+hiddenimports += collect_submodules('ai')
+hiddenimports += collect_submodules('test')
 
 a = Analysis(
     ['src\\main.py'],
-    pathex=[],
+    pathex=['src'],  # Add src to the Python path
     binaries=[],
     datas=data_files,
     hiddenimports=hiddenimports,
