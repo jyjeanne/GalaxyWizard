@@ -138,13 +138,14 @@ class Effect(pb.Copyable, pb.RemoteCopy):
         damage = int(max(0, damage))
         return damage
 
-    # FIXME BE: Defend ability needs to be fixed
     def getDefenders(self, target):
-        (x,y) = target.posn()#FIXME: do this in Range.py
-        adjacent = [(x+1,y), (x-1,y), (x,y+1), (x,y-1)]
+        """Check if any adjacent unit intercepts the attack to defend the target."""
+        (x, y) = target.posn()
+        adjacent = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
         if isPhysicalDamage(self._damageType):
             for u in target.defenders():
-                if u.posn() in adjacent and random.random() > 0.3:
+                # Defender must be alive and adjacent to intercept
+                if u.alive() and u.posn() in adjacent and random.random() > 0.3:
                     ud = ScenarioGUI.get().unitDisplayer(target)
                     ud.addAnimation(Sprite.DamageDisplayer("Defended", Sprite.NEUTRAL))
                     return u

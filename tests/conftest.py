@@ -19,13 +19,13 @@ pygame.init()
 # This is required for PyOpenGL to initialize properly
 try:
     pygame.display.set_mode((640, 480), pygame.OPENGL | pygame.DOUBLEBUF | pygame.HIDDEN)
-    print("✓ Pygame display initialized with OpenGL")
+    print("OK - Pygame display initialized with OpenGL")
 except pygame.error as e:
     print(f"Warning: OpenGL display failed ({e}), trying fallback...")
     # Fallback to minimal display if OpenGL fails
     try:
         pygame.display.set_mode((1, 1))
-        print("✓ Pygame display initialized (fallback mode)")
+        print("OK - Pygame display initialized (fallback mode)")
     except pygame.error as e2:
         print(f"Error: Could not initialize pygame display: {e2}")
 

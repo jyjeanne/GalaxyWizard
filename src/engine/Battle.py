@@ -26,6 +26,7 @@ import fsm as FSM
 from engine import Effect
 import constants as Constants
 from twisted.spread import pb
+import gui
 
 logger = logging.getLogger('batt')
 
@@ -208,28 +209,35 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         self.activeUnit = u
         u.readyTurn()
         u.statusEffects().update()
+
+        # Clear defending status from previous turn
+        defending_copy = list(u._defending)  # Make a copy to avoid modification during iteration
+        for defender in defending_copy:
+            defender.removeDefender(u)
+        u._defending.clear()
+
+        # Apply status effects at beginning of turn
+        # Regeneration effect
+        if u.statusEffects().has(Effect.Status.REGEN):
+            damage = u.statusEffects().power(Effect.Status.REGEN)
+            damage *= u.mhp()
+            damage = int(damage)
+            damage = min(u.mhp() - u.hp(), damage)
+            u.damageHP(-damage, Effect.HEALING)
+            ud = gui.ScenarioGUI.get().unitDisplayer(u)
+            ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.BENEFICIAL, 0.5))
+
+        # Poison effect
+        if u.statusEffects().has(Effect.Status.POISON):
+            damage = u.statusEffects().power(Effect.Status.POISON)
+            damage *= u.mhp()
+            damage = int(damage)
+            damage = min(u.hp(), damage)
+            u.damageHP(damage, Effect.PHYSICAL)
+            ud = gui.ScenarioGUI.get().unitDisplayer(u)
+            ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.NEGATIVE, 0.5))
+
         return u
-        # FIXME BE: add defenders and regen/poison back in
-#         for u in self._defending:
-#             u.removeDefender(self)
-#             self._defending.remove(u)
-        # See if any status effects have affects at beginning of turn
-#         if self._statusEffects.has(Effect.Status.REGEN):
-#             damage = self._statusEffects.power(Effect.Status.REGEN)
-#             damage *= self.mhp()
-#             damage = int(damage)
-#             damage = min(self.mhp() - self.hp(), damage)
-#             self.damageHP(-damage, Effect.HEALING)
-#             ud = gui.ScenarioGUI.get().unitDisplayer(self)        
-#             ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.BENEFICIAL, 0.5))
-#         if self._statusEffects.has(Effect.Status.POISON):
-#             damage = self._statusEffects.power(Effect.Status.POISON)
-#             damage *= self.mhp()
-#             damage = int(damage)
-#             damage = min(self.hp(), damage)
-#             self.damageHP(damage, Effect.PHYSICAL)
-#             ud = gui.ScenarioGUI.get().unitDisplayer(self)        
-#             ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.NEGATIVE, 0.5))
             
 
 class UnitTurn(object):

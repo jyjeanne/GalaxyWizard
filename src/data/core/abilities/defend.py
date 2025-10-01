@@ -10,7 +10,7 @@ COST = 5
 
 TARGET_TYPE = FRIENDLY
 
-RANGE = Single()
+RANGE = Diamond(0, 0, 0)
 
 AOE = Single()
 
