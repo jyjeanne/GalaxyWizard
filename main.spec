@@ -55,7 +55,7 @@ hiddenimports = [
 hiddenimports += collect_submodules('engine')
 hiddenimports += collect_submodules('gui')
 hiddenimports += collect_submodules('ai')
-hiddenimports += collect_submodules('test')
+# Note: Do not include 'test' as it conflicts with Python's built-in test package
 
 a = Analysis(
     ['src\\main.py'],
