@@ -1,34 +1,34 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 #import GLUtil
-from src import resources as Resources
+import resources as Resources
 #import Clock
 #from OpenGL.GL import *
 #from OpenGL.GLU import *
-from src.gui import MapEditorGUI as GUI
+from gui import MapEditorGUI as GUI
 #import engine.Faction as Faction
 #import engine.Effect as Effect
 #import math
-from src.gui import Sprite
+from gui import Sprite
 import pygame
-from src.gui import Input
+from gui import Input
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -267,7 +267,7 @@ class TileInfoDisplayer(Sprite.TextDisplayerBox):
             
             textures = tag['texture']
             sidetextures = []
-            if type(textures) == type([]):
+            if isinstance(textures, list):
                 sidetextures = textures[1:]
                 textures = textures[0]
             self.outputBoxes[1].setText(str(textures))
@@ -377,7 +377,7 @@ class AddTagDialog(Dialog):
         colorVar = (float(self.inputBoxes[5].getText()),
                     float(self.inputBoxes[6].getText()),
                     float(self.inputBoxes[7].getText()))
-        if not tags.has_key(tagName):
+        if tagName not in tags:
             tags[tagName] = {}
         tag = tags[tagName]
         tag['name'] = tagName
@@ -412,18 +412,18 @@ class EditTagDialog(Dialog):
             tag = GUI.get().m.tags[tagName]
             self.tag = tag
             texture = tag['texture']
-            if type(texture) == type([]):
+            if isinstance(texture, list):
                 texture = texture[0]
             self.inputBoxes[0].setText(texture)
             color = tag['color']
-            if type(color) == type([]):
+            if isinstance(color, list):
                 color = color[0]
             print(str(color))
             self.inputBoxes[1].setText(str(color[0]))
             self.inputBoxes[2].setText(str(color[1]))
             self.inputBoxes[3].setText(str(color[2]))
             colorVar = tag['colorVar']
-            if type(colorVar) == type([]):
+            if isinstance(colorVar, list):
                 colorVar = colorVar[0]
             print(str(colorVar))
             self.inputBoxes[4].setText(str(colorVar[0]))
@@ -440,15 +440,15 @@ class EditTagDialog(Dialog):
                     float(self.inputBoxes[5].getText()),
                     float(self.inputBoxes[6].getText()))
         tag = self.tag
-        if type(tag['texture']) == type([]):
-            tag['texture'][0] = texture            
+        if isinstance(tag['texture'], list):
+            tag['texture'][0] = texture
         else:
             tag['texture'] = texture
-        if type(tag['color']) == type([]):
+        if isinstance(tag['color'], list):
             tag['color'][0] = color
         else:
             tag['color'] = color
-        if type(tag['colorVar']) == type([]):
+        if isinstance(tag['colorVar'], list):
             tag['colorVar'][0] = colorVar
         else:
             tag['colorVar'] = colorVar

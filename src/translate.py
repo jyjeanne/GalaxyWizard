@@ -1,5 +1,6 @@
 import gettext
 import os
+import builtins
 
 
 class Translate:
@@ -7,18 +8,23 @@ class Translate:
     @staticmethod
     def getLanguageDict(lang):
         locale_path = os.path.join(os.getcwd(), 'locale')
-        gettext.bindtextdomain('GalaxyMage', locale_path)
-        gettext.textdomain('GalaxyMage')
-        return gettext.translation('GalaxyMage', locale_path, languages=[lang])
+        try:
+            gettext.bindtextdomain('GalaxyWizard', locale_path)
+            gettext.textdomain('GalaxyWizard')
+            return gettext.translation('GalaxyWizard', locale_path, languages=[lang])
+        except FileNotFoundError:
+            # Return a null translation that just passes through strings
+            return gettext.NullTranslations()
 
     def __init__(self):
         # fill our language dictionary with each language
-        self.langDict = {'fr': self.getLanguageDict('fr'),
-                         'en': self.getLanguageDict('en')}
+        self.langDict = {}
+        for lang in ['fr', 'en']:
+            self.langDict[lang] = self.getLanguageDict(lang)
 
-        #and install current langauge
-        #gettext.install('GalaxyMage', unicode=1)
-        pass
+        # Install a default translation function if none exists
+        if not hasattr(builtins, '_'):
+            builtins._ = lambda x: x
 
     def setLanguage(self, lang=None):
         # look if we have this language

@@ -1,30 +1,30 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import time
-from src.engine import Faction
-from src import sound as Sound
+from engine import Faction
+import sound as Sound
 import threading
 import logging
-from src import fsm as FSM
-from src.engine import Effect
-from src import constants as Constants
+import fsm as FSM
+from engine import Effect
+import constants as Constants
 from twisted.spread import pb
 
 logger = logging.getLogger('batt')
@@ -95,6 +95,11 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         r = self._map.reachable(u)
         if not (x, y) in r:
             return False
+        # Validate coordinates are within map bounds
+        if not (0 <= x < self._map.width and 0 <= y < self._map.height):
+            logger.error(f"Invalid move position ({x}, {y}) - out of map bounds")
+            return False
+
         u._hasMove = False
         u._hasCancel = True
         (oldx, oldy) = self.activeUnit.posn()

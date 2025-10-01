@@ -1,28 +1,28 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from src.gui.Sprite import Sprite
-from src.gui import ScenarioGUI
-from src import util as Util
-from src.gui import GLUtil
-from src import resources as Resources
-from src import constants as Constants
+from gui.Sprite import Sprite
+from gui import ScenarioGUI
+import util as Util
+from gui import GLUtil
+import resources as Resources
+import constants as Constants
 
 from OpenGL.GL import *
 
@@ -30,8 +30,8 @@ class Cursor(Sprite):
     def __init__(self, map):
         Sprite.__init__(self)
         self.map = map
-        self.x = map.width / 2
-        self.y = map.height / 2
+        self.x = map.width // 2
+        self.y = map.height // 2
         self.selectedUnit = None
         self.alpha = 1.0
         self.facingMode = False

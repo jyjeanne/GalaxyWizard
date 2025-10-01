@@ -1,19 +1,19 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
@@ -25,18 +25,18 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from src import resources as Resources
-from src.gui import Clock
-from src.gui import Camera
-from src.gui import Sprite
-from src.gui import MapEditorSprite
-from src.gui import MapEditorCursor as MapEditorCursor
-from src.gui import GLUtil
-from src.gui import MainWindow
-from src import util as Util
-from src import sound as Sound
-from src.engine import Light
-from src.gui import Input
+import resources as Resources
+from gui import Clock
+from gui import Camera
+from gui import Sprite
+from gui import MapEditorSprite
+from gui import MapEditorCursor as MapEditorCursor
+from gui import GLUtil
+from gui import MainWindow
+import util as Util
+import sound as Sound
+from engine import Light
+from gui import Input
 
 is_map_editor = True
 
@@ -129,7 +129,7 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         self._topTextDisplayer.setCenterX(True)
         self._topTextDisplayer.setCenterY(False)
         self._topTextDisplayer.setFont(Resources.font(size=16, bold=True))
-        self._topTextDisplayer.setPosn((MainWindow.get().size()[0]/2, 10))
+        self._topTextDisplayer.setPosn((MainWindow.get().size()[0]//2, 10))
         self._topTextDisplayer.setBorder(True)
         self._topTextDisplayer.setEnabled(False)
 
@@ -166,20 +166,34 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         self.scrollTo((self.m.width/2.0, self.m.height/2.0))
 
     def __del__(self):
-        m = self.m
-        for j in range(0, m.height):
-            for i in range(0, m.width):
-                sq = m.squares[i][j]
-                if sq.guiData.has_key("listID"):
-                    try:
-                        glDeleteLists(sq.guiData['listID'], 1)
-                    except:
-                        pass
-                if sq.guiData.has_key("topListID"):
-                    try:
-                        glDeleteLists(sq.guiData['topListID'], 1)
-                    except:
-                        pass
+        try:
+            m = self.m
+            for j in range(0, m.height):
+                for i in range(0, m.width):
+                    sq = m.squares[i][j]
+                    if "listID" in sq.guiData:
+                        try:
+                            glDeleteLists(sq.guiData['listID'], 1)
+                            del sq.guiData['listID']
+                        except (NameError, AttributeError) as e:
+                            import logging
+                            logging.warning(f"Failed to delete display list for map square ({i},{j}): {e}")
+                        except Exception as e:
+                            import logging
+                            logging.error(f"Unexpected error deleting display list for map square ({i},{j}): {e}")
+                    if "topListID" in sq.guiData:
+                        try:
+                            glDeleteLists(sq.guiData['topListID'], 1)
+                            del sq.guiData['topListID']
+                        except (NameError, AttributeError) as e:
+                            import logging
+                            logging.warning(f"Failed to delete top display list for map square ({i},{j}): {e}")
+                        except Exception as e:
+                            import logging
+                            logging.error(f"Unexpected error deleting top display list for map square ({i},{j}): {e}")
+        except (AttributeError, TypeError) as e:
+            import logging
+            logging.warning(f"Failed to access map data during MapEditorGUI cleanup: {e}")
 
     def setCenteredText(self, text):
         self._centeredTextDisplayer.setEnabled(True)
@@ -244,7 +258,7 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         self.m.save(filename)
     
     def compileMapSquareList(self, sq):
-        if sq.guiData.has_key("listID"):
+        if "listID" in sq.guiData:
             glDeleteLists(sq.guiData["listID"], 1)
 
         textureNames = sq.texture()
@@ -323,7 +337,7 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         tdbWidth = 250
         tdbHeight = 8
         tdbY = MainWindow.get().size()[1] - tdbHeight * 20 - 30
-        self._topTextDisplayer.setPosn((width/2, 10))
+        self._topTextDisplayer.setPosn((width//2, 10))
         self._topTextDisplayer.invalidate()
         self._centeredTextDisplayer.setPosn((width/2, height/2))
         self._centeredTextDisplayer.invalidate()
@@ -481,7 +495,7 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
                 
     def handleEvent(self, event):
         newActive = self.activeDelegate.handleEvent(event)
-        if self.delegates.has_key(newActive):
+        if newActive in self.delegates:
             self.activeDelegate = self.delegates[newActive]
         if (self.activeDelegate != self.delegates['addTag'] and
             self.activeDelegate != self.delegates['save']):

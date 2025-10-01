@@ -1,4 +1,4 @@
-NOTE: See the GalaxyMage web site for the latest documentation!  The
+NOTE: See the GalaxyWizard web site for the latest documentation!  The
 documents in this directory are out-of-date and will be removed in a
 future release.
 

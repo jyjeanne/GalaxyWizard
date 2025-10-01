@@ -1,35 +1,35 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import time
 import pygame
-from src import resources as Resources
-from src.gui import Clock
-from src.gui import Sprite
-from src import sound as Sound
+import resources as Resources
+from gui import Clock
+from gui import Sprite
+import sound as Sound
 from OpenGL.GL import *
 from OpenGL.GLU import *
 import logging
 import platform
-from src.gui import Input as Input
+from gui import Input as Input
 from twisted.internet import reactor
-from src import main as Main
+import main as Main
 
 log = logging.getLogger("gui")
 
@@ -52,7 +52,7 @@ class MainWindow(object):
 
         self._fullscreen = fullscreen
         self._fullscreenSize = self._chooseDisplaySize()
-        self._defaultSize = (width, width*3/4)
+        self._defaultSize = (width, width*3//4)
 
         if fullscreen:
             self._size = self._fullscreenSize
@@ -135,7 +135,7 @@ class MainWindow(object):
             videoFlags |= pygame.FULLSCREEN
         else:
             videoFlags |= pygame.RESIZABLE
-        pygame.display.set_caption("GalaxyMage %s" % Main.__version__)
+        pygame.display.set_caption("GalaxyWizard %s" % Main.__version__)
         self.screen = pygame.display.set_mode(self._size, videoFlags)
         log.debug("Using display driver %s" % pygame.display.get_driver())
         log.debug("Display info:")

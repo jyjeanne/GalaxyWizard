@@ -1,31 +1,31 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import pygame
-from src.gui import Sprite
-from src.gui import MainWindow
-from src.gui import Input
-from src import resources as Resources
-from src import main as Main
-from src import twistedmain
-from src import fsm as FSM
-from src.gui import MapEditorSprite
+from gui import Sprite
+from gui import MainWindow
+from gui import Input
+import resources as Resources
+import main as Main
+import twistedmain
+import fsm as FSM
+from gui import MapEditorSprite
 from OpenGL.GL import *
 
 class ScenarioChooser(MainWindow.MainWindowDelegate):
@@ -35,7 +35,7 @@ class ScenarioChooser(MainWindow.MainWindowDelegate):
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         self._result = None
         self._gmVer = Sprite.TextDisplayer()
-        self._gmVer.setText("GalaxyMage %s" % Main.__version__)
+        self._gmVer.setText("GalaxyWizard %s" % Main.__version__)
         self._gmVer.setFont(Resources.font(size=14, bold=False))
         self._label = Sprite.TextDisplayer()
         self._label.setFont(Resources.font(size=20, bold=True))
@@ -109,8 +109,8 @@ class ScenarioChooser(MainWindow.MainWindowDelegate):
         width, height = map(int,size)
         glViewport(0, 0, width, height)
         menuW, menuH = self._menu.size()
-        menuX = width/2 - menuW/2
-        menuY = height/2 - menuH/2
+        menuX = width//2 - menuW//2
+        menuY = height//2 - menuH//2
         self._menu.setPosn((menuX, menuY))
         self._menu.invalidate()
         self._label.setPosn((menuX, menuY - 30))

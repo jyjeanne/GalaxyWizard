@@ -1,24 +1,24 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import random
-from src.engine import Unit
+from engine import Unit
 from twisted.spread import pb
 
 class Class(pb.Copyable, pb.RemoteCopy):
@@ -69,11 +69,11 @@ class Class(pb.Copyable, pb.RemoteCopy):
         self.equip(u)
         for stat in Class._allStats:
             base = self.__dict__[stat + "Base"]
-            x = base / 20
+            x = base // 20
             y = (random.randint(0, 2*x) +
                  random.randint(0, 2*x) -
                  random.randint(0, 2*x) -
-                 random.randint(0, 2*x)) / 2
+                 random.randint(0, 2*x)) // 2
             u.__dict__["_" + stat] = base + x + y
             growthMod = random.gauss(1, 0.1)
             growthMod = min(1.5, growthMod)

@@ -1,30 +1,30 @@
 ## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by 
 
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from src import resources as Resources
-from src.engine import Light
-from src.engine import Battle
+import resources as Resources
+from engine import Light
+from engine import Battle
 import random
-from src.engine.Faction import PLAYER_FACTION, NPC_FRIENDLY_FACTION, NPC_HOSTILE_FACTION
-from src.engine import Map
+from engine.Faction import PLAYER_FACTION, NPC_FRIENDLY_FACTION, NPC_HOSTILE_FACTION
+from engine import Map
 from twisted.spread import pb
 
 class Scenario(pb.Copyable, pb.RemoteCopy):
@@ -80,27 +80,27 @@ def generateRandom(additionalAIUnits):
         map_ = Resources.map('random')
         units = []
         nUnits = random.randint(4, 8)
-        startColumn = random.randint(0, map_.width - (nUnits + 1) / 2)
+        startColumn = random.randint(0, map_.width - (nUnits + 1) // 2)
         for i in range(0, nUnits):
             u = generateUnit(PLAYER_FACTION)
-            if i < nUnits / 2:
+            if i < nUnits // 2:
                 row = map_.height-1
                 column = startColumn + i
             else:
                 row = map_.height-2
-                column = startColumn + (i - nUnits/2)
+                column = startColumn + (i - nUnits//2)
             map_.squares[column][row].setUnit(u)
             units.append(u)
         nUnits += additionalAIUnits
-        startColumn = random.randint(0, map_.width - (nUnits + 1) / 2)
+        startColumn = random.randint(0, map_.width - (nUnits + 1) // 2)
         for i in range(0, nUnits):
             u = generateUnit(NPC_HOSTILE_FACTION)
-            if i < nUnits / 2:
+            if i < nUnits // 2:
                 row = 0
                 column = startColumn + i
             else:
                 row = 1
-                column = startColumn + (i - nUnits/2)
+                column = startColumn + (i - nUnits//2)
             map_.squares[column][row].setUnit(u)
             units.append(u)
         return (map_, units)
@@ -134,14 +134,13 @@ def generateRandom(additionalAIUnits):
 
 class ScenarioIO(object):
     def load(scenarioFilename):
-        scenarioFile = open(scenarioFilename, "rU")
-        scenarioText = scenarioFile.read()
-        scenarioFile.close()
+        with open(scenarioFilename, "r") as scenarioFile:
+            scenarioText = scenarioFile.read()
 
         globalVars = {}
         localVars = {}
 
-        module = compile("from engine.Unit import numpy.oldnumeric.ma as MALE, FEMALE, NEUTER",
+        module = compile("from engine.Unit import MALE, FEMALE, NEUTER",
                          "Unit.py", "exec")
         eval(module, globalVars)
         module = compile("from engine.Faction import Faction",
@@ -165,18 +164,18 @@ class ScenarioIO(object):
 
         # Load ending conditions
         endingConditions = [Battle.NEVER_ENDING]
-        if scenarioData.has_key('ENDING_CONDITIONS'):
+        if 'ENDING_CONDITIONS' in scenarioData:
             endingConditions = scenarioData['ENDING_CONDITIONS']
 
         # Load lights
-        if scenarioData.has_key('LIGHTING'):
+        if 'LIGHTING' in scenarioData:
             lightEnv = scenarioData['LIGHTING']
         else:
             lightEnv = Light.defaultEnvironment()
 
         # Load units
         units = []
-        if scenarioData.has_key('FACTIONS'):
+        if 'FACTIONS' in scenarioData:
             for f in scenarioData['FACTIONS']:
                 faction = f.faction()
                 for u in f.units():
@@ -188,7 +187,7 @@ class ScenarioIO(object):
 
         # Music
         music = 'barbieri-battle'
-        if scenarioData.has_key('MUSIC'):
+        if 'MUSIC' in scenarioData:
             music = scenarioData['MUSIC']
 
         # Create battle

@@ -41,16 +41,14 @@ def main():
         logging.warning("Couldn't initialize sound: " + str(e))
 
     import resources
-    # TODO finish to convert
+
     import sound
     import twistedmain
 
     resources.texture.setTextureSize(64)
-    # TODO finish to convert
+
     sound.setQuiet(options.quiet)
 
-
-    # TODO finish to convert
     twistedmain.run(options)
 
 

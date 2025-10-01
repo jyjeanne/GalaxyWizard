@@ -3,9 +3,9 @@ from twisted.spread import pb
 from twisted.cred import checkers, portal, credentials
 from zope.interface import implementer
 
-from src.gui.MainWindow import MainWindow
-from src.gui import ScenarioChooser
-from src.gui.ScenarioGUI import ScenarioGUI
+from gui.MainWindow import MainWindow
+from gui import ScenarioChooser
+from gui.ScenarioGUI import ScenarioGUI
 import logging
 import resources
 import main
@@ -46,10 +46,10 @@ class GameObserver(pb.Avatar):
         self.server.remoteAll('chat', self.name, message)
 
     def perspective_readyForGame(self):
-        self.server.clients[self.clientRef].readyForGame = True
+        self.server.clients[id(self.clientRef)].readyForGame = True
 
     def perspective_readyToDisplay(self):
-        self.server.clients[self.clientRef].readyToDisplay = True
+        self.server.clients[id(self.clientRef)].readyToDisplay = True
 
 class GamePlayer(GameObserver):
     def __init__(self, server, clientRef, name):
@@ -99,7 +99,14 @@ class GameClient(pb.Referenceable):
                            self.serverPort,
                            factory)
         # log in with username and blank password
-        c = credentials.UsernamePassword(self.username, "")
+        # Ensure both username and password are properly encoded for Python 3
+        username = self.username
+        password = ""
+        if isinstance(username, str):
+            username = username.encode('utf-8')
+        if isinstance(password, str):
+            password = password.encode('utf-8')
+        c = credentials.UsernamePassword(username, password)
         df = factory.login(c, self)
         df.addCallback(self.gotPerspective)
         df.addErrback(lambda e: self.error(e, "logging in to %s" %
@@ -118,9 +125,13 @@ class GameClient(pb.Referenceable):
         pass
 
     def remote_unitBeginTurn(self, unitID):
+        if self.scenario is None:
+            return
         self.unit = self.scenario.unitFromID(unitID)
 
     def remote_unitUpdate(self, unitID, newUnit):
+        if self.scenario is None:
+            return
         unit = self.scenario.unitFromID(unitID)
         unit.update(newUnit)
         if not unit.alive():
@@ -158,10 +169,26 @@ class GameClient(pb.Referenceable):
         return df
 
     def error(self, failure, op=""):
-        clientLog.error('Error in %s: %s' %
-                        (op, str(failure.getErrorMessage())))
-        if reactor.running:
-            reactor.stop()
+        """Handle network errors with appropriate logging and recovery."""
+        errorMsg = str(failure.getErrorMessage())
+        clientLog.error(f'Network error in {op}: {errorMsg}')
+
+        # Check if this is a fatal error that requires shutdown
+        from twisted.internet import error as twisted_errors
+        fatal_errors = (
+            twisted_errors.ConnectionRefusedError,
+            twisted_errors.ConnectionLost,
+            twisted_errors.ConnectionDone,
+        )
+
+        # Only stop reactor for fatal connection errors
+        if failure.check(*fatal_errors):
+            clientLog.critical(f'Fatal network error: {errorMsg}. Shutting down.')
+            if reactor.running:
+                reactor.stop()
+        else:
+            # Log non-fatal errors but continue running
+            clientLog.warning(f'Non-fatal network error in {op}, continuing...')
 
     def gotPerspective(self, perspective):
         """Called after a successful login to the server."""
@@ -217,10 +244,12 @@ class InteractiveClient(GameClient):
 
     def remote_unitBeginTurn(self, unitID):
         GameClient.remote_unitBeginTurn(self, unitID)
-        self.scenarioGUI.activateUnit(self.unit)
+        if self.scenarioGUI is not None and self.unit is not None:
+            self.scenarioGUI.activateUnit(self.unit)
 
     def remote_unitMoveActCancel(self, move, act, cancel):
-        self.scenarioGUI.moveActCancel(move, act, cancel)   
+        if self.scenarioGUI is not None:
+            self.scenarioGUI.moveActCancel(move, act, cancel)   
 
     def remote_unitMoved(self, x, y):
         GameClient.remote_unitMoved(self, x, y)
@@ -255,9 +284,15 @@ class AIFSM(fsm.FSM):
         
     def enter_begin(self, oldState, unitID):
         self.unit = self.aiClient.scenario.unitFromID(unitID)
+        if self.unit is None:
+            clientLog.error(f"AI cannot find unit with ID {unitID}")
+            return
 
     def enter_calc(self, oldState, xxx_todo_changeme2):
         (move, act, cancel) = xxx_todo_changeme2
+        if self.unit is None:
+            clientLog.error("AI unit is None, cannot calculate turn")
+            return
         self.unit.setMoveActCancel(move, act, cancel)
         unitAI = ai.UnitAI.Exhaustive(self.unit)
         df = threads.deferToThread(unitAI.calc,
@@ -290,7 +325,8 @@ class AIClient(GameClient):
     
     def remote_unitBeginTurn(self, unitID):
         GameClient.remote_unitBeginTurn(self, unitID)
-        self.fsm.trans('begin', unitID)
+        if self.unit is not None:
+            self.fsm.trans('begin', unitID)
     
     def remote_unitMoveActCancel(self, move, act, cancel):
         if self.fsm.state == 'begin':
@@ -430,7 +466,10 @@ class GameState(object):
     def unitAct(self, client, abilityID, x, y):
         if not self.unitController(client):
             return False
-        ability = engine.netsupport.Ability.get[abilityID]
+        ability = engine.Ability.Ability.get.get(abilityID)
+        if ability is None:
+            serverLog.error(f"Ability with ID {abilityID} not found")
+            return False
         result = self.scenario.battle().unitActed(ability, x, y)
         if not result:
             return False
@@ -490,10 +529,15 @@ class UsernameChecker(object):
         self.users = {}
 
     def requestAvatarId(self, credentials):
-        name = credentials.username
+        # Handle both bytes and string usernames for Python 3 compatibility
+        username = credentials.username
+        if isinstance(username, bytes):
+            username = username.decode('utf-8')
+
+        name = username
         i = 2
         while name in self.users:
-            name = credentials.username + str(i)
+            name = username + str(i)
             i += 1
         self.users[name] = True
         return defer.succeed(name)
@@ -515,10 +559,20 @@ class GameServer(object):
         self.state.update()
 
     def error(self, failure, op=""):
+        """Handle server-side network errors gracefully."""
+        # Silently ignore connection lost errors (normal disconnects)
         if failure.type == pb.PBConnectionLost:
             return
-        serverLog.warn('Error in %s: %s' %
-                       (op, str(failure.getErrorMessage())))
+
+        errorMsg = str(failure.getErrorMessage())
+
+        # Log different error types with appropriate severity
+        if 'Connection' in errorMsg:
+            serverLog.info(f'Client connection error in {op}: {errorMsg}')
+        else:
+            serverLog.warning(f'Network error in {op}: {errorMsg}')
+
+        # Continue running - don't stop server on individual client errors
 
     def requestAvatar(self, name, clientRef, *interfaces):
         """This is what gets called when a client logs in."""
@@ -534,13 +588,13 @@ class GameServer(object):
         clientInfo = ClientInfo(clientRef, name, address,
                                 perspective.accessLevel)
         perspective.faction = clientInfo.faction
-        self.clients[clientRef] = clientInfo
+        self.clients[id(clientRef)] = clientInfo
         serverLog.debug('%s connected (total clients: %d)' %
                         (clientInfo, len(self.clients)))
         self.remoteAll('serverMessage', "%s connected (%d players total)" %
                        (name, len(self.clients)))
         return (perspectiveClass, perspective,
-                lambda: self.handleDisconnect(clientRef))
+                lambda: self.handleDisconnect(id(clientRef)))
 
     def handleDisconnect(self, client):
         clientInfo = self.clients[client]
@@ -552,15 +606,30 @@ class GameServer(object):
 
 
     def remote(self, client, methodName, *args):
-        if isinstance(client, GameObserver):
-            client = client.clientRef
-        df = client.callRemote(methodName, *args)
-        op = "%s%s" % (methodName, str(args))
-        df.addErrback(self.error, op)
-        return df
+        """Call a remote method on a client with error handling."""
+        try:
+            if isinstance(client, GameObserver):
+                client = client.clientRef
+            df = client.callRemote(methodName, *args)
+            op = "%s%s" % (methodName, str(args))
+            df.addErrback(self.error, op)
+            return df
+        except Exception as e:
+            serverLog.error(f'Exception calling remote {methodName}: {e}')
+            return None
 
     def remoteAll(self, methodName, *args):
-        dfs = [self.remote(c, methodName, *args) for c in self.clients]
+        """Call a remote method on all clients with error handling."""
+        dfs = []
+        # Create a copy of clients to avoid dict modification during iteration
+        for clientInfo in list(self.clients.values()):
+            try:
+                df = self.remote(clientInfo.ref, methodName, *args)
+                if df is not None:
+                    dfs.append(df)
+            except Exception as e:
+                serverLog.warning(f'Failed to call {methodName} on client {clientInfo.name}: {e}')
+                continue
         return dfs          
 
 class GameServerException(Exception):
@@ -588,9 +657,9 @@ def runMapEditor(main, mapName):
     if mapName != None:
 #        try:
             m = resources.map(mapName)
-#        except Exception, e:
-#            print 'Error loading map "%s":' % mapName
-#            print e
+#        except Exception as e:
+#            print('Error loading map "%s":' % mapName)
+#            print(e)
 #            sys.exit(1)
     else:
         m = resources.map('random')
@@ -603,11 +672,11 @@ def runMapEditor(main, mapName):
 def startGame(server, port=None, user=None, scenario=None,
               multiplayer=None):
     if port == None:
-        port = opts.port
+        port = opts.port if opts and hasattr(opts, 'port') else 22222
     if user == None:
-        user = opts.user
+        user = opts.user if opts and hasattr(opts, 'user') else 'Player'
     if multiplayer == None:
-        multiplayer = opts.multiplayer
+        multiplayer = opts.multiplayer if opts and hasattr(opts, 'multiplayer') else False
         
     # Configure the server
     if server == None:

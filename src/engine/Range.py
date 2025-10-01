@@ -1,19 +1,19 @@
-# Copyright (C) 2005-2006 Colin McMillen and GalaxyMage contributors.
+# Copyright (C) 2005-2006 Jeremy Jeanne and GalaxyWizard contributors.
 # See http://www.galaxymage.org/index.php/Credits for full credits.
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
 # published by the Free Software Foundation.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
@@ -27,9 +27,16 @@ class Range(pb.Copyable, pb.RemoteCopy):
     def __call__(self, map, unit, pos):
         x, y, z = pos
         result = self.affectedSquares(map, unit, (x, y, z))
-        result = [(x,y) for (x,y) in result
-                  if (map.squareExists(x, y) and
-                      abs(map.squares[x][y].z - z) <= self._zdiff)]
+        # Handle cases where z might not be properly serialized over network
+        try:
+            z_float = float(z)
+            result = [(x,y) for (x,y) in result
+                      if (map.squareExists(x, y) and
+                          abs(map.squares[x][y].z - z_float) <= self._zdiff)]
+        except (TypeError, ValueError):
+            # If z is not a valid number (e.g., Unpersistable), skip z-diff check
+            result = [(x,y) for (x,y) in result
+                      if map.squareExists(x, y)]
         return result
 
     def affectedSquares(self, map, unit, pos):

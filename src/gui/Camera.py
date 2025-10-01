@@ -1,25 +1,26 @@
-# Copyright (C) 2005 Colin McMillen <mcmillen@cs.cmu.edu>
+# Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
-# This file is part of GalaxyMage.
+# This file is part of GalaxyWizard.
 #
-# GalaxyMage is free software; you can redistribute it and/or modify
+# GalaxyWizard is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 # 
-# GalaxyMage is distributed in the hope that it will be useful, but
+# GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with GalaxyMage; if not, write to the Free Software
+# along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-from src.gui import Geometry
+from gui import Geometry
 import math
-from src.gui import Clock
+from gui import Clock
+import constants as Constants
 
 class Camera(object):
 
@@ -170,62 +171,46 @@ class Camera(object):
 
     def sortSprites(self, l):
 
-        def cmpSpritesN(s1, s2):
-            t1 = s1.y
-            t2 = s2.y
-            return cmp(t1, t2)
+        def keySpritesN(s):
+            return s.y
 
-        def cmpSpritesNE(s1, s2):
-            t1 = -s1.x + s1.y
-            t2 = -s2.x + s2.y
-            return cmp(t1, t2)
+        def keySpritesNE(s):
+            return -s.x + s.y
 
-        def cmpSpritesE(s1, s2):
-            t1 = -s1.x
-            t2 = -s2.x
-            return cmp(t1, t2)
+        def keySpritesE(s):
+            return -s.x
 
-        def cmpSpritesSE(s1, s2):
-            t1 = -s1.x - s1.y
-            t2 = -s2.x - s2.y
-            return cmp(t1, t2)
+        def keySpritesSE(s):
+            return -s.x - s.y
 
-        def cmpSpritesS(s1, s2):
-            t1 = -s1.y
-            t2 = -s2.y
-            return cmp(t1, t2)
+        def keySpritesS(s):
+            return -s.y
 
-        def cmpSpritesSW(s1, s2):
-            t1 = s1.x - s1.y
-            t2 = s2.x - s2.y
-            return cmp(t1, t2)
+        def keySpritesSW(s):
+            return s.x - s.y
 
-        def cmpSpritesW(s1, s2):
-            t1 = s1.x
-            t2 = s2.x
-            return cmp(t1, t2)
-            
-        def cmpSpritesNW(s1, s2):
-            t1 = s1.x + s1.y
-            t2 = s2.x + s2.y
-            return cmp(t1, t2)
+        def keySpritesW(s):
+            return s.x
+
+        def keySpritesNW(s):
+            return s.x + s.y
 
         if self.current == Constants.N:
-            l.sort(cmpSpritesN)
+            l.sort(key=keySpritesN)
         elif self.current == Constants.NE:
-            l.sort(cmpSpritesNE)
+            l.sort(key=keySpritesNE)
         elif self.current == Constants.E:
-            l.sort(cmpSpritesE)
+            l.sort(key=keySpritesE)
         elif self.current == Constants.SE:
-            l.sort(cmpSpritesSE)
+            l.sort(key=keySpritesSE)
         elif self.current == Constants.S:
-            l.sort(cmpSpritesS)
+            l.sort(key=keySpritesS)
         elif self.current == Constants.SW:
-            l.sort(cmpSpritesSW)
+            l.sort(key=keySpritesSW)
         elif self.current == Constants.W:
-            l.sort(cmpSpritesW)
+            l.sort(key=keySpritesW)
         elif self.current == Constants.NW:
-            l.sort(cmpSpritesNW)
+            l.sort(key=keySpritesNW)
 
     def cursorMovement(self, x, y):
         if self.current == Constants.N or self.current == Constants.NW:
