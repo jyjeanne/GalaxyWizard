@@ -108,7 +108,7 @@ jobs:
         poetry run pyinstaller main.spec --clean --noconfirm
 
     - name: Upload Windows executable
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: GalaxyWizard-Windows
         path: dist/GalaxyWizard.exe
@@ -156,7 +156,7 @@ jobs:
         poetry run pyinstaller main.spec --clean --noconfirm
 
     - name: Upload Linux executable
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: GalaxyWizard-Linux
         path: dist/GalaxyWizard
