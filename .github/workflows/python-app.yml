@@ -40,6 +40,11 @@ jobs:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
 
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libgl1-mesa-dev libglu1-mesa-dev
+
     - name: Install dependencies
       run: |
         poetry install --no-interaction --no-ansi
@@ -56,10 +61,14 @@ jobs:
 
     - name: Test with pytest
       run: |
-        cd src && poetry run pytest ../tests/ -v --tb=short
+        cd src && xvfb-run -a poetry run pytest ../tests/ -v --tb=short
       env:
         # Ensure tests can find data files
         PYTHONPATH: ${{ github.workspace }}/src
+        # Set display for OpenGL
+        DISPLAY: :99
+        # PyOpenGL platform
+        PYOPENGL_PLATFORM: osmesa
 
   build-windows:
     needs: test
@@ -131,6 +140,11 @@ jobs:
       with:
         path: .venv
         key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb libgl1-mesa-dev libglu1-mesa-dev
 
     - name: Install dependencies
       run: |

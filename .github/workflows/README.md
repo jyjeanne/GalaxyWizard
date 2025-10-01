@@ -14,9 +14,10 @@ The workflow consists of **3 parallel jobs**:
 1. **Sets up Python 3.11** - Matches your development environment
 2. **Installs Poetry** - Uses Poetry for dependency management (not pip/requirements.txt)
 3. **Caches dependencies** - Speeds up subsequent runs by caching `.venv`
-4. **Installs project dependencies** - Runs `poetry install` to get all packages from `poetry.lock`
-5. **Lints with flake8** - Checks Python code for syntax errors and style issues
-6. **Runs pytest** - Executes all 33 unit tests from the `tests/` directory
+4. **Installs system dependencies** - xvfb, libgl1-mesa-dev, libglu1-mesa-dev (for headless OpenGL)
+5. **Installs project dependencies** - Runs `poetry install` to get all packages from `poetry.lock`
+6. **Lints with flake8** - Checks Python code for syntax errors and style issues
+7. **Runs pytest with xvfb** - Executes all 33 unit tests using virtual display (OpenGL requires graphics context)
 
 #### Job 2: Build Windows Executable (requires test job to pass)
 1. **Sets up Python 3.11 on Windows**
@@ -28,9 +29,10 @@ The workflow consists of **3 parallel jobs**:
 #### Job 3: Build Linux Executable (requires test job to pass)
 1. **Sets up Python 3.11 on Ubuntu**
 2. **Installs Poetry**
-3. **Installs dependencies** - Including PyInstaller
-4. **Builds standalone binary** - Uses `main.spec` to create `GalaxyWizard` binary
-5. **Uploads artifact** - Executable available for download (30 days retention)
+3. **Installs system dependencies** - xvfb, OpenGL libraries
+4. **Installs dependencies** - Including PyInstaller
+5. **Builds standalone binary** - Uses `main.spec` to create `GalaxyWizard` binary
+6. **Uploads artifact** - Executable available for download (30 days retention)
 
 ### Key differences from standard workflow:
 
@@ -77,8 +79,11 @@ If build jobs fail:
 To run the same checks locally:
 ```bash
 # Lint
-poetry run flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
+poetry run flake8 src --exclude=src/data,src/test/data --count --select=E9,F63,F7,F82 --ignore=F824 --show-source --statistics
 
-# Test
+# Test (with display)
 cd src && poetry run pytest ../tests/ -v
+
+# Test (headless Linux - requires xvfb)
+cd src && xvfb-run -a poetry run pytest ../tests/ -v
 ```
