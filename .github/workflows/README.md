@@ -37,7 +37,10 @@ The workflow consists of **3 parallel jobs**:
 ### Key differences from standard workflow:
 
 - ✅ Uses **Poetry** instead of pip/requirements.txt
+- ✅ Installs **xvfb** and OpenGL libraries for headless testing
+- ✅ Uses **SDL dummy drivers** for pygame/OpenGL initialization
 - ✅ Runs tests from `src/` directory (needed for resource file paths)
+- ✅ Uses **conftest.py** to initialize pygame display before tests run
 - ✅ Only lints `src/` directory (not test files)
 - ✅ Caches Poetry virtual environment for faster builds
 

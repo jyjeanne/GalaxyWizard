@@ -67,8 +67,9 @@ jobs:
         PYTHONPATH: ${{ github.workspace }}/src
         # Set display for OpenGL
         DISPLAY: :99
-        # PyOpenGL platform
-        PYOPENGL_PLATFORM: osmesa
+        # SDL dummy drivers for headless testing
+        SDL_VIDEODRIVER: dummy
+        SDL_AUDIODRIVER: dummy
 
   build-windows:
     needs: test
