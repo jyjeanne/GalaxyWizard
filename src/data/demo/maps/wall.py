@@ -11,9 +11,9 @@ mediumVar = (0.05, 0.05, 0.05)
 highVar = (0.1, 0.1, 0.1)
 
 # Textures
-stone = 'stone'
-wood = 'wood'
-grass = 'grass'
+stone = "stone"
+wood = "wood"
+grass = "grass"
 
 # ACTUAL MAP DATA
 
@@ -24,30 +24,24 @@ HEIGHT = 20
 
 TILE_PROPERTIES = {
     # Rock
-    'r': { 'color': rock,
-           'colorVar': mediumVar,
-           'texture': stone,
-         },
+    "r": {
+        "color": rock,
+        "colorVar": mediumVar,
+        "texture": stone,
+    },
     # Wood
-    'w': { 'color': tan,
-           'colorVar': mediumVar,
-           'texture': wood,
-         },            
+    "w": {
+        "color": tan,
+        "colorVar": mediumVar,
+        "texture": wood,
+    },
     # Hills
-    'd': { 'color': darkgreen,
-           'colorVar': highVar,
-           'texture': grass,
-           'smooth': True
-         },            
+    "d": {"color": darkgreen, "colorVar": highVar, "texture": grass, "smooth": True},
     # Default: green grass
-    '': { 'color': green,
-          'colorVar': mediumVar,
-          'texture': grass,
-          'smooth': True
-        },
-    }
+    "": {"color": green, "colorVar": mediumVar, "texture": grass, "smooth": True},
+}
 
-LAYOUT = '''
+LAYOUT = """
 8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    
 8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    
 8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    8    
@@ -68,5 +62,4 @@ LAYOUT = '''
 8    8    12d  16d  16d  20d  20d  20d  20d  20d  20d  20d  16d  16d  12d  14d  16d  16d  18d  18d
 8    8    12d  12d  16d  16d  16d  16d  16d  16d  16d  16d  16d  12d  12d  14d  16d  18d  18d  20d   
 8    8    8    12d  12d  12d  12d  12d  12d  12d  12d  12d  12d  12d  12d  14d  16d  18d  20d  20d   
-'''
-
+"""

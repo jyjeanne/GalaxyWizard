@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -22,24 +22,24 @@ import math
 from gui import Clock
 import constants as Constants
 
-class Camera(object):
 
+class Camera(object):
     def __init__(self):
-        self._pitch = -60.0 # 0.0 is looking straight down at the map
-        self.current = Constants.NW # logical camera direction, ~setRotation/45
-        self._setRotation = Constants.NW*45.0 # requested camera rotation
-        self._mapRotation = self._setRotation # current camera rotation
+        self._pitch = -60.0  # 0.0 is looking straight down at the map
+        self.current = Constants.NW  # logical camera direction, ~setRotation/45
+        self._setRotation = Constants.NW * 45.0  # requested camera rotation
+        self._mapRotation = self._setRotation  # current camera rotation
         self._height = 15.0
         self.needToRotate = True
         self._changed = True
         self._scrollTarget = None
         self._offset = Geometry.Point3D(0.0, 0.0, 0.0)
-        
+
     def reset(self):
-        self._pitch = -60.0 # 0.0 is looking straight down at the map
-        self.current = Constants.NW # logical camera direction, ~setRotation/45
-        self._setRotation = Constants.NW*45.0 # requested camera rotation
-        self._mapRotation = self._setRotation # current camera rotation
+        self._pitch = -60.0  # 0.0 is looking straight down at the map
+        self.current = Constants.NW  # logical camera direction, ~setRotation/45
+        self._setRotation = Constants.NW * 45.0  # requested camera rotation
+        self._mapRotation = self._setRotation  # current camera rotation
         self._height = 15.0
         self.needToRotate = True
         self._changed = True
@@ -106,10 +106,10 @@ class Camera(object):
 
     def setRotation(self, degrees):
         self._mapRotation = self._setRotation = degrees % 360.0
-        self.current = int(degrees/45.0 + 0.5) % 8
+        self.current = int(degrees / 45.0 + 0.5) % 8
         self.needToRotate = False
         self._changed = True
-            
+
     def mapRotation(self):
         return self._mapRotation
 
@@ -158,14 +158,14 @@ class Camera(object):
             rotateAmount += 360.0
         elif rotateAmount > 180.0:
             rotateAmount -= 360.0
-        speed = 270 # degrees/second
+        speed = 270  # degrees/second
         distToRotate = timeElapsed * speed
         if rotateAmount < 0.0:
             distToRotate *= -1.0
         if abs(rotateAmount) < abs(distToRotate):
             distToRotate = rotateAmount
             self.needToRotate = False
-        self._mapRotation += distToRotate       
+        self._mapRotation += distToRotate
         self._mapRotation = self._mapRotation % 360.0
         self._changed = True
 
@@ -220,26 +220,38 @@ class Camera(object):
         elif self.current == Constants.S or self.current == Constants.SE:
             return (-x, -y)
         else:
-            return (y, -x)   
+            return (y, -x)
 
     def getCorner(self, corner):
         if self.current == Constants.N or self.current == Constants.NW:
             return corner
         elif self.current == Constants.E or self.current == Constants.NE:
-            if corner == 0: return 1
-            if corner == 1: return 3
-            if corner == 3: return 2
-            if corner == 2: return 0
+            if corner == 0:
+                return 1
+            if corner == 1:
+                return 3
+            if corner == 3:
+                return 2
+            if corner == 2:
+                return 0
         elif self.current == Constants.S or self.current == Constants.SE:
-            if corner == 0: return 3
-            if corner == 1: return 2
-            if corner == 3: return 0
-            if corner == 2: return 1
+            if corner == 0:
+                return 3
+            if corner == 1:
+                return 2
+            if corner == 3:
+                return 0
+            if corner == 2:
+                return 1
         else:
-            if corner == 0: return 2
-            if corner == 1: return 0
-            if corner == 3: return 1
-            if corner == 2: return 3
+            if corner == 0:
+                return 2
+            if corner == 1:
+                return 0
+            if corner == 3:
+                return 1
+            if corner == 2:
+                return 3
 
     def mouseMovement(self, x, y):
         return Geometry.rotate2d((x, y), math.radians(self._mapRotation))
@@ -259,4 +271,3 @@ class Camera(object):
             return (y, -x)
         else:
             return Geometry.rotate2d((y, -x), math.radians(-45))
-

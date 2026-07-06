@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -23,18 +23,19 @@ from twisted.spread import pb
 WEAPON = 0
 ARMOR = 1
 
+
 class Equipment(pb.Copyable, pb.RemoteCopy):
     def __init__(self, name, stats):
         self._name = name
-        self._mhp = stats['mhp']
-        self._msp = stats['msp']
-        self._watk = stats['watk']
-        self._wdef = stats['wdef']
-        self._matk = stats['matk']
-        self._mdef = stats['mdef']
-        self._speed = stats['speed']
-        self._move = stats['move']
-        self._jump = stats['jump']
+        self._mhp = stats["mhp"]
+        self._msp = stats["msp"]
+        self._watk = stats["watk"]
+        self._wdef = stats["wdef"]
+        self._matk = stats["matk"]
+        self._mdef = stats["mdef"]
+        self._speed = stats["speed"]
+        self._move = stats["move"]
+        self._jump = stats["jump"]
 
         # List of sprites
         self._sprites = []
@@ -47,7 +48,7 @@ class Equipment(pb.Copyable, pb.RemoteCopy):
 
     def msp(self):
         return self._msp
-            
+
     def watk(self):
         return self._watk
 
@@ -58,7 +59,7 @@ class Equipment(pb.Copyable, pb.RemoteCopy):
         return self._matk
 
     def mdef(self):
-        return self._mdef  
+        return self._mdef
 
     def move(self):
         return self._move
@@ -71,9 +72,10 @@ class Equipment(pb.Copyable, pb.RemoteCopy):
 
     def setSprites(self, sprites):
         self._sprites = sprites
-        
+
     def getSprites(self, spriteName):
         return self._sprites[spriteName]
+
 
 class Weapon(Equipment):
     HAND = 0
@@ -82,29 +84,29 @@ class Weapon(Equipment):
     STAFF = 3
     MACE = 4
     BOW = 5
-    
+
     def __init__(self, name, stats, type_):
         Equipment.__init__(self, name, stats)
         self._weaponType = type_
         if self._weaponType == Weapon.HAND:
-            self._attack = Resources.ability('weapon-hand')
+            self._attack = Resources.ability("weapon-hand")
         if self._weaponType == Weapon.SWORD:
-            self._attack = Resources.ability('weapon-sword')
+            self._attack = Resources.ability("weapon-sword")
         if self._weaponType == Weapon.DAGGER:
-            self._attack = Resources.ability('weapon-dagger')
+            self._attack = Resources.ability("weapon-dagger")
         if self._weaponType == Weapon.STAFF:
-            self._attack = Resources.ability('weapon-staff')
+            self._attack = Resources.ability("weapon-staff")
         if self._weaponType == Weapon.MACE:
-            self._attack = Resources.ability('weapon-mace')
+            self._attack = Resources.ability("weapon-mace")
         if self._weaponType == Weapon.BOW:
-            self._attack = Resources.ability('weapon-bow')
+            self._attack = Resources.ability("weapon-bow")
 
     def weaponType(self):
         return self._weaponType
-    
+
     def attack(self):
         return self._attack
-       
+
+
 class Armor(Equipment):
     pass
-

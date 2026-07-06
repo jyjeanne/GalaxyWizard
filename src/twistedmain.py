@@ -4,18 +4,18 @@ from twisted.cred import checkers, portal, credentials
 from zope.interface import implementer
 
 from gui.MainWindow import MainWindow
-from gui import ScenarioChooser
 from gui.ScenarioGUI import ScenarioGUI
 import logging
 import resources
 import main
 
-serverLog = logging.getLogger('gsrv')
-clientLog = logging.getLogger('gcli')
+serverLog = logging.getLogger("gsrv")
+clientLog = logging.getLogger("gcli")
 
 import engine.netsupport
 
 ############################ COMMON
+
 
 # Each Avatar can call some methods on the server. A GameCreator can
 # call all methods, a GamePlayer can call most methods (everything
@@ -25,6 +25,7 @@ class Access(object):
     CREATOR = "Creator"
     PLAYER = "Player"
     OBSERVER = "Observer"
+
 
 class GameObserver(pb.Avatar):
     def __init__(self, server, clientRef, name):
@@ -37,19 +38,22 @@ class GameObserver(pb.Avatar):
 
     def perspective_info(self, version):
         if main.__version__ != version:
-            err = ("Your version of GalaxyWizard (%s) does not match the server's (%s)." %
-                   (version, main.__version__))
+            err = "Your version of GalaxyWizard (%s) does not match the server's (%s)." % (
+                version,
+                main.__version__,
+            )
             raise Exception(err)
         return self.name, self.accessLevel, self.faction
 
     def perspective_chat(self, message):
-        self.server.remoteAll('chat', self.name, message)
+        self.server.remoteAll("chat", self.name, message)
 
     def perspective_readyForGame(self):
         self.server.clients[id(self.clientRef)].readyForGame = True
 
     def perspective_readyToDisplay(self):
         self.server.clients[id(self.clientRef)].readyToDisplay = True
+
 
 class GamePlayer(GameObserver):
     def __init__(self, server, clientRef, name):
@@ -64,22 +68,25 @@ class GamePlayer(GameObserver):
 
     def perspective_unitFacing(self, facing):
         return self.gameState.unitFacing(self, int(facing))
-        
+
+
 class GameCreator(GamePlayer):
     def __init__(self, server, clientRef, name):
         GamePlayer.__init__(self, server, clientRef, name)
         self.accessLevel = Access.CREATOR
-            
+
     def perspective_setScenario(self, campaign, scenario):
-        clientLog.debug("Set campaign and scenario to %s/%s" %
-                        (campaign, scenario))
+        clientLog.debug("Set campaign and scenario to %s/%s" % (campaign, scenario))
         return self.server.state.setScenario(campaign, scenario)
 
+
 ############################ CLIENT
+
 
 class GameClient(pb.Referenceable):
     """Client interface. Handles talking to the server but doesn't
     take any real actions or start any GUI."""
+
     def __init__(self, server, serverPort, username):
         self.server = server
         self.serverPort = serverPort
@@ -90,27 +97,24 @@ class GameClient(pb.Referenceable):
         self.faction = None
         self.scenario = None
         self.start()
-        self.unit = None # FIXME: remove
+        self.unit = None  # FIXME: remove
 
     def start(self):
         # Start connection to the PB server
         factory = pb.PBClientFactory()
-        reactor.connectTCP(self.server,
-                           self.serverPort,
-                           factory)
+        reactor.connectTCP(self.server, self.serverPort, factory)
         # log in with username and blank password
         # Ensure both username and password are properly encoded for Python 3
         username = self.username
         password = ""
         if isinstance(username, str):
-            username = username.encode('utf-8')
+            username = username.encode("utf-8")
         if isinstance(password, str):
-            password = password.encode('utf-8')
+            password = password.encode("utf-8")
         c = credentials.UsernamePassword(username, password)
         df = factory.login(c, self)
         df.addCallback(self.gotPerspective)
-        df.addErrback(lambda e: self.error(e, "logging in to %s" %
-                                           self.server))
+        df.addErrback(lambda e: self.error(e, "logging in to %s" % self.server))
 
     # Methods starting with remote_ can be called by the server.
     def remote_startGame(self, scenario):
@@ -171,10 +175,11 @@ class GameClient(pb.Referenceable):
     def error(self, failure, op=""):
         """Handle network errors with appropriate logging and recovery."""
         errorMsg = str(failure.getErrorMessage())
-        clientLog.error(f'Network error in {op}: {errorMsg}')
+        clientLog.error(f"Network error in {op}: {errorMsg}")
 
         # Check if this is a fatal error that requires shutdown
         from twisted.internet import error as twisted_errors
+
         fatal_errors = (
             twisted_errors.ConnectionRefusedError,
             twisted_errors.ConnectionLost,
@@ -183,17 +188,17 @@ class GameClient(pb.Referenceable):
 
         # Only stop reactor for fatal connection errors
         if failure.check(*fatal_errors):
-            clientLog.critical(f'Fatal network error: {errorMsg}. Shutting down.')
+            clientLog.critical(f"Fatal network error: {errorMsg}. Shutting down.")
             if reactor.running:
                 reactor.stop()
         else:
             # Log non-fatal errors but continue running
-            clientLog.warning(f'Non-fatal network error in {op}, continuing...')
+            clientLog.warning(f"Non-fatal network error in {op}, continuing...")
 
     def gotPerspective(self, perspective):
         """Called after a successful login to the server."""
         self.perspective = perspective
-        df = self.remote('info', main.__version__)
+        df = self.remote("info", main.__version__)
         df.addCallback(self.gotInfo)
 
     def gotInfo(self, xxx_todo_changeme):
@@ -201,12 +206,13 @@ class GameClient(pb.Referenceable):
         self.name = name
         self.faction = faction
         self.accessLevel = accessLevel
-        self.remote('readyForGame')
+        self.remote("readyForGame")
+
 
 class InteractiveClient(GameClient):
     """Interactive client -- the normal player GUI."""
-    def __init__(self, server, serverPort, username, scenario, aiPlayers,
-                 window):
+
+    def __init__(self, server, serverPort, username, scenario, aiPlayers, window):
         self.window = window
         self.scenarioGUI = None
         self.scenarioName = scenario
@@ -217,11 +223,13 @@ class InteractiveClient(GameClient):
         (name, accessLevel, faction) = xxx_todo_changeme1
         GameClient.gotInfo(self, (name, accessLevel, faction))
         clientLog.debug("Access level set to %s" % self.accessLevel)
-        if self.accessLevel == Access.CREATOR:        
+        if self.accessLevel == Access.CREATOR:
             # FIXME: set scenario name from in-game, not command-line only
-            df = self.remote('setScenario',
-                             'demo', # FIXME: allow setting campaign
-                             self.scenarioName)
+            df = self.remote(
+                "setScenario",
+                "demo",  # FIXME: allow setting campaign
+                self.scenarioName,
+            )
             for i in range(0, self.aiPlayers):
                 ai = AIClient(self.server, self.serverPort)
 
@@ -230,9 +238,7 @@ class InteractiveClient(GameClient):
 
     def remote_startGame(self, scenario):
         GameClient.remote_startGame(self, scenario)
-        self.scenarioGUI = ScenarioGUI(self,
-                                                       scenario,
-                                                       self.faction)
+        self.scenarioGUI = ScenarioGUI(self, scenario, self.faction)
         self.window.setDelegate(self.scenarioGUI)
 
     def remote_chat(self, username, message):
@@ -249,39 +255,41 @@ class InteractiveClient(GameClient):
 
     def remote_unitMoveActCancel(self, move, act, cancel):
         if self.scenarioGUI is not None:
-            self.scenarioGUI.moveActCancel(move, act, cancel)   
+            self.scenarioGUI.moveActCancel(move, act, cancel)
 
     def remote_unitMoved(self, x, y):
         GameClient.remote_unitMoved(self, x, y)
         self.scenarioGUI.moveUnit(x, y)
-        
+
     def remote_unitSetFacing(self, facing):
         GameClient.remote_unitSetFacing(self, facing)
-        reactor.callLater(1.0, self.remote, 'readyToDisplay')
-        
+        reactor.callLater(1.0, self.remote, "readyToDisplay")
+
     def remote_actionResults(self, actionResults):
         for unitID, results in list(actionResults.items()):
             self.scenarioGUI.showActionResults(unitID, results)
-        reactor.callLater(1.0, self.remote, 'readyToDisplay')
-        
+        reactor.callLater(1.0, self.remote, "readyToDisplay")
+
     def remote_actionPerformed(self, abilityID):
         self.scenarioGUI.showActionPerformed(abilityID)
+
 
 ### AI Client
 import ai.UnitAI
 import fsm
 import engine.Battle
 from twisted.internet import threads
-        
+
+
 class AIFSM(fsm.FSM):
     def __init__(self, aiClient):
-        fsm.FSM.__init__(self, ['disabled', 'begin', 'calc'])
+        fsm.FSM.__init__(self, ["disabled", "begin", "calc"])
         for s in self.states:
             self.addEntryHook(s, getattr(self, "enter_" + s, self.doNothing))
         self.aiClient = aiClient
         self.unit = None
         self.turn = None
-        
+
     def enter_begin(self, oldState, unitID):
         self.unit = self.aiClient.scenario.unitFromID(unitID)
         if self.unit is None:
@@ -295,57 +303,57 @@ class AIFSM(fsm.FSM):
             return
         self.unit.setMoveActCancel(move, act, cancel)
         unitAI = ai.UnitAI.Exhaustive(self.unit)
-        df = threads.deferToThread(unitAI.calc,
-                                   self.aiClient.scenario.battle())
+        df = threads.deferToThread(unitAI.calc, self.aiClient.scenario.battle())
         df.addCallback(self.executeTurn)
 
     def executeTurn(self, turn):
         self.turn = turn
         if turn.turnOrder() == engine.Battle.UnitTurn.MOVE_FIRST:
             if turn.moveTarget() != None:
-                self.aiClient.remote('unitMove',
-                                     *turn.moveTarget())
+                self.aiClient.remote("unitMove", *turn.moveTarget())
             if turn.action() != None:
-                self.aiClient.remote('unitAct',
-                                     turn.action().abilityID,
-                                     *turn.actionTarget())
-            self.aiClient.remote('unitFacing', turn.facing())
+                self.aiClient.remote("unitAct", turn.action().abilityID, *turn.actionTarget())
+            self.aiClient.remote("unitFacing", turn.facing())
         else:
-            raise NotImplemented("AI turn order = act-first")
+            raise NotImplementedError("AI turn order = act-first")
 
     def doNothing(self, *args):
         pass
 
+
 # FIXME: clean up AIclient, don't need AIFSM class
 class AIClient(GameClient):
     """AI client -- just sends moves to the server when needed."""
+
     def __init__(self, server, serverPort):
         GameClient.__init__(self, server, serverPort, "AI")
         self.fsm = AIFSM(self)
-    
+
     def remote_unitBeginTurn(self, unitID):
         GameClient.remote_unitBeginTurn(self, unitID)
         if self.unit is not None:
-            self.fsm.trans('begin', unitID)
-    
+            self.fsm.trans("begin", unitID)
+
     def remote_unitMoveActCancel(self, move, act, cancel):
-        if self.fsm.state == 'begin':
-            self.fsm.trans('calc', (move, act, cancel))
+        if self.fsm.state == "begin":
+            self.fsm.trans("calc", (move, act, cancel))
 
     def remote_unitMoved(self, x, y):
         GameClient.remote_unitMoved(self, x, y)
         self.unit.setPosn(x, y, self.scenario.map().squares[x][y].z)
-        self.remote('readyToDisplay')
+        self.remote("readyToDisplay")
 
     def remote_unitSetFacing(self, facing):
         GameClient.remote_unitSetFacing(self, facing)
-        self.remote('readyToDisplay')
+        self.remote("readyToDisplay")
 
     def remote_actionResults(self, *args):
         GameClient.remote_actionResults(self, *args)
-        self.remote('readyToDisplay')
+        self.remote("readyToDisplay")
+
 
 ########################### SERVER
+
 
 class UnitState(object):
     def __init__(self, unit, controller):
@@ -356,11 +364,12 @@ class UnitState(object):
     def moveActCancel(self):
         return self.unit.hasMove(), self.unit.hasAct(), self.unit.hasCancel()
 
+
 class GameState(object):
     WAITING_FOR_PLAYERS = 0
     PLAYING = 1
     DONE = 2
-    
+
     def __init__(self, server):
         self.server = server
         self.scenario = None
@@ -368,7 +377,7 @@ class GameState(object):
         self.unitState = None
         self.factions = {}
         self.clientCommandQueue = []
-        
+
     def _validate_name(self, name, name_type):
         """
         Validate campaign/scenario names to prevent directory traversal attacks.
@@ -389,12 +398,12 @@ class GameState(object):
             raise ValueError(f"{name_type} name cannot be empty")
 
         # Check for reserved names first (before regex check)
-        if name in ['.', '..', 'CON', 'PRN', 'AUX', 'NUL']:
+        if name in [".", "..", "CON", "PRN", "AUX", "NUL"]:
             raise ValueError(f"Reserved {name_type} name '{name}' is not allowed")
 
         # Only allow alphanumeric characters, hyphens, and underscores
         # This prevents directory traversal attacks (../, ./, /etc)
-        if not re.match(r'^[a-zA-Z0-9_-]+$', name):
+        if not re.match(r"^[a-zA-Z0-9_-]+$", name):
             raise ValueError(
                 f"Invalid {name_type} name '{name}'. "
                 f"Only alphanumeric characters, hyphens, and underscores are allowed."
@@ -414,12 +423,12 @@ class GameState(object):
             ValueError: If campaign or scenario names contain invalid characters
         """
         # Validate input to prevent directory traversal attacks
-        validated_campaign = self._validate_name(campaign, 'campaign')
-        validated_scenario = self._validate_name(scenario, 'scenario')
+        validated_campaign = self._validate_name(campaign, "campaign")
+        validated_scenario = self._validate_name(scenario, "scenario")
 
         resources.setCampaign(validated_campaign)
         self.scenario = resources.scenario(validated_scenario)
-        self.scenario.numPlayers = 2 # FIXME: should be defined by the scenario
+        self.scenario.numPlayers = 2  # FIXME: should be defined by the scenario
 
     def update(self):
         self._update()
@@ -441,30 +450,31 @@ class GameState(object):
         if self.state == GameState.PLAYING and self.clientsReadyToDisplay():
             b = self.scenario.battle()
             if b.status() != -1:
-                self.clientCommandQueue.append(('battleStatus', (b.status(),)))
+                self.clientCommandQueue.append(("battleStatus", (b.status(),)))
             if b.activeUnit == None:
                 unit = b.pickNextUnit()
                 controller = self.factions[unit.faction()]
                 self.unitState = UnitState(unit, controller)
-                self.server.remoteAll('unitBeginTurn', unit.unitID)
-                self.server.remote(controller.ref, 'unitMoveActCancel',
-                                   *self.unitState.moveActCancel())
+                self.server.remoteAll("unitBeginTurn", unit.unitID)
+                self.server.remote(
+                    controller.ref, "unitMoveActCancel", *self.unitState.moveActCancel()
+                )
             if self.clientCommandQueue:
                 commandName, args = self.clientCommandQueue.pop(0)
                 self.setClientsReadyToDisplay(False)
-                if commandName == 'unitMove':
+                if commandName == "unitMove":
                     self.sendUnitMove(*args)
-                elif commandName == 'unitAct':
+                elif commandName == "unitAct":
                     self.sendUnitAct(*args)
-                elif commandName == 'unitFacing':
+                elif commandName == "unitFacing":
                     self.sendUnitFacing(*args)
-                elif commandName == 'battleStatus':
+                elif commandName == "battleStatus":
                     self.sendBattleStatus(*args)
-                
+
     def startGame(self):
         self.factions = {}
         self.state = GameState.PLAYING
-        self.server.remoteAll('startGame', self.scenario)
+        self.server.remoteAll("startGame", self.scenario)
         for c in list(self.server.clients.values()):
             self.factions[c.faction] = c
         self.setClientsReadyToDisplay(True)
@@ -477,7 +487,7 @@ class GameState(object):
 
     def setClientsReadyToDisplay(self, ready):
         for c in list(self.server.clients.values()):
-            c.readyToDisplay = ready       
+            c.readyToDisplay = ready
 
     def unitController(self, client):
         return client.faction == self.unitState.unit.faction()
@@ -488,24 +498,21 @@ class GameState(object):
         result = self.scenario.battle().unitMoved(x, y)
         if not result:
             return False
-        self.clientCommandQueue.append(('unitMove', (client, x, y)))
+        self.clientCommandQueue.append(("unitMove", (client, x, y)))
         return True
 
     def sendBattleStatus(self, winner):
         for c in list(self.server.clients.values()):
             if c.faction == winner:
-                self.server.remote(c.ref,
-                                   'serverMessage', 'You win!')
+                self.server.remote(c.ref, "serverMessage", "You win!")
             else:
-                self.server.remote(c.ref,
-                                   'serverMessage', 'You lose!')
+                self.server.remote(c.ref, "serverMessage", "You lose!")
         self.state = GameState.DONE
         reactor.callLater(10, reactor.stop)
 
     def sendUnitMove(self, client, x, y):
-        self.server.remote(client, 'unitMoveActCancel',
-                           *self.unitState.moveActCancel())
-        self.server.remoteAll('unitMoved', x, y)
+        self.server.remote(client, "unitMoveActCancel", *self.unitState.moveActCancel())
+        self.server.remoteAll("unitMoved", x, y)
 
     def unitAct(self, client, abilityID, x, y):
         if not self.unitController(client):
@@ -518,21 +525,19 @@ class GameState(object):
         if not result:
             return False
         affectedUnits, allEffectResults = result
-        self.clientCommandQueue.append(('unitAct',
-                                        (client, abilityID, affectedUnits,
-                                         allEffectResults)))
+        self.clientCommandQueue.append(
+            ("unitAct", (client, abilityID, affectedUnits, allEffectResults))
+        )
         return True
 
     def sendUnitAct(self, client, abilityID, affectedUnits, allEffectResults):
         # FIXME: put actionPerformed and actionResults into one
         # message
-        self.server.remoteAll('actionPerformed', abilityID)
-        self.server.remoteAll('actionResults', allEffectResults)
+        self.server.remoteAll("actionPerformed", abilityID)
+        self.server.remoteAll("actionResults", allEffectResults)
         for u in affectedUnits:
-            self.server.remoteAll('unitUpdate', u.unitID, u)
-        self.server.remote(client, 'unitMoveActCancel',
-                           *self.unitState.moveActCancel())
-
+            self.server.remoteAll("unitUpdate", u.unitID, u)
+        self.server.remote(client, "unitMoveActCancel", *self.unitState.moveActCancel())
 
     def unitFacing(self, client, facing):
         if not self.unitController(client):
@@ -540,16 +545,17 @@ class GameState(object):
         result = self.scenario.battle().unitSetFacing(facing)
         if not result:
             return False
-        self.clientCommandQueue.append(('unitFacing', (facing,)))
+        self.clientCommandQueue.append(("unitFacing", (facing,)))
         return True
-    
+
     def sendUnitFacing(self, facing):
-        self.server.remoteAll('unitSetFacing', facing)
+        self.server.remoteAll("unitSetFacing", facing)
         self.scenario.battle().unitDone()
+
 
 class ClientInfo(object):
     nextFaction = 0
-    
+
     def __init__(self, ref, name, address, accessLevel):
         self.ref = ref
         self.address = address
@@ -563,11 +569,11 @@ class ClientInfo(object):
     def __str__(self):
         return "%s (%s:%s)" % (self.name, self.address.host, self.address.port)
 
+
 @implementer(checkers.ICredentialsChecker)
 class UsernameChecker(object):
-    #interface.implements(checkers.ICredentialsChecker)
-    credentialInterfaces = (credentials.IUsernamePassword,
-                            credentials.IUsernameHashedPassword)
+    # interface.implements(checkers.ICredentialsChecker)
+    credentialInterfaces = (credentials.IUsernamePassword, credentials.IUsernameHashedPassword)
 
     def __init__(self):
         self.users = {}
@@ -576,7 +582,7 @@ class UsernameChecker(object):
         # Handle both bytes and string usernames for Python 3 compatibility
         username = credentials.username
         if isinstance(username, bytes):
-            username = username.decode('utf-8')
+            username = username.decode("utf-8")
 
         name = username
         i = 2
@@ -586,14 +592,15 @@ class UsernameChecker(object):
         self.users[name] = True
         return defer.succeed(name)
 
+
 @implementer(portal.IRealm)
 class GameServer(object):
     def __init__(self, port):
         self.port = port
         self.state = GameState(self)
-        self.clients = {} # maps clientRef -> ClientInfo
+        self.clients = {}  # maps clientRef -> ClientInfo
         self.start()
-        serverLog.info('Listening on port %d' % self.port)
+        serverLog.info("Listening on port %d" % self.port)
 
     def start(self):
         p = portal.Portal(self)
@@ -611,10 +618,10 @@ class GameServer(object):
         errorMsg = str(failure.getErrorMessage())
 
         # Log different error types with appropriate severity
-        if 'Connection' in errorMsg:
-            serverLog.info(f'Client connection error in {op}: {errorMsg}')
+        if "Connection" in errorMsg:
+            serverLog.info(f"Client connection error in {op}: {errorMsg}")
         else:
-            serverLog.warning(f'Network error in {op}: {errorMsg}')
+            serverLog.warning(f"Network error in {op}: {errorMsg}")
 
         # Continue running - don't stop server on individual client errors
 
@@ -629,25 +636,23 @@ class GameServer(object):
             perspectiveClass = GamePlayer
         address = clientRef.broker.transport.getPeer()
         perspective = perspectiveClass(self, clientRef, name)
-        clientInfo = ClientInfo(clientRef, name, address,
-                                perspective.accessLevel)
+        clientInfo = ClientInfo(clientRef, name, address, perspective.accessLevel)
         perspective.faction = clientInfo.faction
         self.clients[id(clientRef)] = clientInfo
-        serverLog.debug('%s connected (total clients: %d)' %
-                        (clientInfo, len(self.clients)))
-        self.remoteAll('serverMessage', "%s connected (%d players total)" %
-                       (name, len(self.clients)))
-        return (perspectiveClass, perspective,
-                lambda: self.handleDisconnect(id(clientRef)))
+        serverLog.debug("%s connected (total clients: %d)" % (clientInfo, len(self.clients)))
+        self.remoteAll(
+            "serverMessage", "%s connected (%d players total)" % (name, len(self.clients))
+        )
+        return (perspectiveClass, perspective, lambda: self.handleDisconnect(id(clientRef)))
 
     def handleDisconnect(self, client):
         clientInfo = self.clients[client]
         del self.clients[client]
-        serverLog.debug('%s disconnected (total clients: %d)' %
-                        (clientInfo, len(self.clients)))
-        self.remoteAll('serverMessage', "%s disconnected (%d players total)" %
-                       (clientInfo.name, len(self.clients)))
-
+        serverLog.debug("%s disconnected (total clients: %d)" % (clientInfo, len(self.clients)))
+        self.remoteAll(
+            "serverMessage",
+            "%s disconnected (%d players total)" % (clientInfo.name, len(self.clients)),
+        )
 
     def remote(self, client, methodName, *args):
         """Call a remote method on a client with error handling."""
@@ -659,7 +664,7 @@ class GameServer(object):
             df.addErrback(self.error, op)
             return df
         except Exception as e:
-            serverLog.error(f'Exception calling remote {methodName}: {e}')
+            serverLog.error(f"Exception calling remote {methodName}: {e}")
             return None
 
     def remoteAll(self, methodName, *args):
@@ -672,12 +677,14 @@ class GameServer(object):
                 if df is not None:
                     dfs.append(df)
             except Exception as e:
-                serverLog.warning(f'Failed to call {methodName} on client {clientInfo.name}: {e}')
+                serverLog.warning(f"Failed to call {methodName} on client {clientInfo.name}: {e}")
                 continue
-        return dfs          
+        return dfs
+
 
 class GameServerException(Exception):
     pass
+
 
 ########################################### MAIN
 
@@ -685,6 +692,7 @@ import gui.ScenarioChooser
 
 window = None
 opts = None
+
 
 def runMapEditor(main, mapName):
     """Run the map editor.
@@ -699,56 +707,51 @@ def runMapEditor(main, mapName):
 
     resources.map = resources.MapLoader()
     if mapName != None:
-#        try:
-            m = resources.map(mapName)
-#        except Exception as e:
-#            print('Error loading map "%s":' % mapName)
-#            print(e)
-#            sys.exit(1)
+        #        try:
+        m = resources.map(mapName)
+    #        except Exception as e:
+    #            print('Error loading map "%s":' % mapName)
+    #            print(e)
+    #            sys.exit(1)
     else:
-        m = resources.map('random')
+        m = resources.map("random")
 
     # Start the map editor GUI
     mapEditorGUI = gui.MapEditorGUI.MapEditorGUI(m)
     main.setDelegate(mapEditorGUI)
 
 
-def startGame(server, port=None, user=None, scenario=None,
-              multiplayer=None):
+def startGame(server, port=None, user=None, scenario=None, multiplayer=None):
     if port == None:
-        port = opts.port if opts and hasattr(opts, 'port') else 22222
+        port = opts.port if opts and hasattr(opts, "port") else 22222
     if user == None:
-        user = opts.user if opts and hasattr(opts, 'user') else 'Player'
+        user = opts.user if opts and hasattr(opts, "user") else "Player"
     if multiplayer == None:
-        multiplayer = opts.multiplayer if opts and hasattr(opts, 'multiplayer') else False
-        
+        multiplayer = opts.multiplayer if opts and hasattr(opts, "multiplayer") else False
+
     # Configure the server
     if server == None:
-        server = '127.0.0.1'
+        server = "127.0.0.1"
         gameServer = GameServer(port)
     # Then configure the client
     aiPlayers = 1
     if multiplayer:
         aiPlayers = 0
-    gameClient = InteractiveClient(server,
-                                   port,
-                                   user,
-                                   scenario,
-                                   aiPlayers,
-                                   window)
+    gameClient = InteractiveClient(server, port, user, scenario, aiPlayers, window)
+
 
 def run(options):
     global window
     global opts
     opts = options
-    window = MainWindow(opts.fullscreen,opts.width)
+    window = MainWindow(opts.fullscreen, opts.width)
     window.update()
     if opts.edit_map:
         runMapEditor(window, opts.edit_map)
     else:
         window.setDelegate(gui.ScenarioChooser.ScenarioChooser())
-    try:        
-        reactor.run()               
+    try:
+        reactor.run()
     except KeyboardInterrupt:
         if reactor.running:
             reactor.stop()

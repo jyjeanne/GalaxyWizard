@@ -1,4 +1,4 @@
-## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by 
+## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by
 
 # Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
@@ -8,12 +8,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -23,9 +23,9 @@ import resources as Resources
 from engine import Light
 from engine import Battle
 import random
-from engine.Faction import PLAYER_FACTION, NPC_FRIENDLY_FACTION, NPC_HOSTILE_FACTION
-from engine import Map
+from engine.Faction import PLAYER_FACTION, NPC_HOSTILE_FACTION
 from twisted.spread import pb
+
 
 class Scenario(pb.Copyable, pb.RemoteCopy):
     def __init__(self, map, units, lightEnv, battle, ai, music):
@@ -60,35 +60,35 @@ class Scenario(pb.Copyable, pb.RemoteCopy):
                 return u
         return None
 
+
 def blankMap(map):
-    return Scenario(map, [], Light.defaultEnvironment(),
-                    Battle.Battle([Battle.NEVER_ENDING], [], map),
-                    None,
-                    '')
+    return Scenario(
+        map, [], Light.defaultEnvironment(), Battle.Battle([Battle.NEVER_ENDING], [], map), None, ""
+    )
+
 
 def generateRandom(additionalAIUnits):
     def generateUnit(faction):
-        unitTemplates = ['archer1', 'fighter1', 'defender1',
-                         'rogue1', 'healer1', 'mage1']
+        unitTemplates = ["archer1", "fighter1", "defender1", "rogue1", "healer1", "mage1"]
         unitTemplate = random.choice(unitTemplates)
         u = Resources.unit(unitTemplate)
         u.setFaction(faction)
-        #u.setFaction(0)
+        # u.setFaction(0)
         return u
 
     def generateMapAndUnits():
-        map_ = Resources.map('random')
+        map_ = Resources.map("random")
         units = []
         nUnits = random.randint(4, 8)
         startColumn = random.randint(0, map_.width - (nUnits + 1) // 2)
         for i in range(0, nUnits):
             u = generateUnit(PLAYER_FACTION)
             if i < nUnits // 2:
-                row = map_.height-1
+                row = map_.height - 1
                 column = startColumn + i
             else:
-                row = map_.height-2
-                column = startColumn + (i - nUnits//2)
+                row = map_.height - 2
+                column = startColumn + (i - nUnits // 2)
             map_.squares[column][row].setUnit(u)
             units.append(u)
         nUnits += additionalAIUnits
@@ -100,7 +100,7 @@ def generateRandom(additionalAIUnits):
                 column = startColumn + i
             else:
                 row = 1
-                column = startColumn + (i - nUnits//2)
+                column = startColumn + (i - nUnits // 2)
             map_.squares[column][row].setUnit(u)
             units.append(u)
         return (map_, units)
@@ -119,18 +119,15 @@ def generateRandom(additionalAIUnits):
         (map_, units) = generateMapAndUnits()
         validMap = verifyMap(map_, units)
 
-    endingConditions = [Battle.PLAYER_DEFEATED,
-                        Battle.DEFEAT_ALL_ENEMIES]
+    endingConditions = [Battle.PLAYER_DEFEATED, Battle.DEFEAT_ALL_ENEMIES]
     battle = Battle.Battle(endingConditions, units, map_)
 
     lighting = Light.randomEnvironment(map_.width, map_.height)
 
-    music = random.choice(['barbieri-lyta',
-                           'barbieri-battle',
-                           'barbieri-army-march'])
-    
-    return Scenario(map_, units, lighting,
-                    battle, None, music)
+    music = random.choice(["barbieri-lyta", "barbieri-battle", "barbieri-army-march"])
+
+    return Scenario(map_, units, lighting, battle, None, music)
+
 
 class ScenarioIO(object):
     def load(scenarioFilename):
@@ -140,43 +137,40 @@ class ScenarioIO(object):
         globalVars = {}
         localVars = {}
 
-        module = compile("from engine.Unit import MALE, FEMALE, NEUTER",
-                         "Unit.py", "exec")
+        module = compile("from engine.Unit import MALE, FEMALE, NEUTER", "Unit.py", "exec")
         eval(module, globalVars)
-        module = compile("from engine.Faction import Faction",
-                         "Faction.py", "exec")
+        module = compile("from engine.Faction import Faction", "Faction.py", "exec")
         eval(module, globalVars)
-        
+
         for m in ["Light", "Battle"]:
             module = compile("import engine.%s as %s" % (m, m), m, "exec")
-            eval(module, globalVars)       
-        compiled = compile(scenarioText, scenarioFilename, 'exec')
+            eval(module, globalVars)
+        compiled = compile(scenarioText, scenarioFilename, "exec")
 
         eval(compiled, globalVars, localVars)
         scenarioData = localVars
-        
-        if scenarioData['VERSION'] != 1:
-            raise Exception("Scenario version %d not supported" %
-                            scenarioData["VERSION"])
 
-        # Required fields: map 
-        m = Resources.map(scenarioData['MAP'])
+        if scenarioData["VERSION"] != 1:
+            raise Exception("Scenario version %d not supported" % scenarioData["VERSION"])
+
+        # Required fields: map
+        m = Resources.map(scenarioData["MAP"])
 
         # Load ending conditions
         endingConditions = [Battle.NEVER_ENDING]
-        if 'ENDING_CONDITIONS' in scenarioData:
-            endingConditions = scenarioData['ENDING_CONDITIONS']
+        if "ENDING_CONDITIONS" in scenarioData:
+            endingConditions = scenarioData["ENDING_CONDITIONS"]
 
         # Load lights
-        if 'LIGHTING' in scenarioData:
-            lightEnv = scenarioData['LIGHTING']
+        if "LIGHTING" in scenarioData:
+            lightEnv = scenarioData["LIGHTING"]
         else:
             lightEnv = Light.defaultEnvironment()
 
         # Load units
         units = []
-        if 'FACTIONS' in scenarioData:
-            for f in scenarioData['FACTIONS']:
+        if "FACTIONS" in scenarioData:
+            for f in scenarioData["FACTIONS"]:
                 faction = f.faction()
                 for u in f.units():
                     (unitFile, (x, y)) = u
@@ -186,14 +180,13 @@ class ScenarioIO(object):
                     units.append(u)
 
         # Music
-        music = 'barbieri-battle'
-        if 'MUSIC' in scenarioData:
-            music = scenarioData['MUSIC']
+        music = "barbieri-battle"
+        if "MUSIC" in scenarioData:
+            music = scenarioData["MUSIC"]
 
         # Create battle
         battle = Battle.Battle(endingConditions, units, m)
-   
+
         return Scenario(m, units, lightEnv, battle, None, music)
 
     load = staticmethod(load)
-

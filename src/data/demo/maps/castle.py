@@ -17,13 +17,13 @@ flat = (0, 0, 0, 0)
 raisedLeft = (height, 0, height, 0)
 raisedRight = (0, height, 0, height)
 raisedBack = (height, height, 0, 0)
-pointy = (-2*height, -2*height, -2*height, -2*height)
+pointy = (-2 * height, -2 * height, -2 * height, -2 * height)
 
 # Textures
-stone = 'stone'
-marble = 'marble-slight'
-wood = 'wood-2'
-grass = 'grass'
+stone = "stone"
+marble = "marble-slight"
+wood = "wood-2"
+grass = "grass"
 
 # ACTUAL MAP DATA
 
@@ -34,44 +34,27 @@ HEIGHT = 22
 
 TILE_PROPERTIES = {
     # White stone, flat top
-    'w': { 'color': white,
-           'colorVar': mediumVar,
-           'texture': stone,
-           'cornerHeights': pointy,
-          },
+    "w": {
+        "color": white,
+        "colorVar": mediumVar,
+        "texture": stone,
+        "cornerHeights": pointy,
+    },
     # White stone, left edge is higher
-    'l': { 'color': white,
-           'colorVar': mediumVar,
-           'texture': stone,
-           'cornerHeights': raisedLeft },
+    "l": {"color": white, "colorVar": mediumVar, "texture": stone, "cornerHeights": raisedLeft},
     # White stone, right edge is higher
-    'r': { 'color': white,
-           'colorVar': mediumVar,
-           'texture': stone,
-           'cornerHeights': raisedRight },
+    "r": {"color": white, "colorVar": mediumVar, "texture": stone, "cornerHeights": raisedRight},
     # White stone, back edge is higher
-    'u': { 'color': white,
-           'colorVar': mediumVar,
-           'texture': stone,
-           'cornerHeights': raisedBack },
+    "u": {"color": white, "colorVar": mediumVar, "texture": stone, "cornerHeights": raisedBack},
     # Grey marble
-    'g': { 'color': grey,
-           'colorVar': mediumVar,
-           'texture': marble,
-           'cornerHeights': flat },
+    "g": {"color": grey, "colorVar": mediumVar, "texture": marble, "cornerHeights": flat},
     # Tan wood
-    't': { 'color': tan,
-           'colorVar': mediumVar,
-           'texture': wood,
-           'cornerHeights': flat },
+    "t": {"color": tan, "colorVar": mediumVar, "texture": wood, "cornerHeights": flat},
     # Default: green grass
-    '': { 'color': green,
-          'colorVar': highVar,
-          'texture': grass,
-          'cornerHeights': flat },
-    }
+    "": {"color": green, "colorVar": highVar, "texture": grass, "cornerHeights": flat},
+}
 
-LAYOUT = '''
+LAYOUT = """
 4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    
 4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    
 4    4    4    4    0    0    0    0    0    0    0    0    0    4    4    4    4    
@@ -94,5 +77,4 @@ LAYOUT = '''
 4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4   
 4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4   
 4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4    4
-'''
-
+"""

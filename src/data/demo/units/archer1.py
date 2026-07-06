@@ -4,6 +4,6 @@ CLASSES = [("archer", 1)]
 
 GENDER = FEMALE_OR_MALE
 
-WEAPON = 'bow'
+WEAPON = "bow"
 
-ARMOR = 'leather-jerkin'
+ARMOR = "leather-jerkin"

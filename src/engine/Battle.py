@@ -6,34 +6,33 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-import time
 from engine import Faction
-import sound as Sound
-import threading
 import logging
-import fsm as FSM
 from engine import Effect
 import constants as Constants
 from twisted.spread import pb
 import gui
 
-logger = logging.getLogger('batt')
+logger = logging.getLogger("batt")
+
 
 def get():
     return _battle
 
+
 _battle = None
+
 
 class Battle(pb.Copyable, pb.RemoteCopy):
     def __init__(self, endingConditions, units, map):
@@ -52,7 +51,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
 
     def units(self):
         return self._units
-        
+
     def map(self):
         return self._map
 
@@ -94,7 +93,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         if not u.hasMove():
             return False
         r = self._map.reachable(u)
-        if not (x, y) in r:
+        if (x, y) not in r:
             return False
         # Validate coordinates are within map bounds
         if not (0 <= x < self._map.width and 0 <= y < self._map.height):
@@ -140,7 +139,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
             return False
         targets = action.affectedUnits(self._map, u, posn)
         if not targets:
-            return False        
+            return False
 
         u._hasAct = False
         u._hasCancel = False
@@ -148,7 +147,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         affectedUnits = list(targets)
         affectedUnits.append(u)
         # Maps target ID to a list of all effect results for that target
-        allEffectResults = {} 
+        allEffectResults = {}
         for target in targets:
             for e in action.effects():
                 effectResults = e.affect(u, target)
@@ -192,14 +191,15 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         endingCondition = LastTeamStanding()
         result = endingCondition(self)
         return result
-#         for i in range(0, len(self.endingConditions)):
-#             c = self.endingConditions[i]
-#             if c(self):
-#                 return i
-#         return -1
+
+    #         for i in range(0, len(self.endingConditions)):
+    #             c = self.endingConditions[i]
+    #             if c(self):
+    #                 return i
+    #         return -1
 
     def pickNextUnit(self):
-        #logger.debug2('picking a unit')
+        # logger.debug2('picking a unit')
         active = [u for u in self._units if u.active()]
         self._turns += 1
         self.unitQueue = [u for u in self.unitQueue if u.active()]
@@ -238,19 +238,15 @@ class Battle(pb.Copyable, pb.RemoteCopy):
             ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.NEGATIVE, 0.5))
 
         return u
-            
+
 
 class UnitTurn(object):
-
     MOVE_FIRST = 0
     ACT_FIRST = 1
-    
-    def __init__(self,
-                 turnOrder=MOVE_FIRST,
-                 moveTarget=None,
-                 action=None,
-                 actionTarget=None,
-                 facing=None):
+
+    def __init__(
+        self, turnOrder=MOVE_FIRST, moveTarget=None, action=None, actionTarget=None, facing=None
+    ):
         self._turnOrder = turnOrder
         self._moveTarget = moveTarget
         self._action = action
@@ -283,13 +279,18 @@ class UnitTurn(object):
             return "Move: %s" % str(self._moveTarget)
         else:
             if self._turnOrder == UnitTurn.MOVE_FIRST:
-                return "Move: %s, %s: %s" % (self._moveTarget,
-                                             self._action.name(),
-                                             self._actionTarget)
+                return "Move: %s, %s: %s" % (
+                    self._moveTarget,
+                    self._action.name(),
+                    self._actionTarget,
+                )
             else:
-                return "%s: %s, Move: %s" % (self._action.name(),
-                                             self._actionTarget,
-                                             self._moveTarget)
+                return "%s: %s, Move: %s" % (
+                    self._action.name(),
+                    self._actionTarget,
+                    self._moveTarget,
+                )
+
 
 class EndingCondition(pb.Copyable, pb.RemoteCopy):
     def __call__(self, battle):
@@ -298,6 +299,7 @@ class EndingCondition(pb.Copyable, pb.RemoteCopy):
 
     def description():
         return ""
+
 
 class DefeatAllEnemies(EndingCondition):
     def __call__(self, battle):
@@ -311,6 +313,7 @@ class DefeatAllEnemies(EndingCondition):
 
     def description():
         return "Defeat all enemies!"
+
 
 class PlayerDefeated(EndingCondition):
     def __call__(self, battle):
@@ -333,7 +336,8 @@ class LastTeamStanding(EndingCondition):
             elif teamRemaining != u.faction():
                 return -1
         return teamRemaining
-        
+
+
 PLAYER_DEFEATED = PlayerDefeated()
 DEFEAT_ALL_ENEMIES = DefeatAllEnemies()
 LAST_TEAM_STANDING = LastTeamStanding()

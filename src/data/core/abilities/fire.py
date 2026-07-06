@@ -16,5 +16,4 @@ AOE = Diamond(0, 1)
 
 EFFECTS = [Damage(power=1.0, damageType=FIRE)]
 
-SOUND = 'fire'
-
+SOUND = "fire"

@@ -14,4 +14,4 @@ RANGE = Cross(1, 1)
 
 AOE = Single()
 
-EFFECTS = [Status(Status.TRIPPED,duration=3)]
+EFFECTS = [Status(Status.TRIPPED, duration=3)]

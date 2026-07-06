@@ -4,6 +4,6 @@ CLASSES = [("fighter", 20)]
 
 GENDER = MALE
 
-WEAPON = 'sword'
+WEAPON = "sword"
 
-ARMOR = 'chain-mail'
+ARMOR = "chain-mail"

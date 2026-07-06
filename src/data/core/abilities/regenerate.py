@@ -15,4 +15,3 @@ RANGE = Diamond(0, 5, 16)
 AOE = Single()
 
 EFFECTS = [Status(Status.REGEN, power=0.2, duration=5)]
-

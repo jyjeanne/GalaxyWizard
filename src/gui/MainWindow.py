@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -33,9 +33,11 @@ import main as Main
 
 log = logging.getLogger("gui")
 
+
 def get():
     """Returns the singleton MainWindow object."""
     return _mainWindow
+
 
 _mainWindow = None
 
@@ -52,13 +54,13 @@ class MainWindow(object):
 
         self._fullscreen = fullscreen
         self._fullscreenSize = self._chooseDisplaySize()
-        self._defaultSize = (width, width*3//4)
+        self._defaultSize = (width, width * 3 // 4)
 
         if fullscreen:
             self._size = self._fullscreenSize
         else:
             self._size = self._defaultSize
-        
+
         self._fpsDisplayer = Sprite.FPSDisplayer()
         self._delegate = None
         self._soundEnabled = True
@@ -110,7 +112,7 @@ class MainWindow(object):
 
         # Swap buffers
         pygame.display.flip()
-        
+
     def setDelegate(self, delegate):
         """Sets the main window's delegate.
 
@@ -130,7 +132,7 @@ class MainWindow(object):
         return usableSizes[-1]
 
     def _setDisplayMode(self):
-        videoFlags = pygame.OPENGL|pygame.DOUBLEBUF
+        videoFlags = pygame.OPENGL | pygame.DOUBLEBUF
         if self._fullscreen:
             videoFlags |= pygame.FULLSCREEN
         else:
@@ -143,10 +145,10 @@ class MainWindow(object):
 
     def _resize(self):
         (width, height) = self._size
-        #pygame.mouse.set_visible(not self._fullscreen)
+        # pygame.mouse.set_visible(not self._fullscreen)
         if height == 0:
             height = 1
-        videoFlags = pygame.OPENGL|pygame.DOUBLEBUF
+        videoFlags = pygame.OPENGL | pygame.DOUBLEBUF
         if self._fullscreen:
             videoFlags |= pygame.FULLSCREEN
         else:
@@ -156,13 +158,17 @@ class MainWindow(object):
         self._fpsDisplayer.invalidate()
         if self._delegate != None:
             self._delegate.resize(self._size)
-        
+
     def _initOpenGL(self):
-        log.debug('OpenGL version: ' + glGetString(GL_VERSION).decode('utf-8'))
-        log.debug('OpenGL renderer: ' + glGetString(GL_VENDOR).decode('utf-8') + " " +
-                 glGetString(GL_RENDERER).decode('utf-8'))
-        log.debug('OpenGL extensions: ' + glGetString(GL_EXTENSIONS).decode('utf-8'))
-        
+        log.debug("OpenGL version: " + glGetString(GL_VERSION).decode("utf-8"))
+        log.debug(
+            "OpenGL renderer: "
+            + glGetString(GL_VENDOR).decode("utf-8")
+            + " "
+            + glGetString(GL_RENDERER).decode("utf-8")
+        )
+        log.debug("OpenGL extensions: " + glGetString(GL_EXTENSIONS).decode("utf-8"))
+
         glEnable(GL_POLYGON_OFFSET_FILL)
         glEnable(GL_TEXTURE_2D)
         glEnable(GL_BLEND)
@@ -180,18 +186,18 @@ class MainWindow(object):
                     self._delegate.handleEvent(event)
 
     def _handleEvent(self, event):
-        if (event.type == pygame.QUIT):
+        if event.type == pygame.QUIT:
             if reactor.running:
                 reactor.stop()
             return True
-        if (event.type == Input.FPS):
+        if event.type == Input.FPS:
             self._fpsDisplayer.toggle()
             self._limitFPS = not self._limitFPS
             return True
-        if (event.type == Input.TOGGLE_SOUND):
+        if event.type == Input.TOGGLE_SOUND:
             Sound.toggleQuiet()
             return True
-        if (event.type == Input.TOGGLE_FULLSCREEN):
+        if event.type == Input.TOGGLE_FULLSCREEN:
             if platform.system() != "Linux":
                 return True
             self._fullscreen = not self._fullscreen
@@ -201,12 +207,13 @@ class MainWindow(object):
                 self._size = self._defaultSize
             self._resize()
             return True
-        if (event.type == pygame.VIDEORESIZE):
+        if event.type == pygame.VIDEORESIZE:
             self._size = event.size
             self._defaultSize = event.size
             self._resize()
             return True
         return False
+
 
 class MainWindowDelegate(object):
     def update(self, timeElapsed):
@@ -223,8 +230,7 @@ class MainWindowDelegate(object):
         """Takes in an event and returns True if the event was handled
         by the delegate."""
         return False
-    
+
     def resize(self, size):
         """Tells the delegate that a resize event has occurred."""
         pass
-    

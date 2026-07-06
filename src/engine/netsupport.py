@@ -7,7 +7,6 @@ from engine import Class
 from engine import Scenario
 from engine import Range
 from engine import Effect
-from engine import Light
 from engine import Equipment
 from engine import Battle
 
@@ -29,7 +28,7 @@ pb.setUnjellyableForClass(Effect.Damage, Effect.Damage)
 pb.setUnjellyableForClass(Effect.DamageSP, Effect.DamageSP)
 pb.setUnjellyableForClass(Effect.DrainLife, Effect.DrainLife)
 pb.setUnjellyableForClass(Effect.HealFriendlyDamageHostile, Effect.HealFriendlyDamageHostile)
-pb.setUnjellyableForClass(Effect.Healing, Effect.Healing)       
+pb.setUnjellyableForClass(Effect.Healing, Effect.Healing)
 pb.setUnjellyableForClass(Effect.Status, Effect.Status)
 pb.setUnjellyableForClass(Light.Light, Light.Light)
 pb.setUnjellyableForClass(Light.White, Light.White)
@@ -45,5 +44,3 @@ pb.setUnjellyableForClass(Effect.DamageResult, Effect.DamageResult)
 pb.setUnjellyableForClass(Effect.DamageSPResult, Effect.DamageSPResult)
 pb.setUnjellyableForClass(Effect.HealResult, Effect.HealResult)
 pb.setUnjellyableForClass(Effect.StatusResult, Effect.StatusResult)
-
-

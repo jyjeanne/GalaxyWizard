@@ -3,12 +3,12 @@ import logging
 import optparse
 import pygame
 from translate import Translate
-import numpy as np
 
 __version__ = "0.1.0"
 
+
 def main():
-    print('Start GalaxyWizard', __version__)
+    print("Start GalaxyWizard", __version__)
 
     # init translate
     translate_config = Translate()
@@ -22,7 +22,7 @@ def main():
     parser.add_option("--edit-map", "-e", action="store", default=None, metavar="MAPNAME")
     parser.add_option("--port", "-P", type=int, default=22222)
     parser.add_option("--lang", "-l", default="en")
-    parser.add_option("--user", default=os.environ.get('USER', 'Player'))
+    parser.add_option("--user", default=os.environ.get("USER", "Player"))
     (options, args) = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG - options.verbose * 10)

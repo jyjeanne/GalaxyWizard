@@ -7,36 +7,45 @@ WATER_HEIGHT = 10
 WATER_COLOR = (0.3, 0.3, 0.7, 0.5)
 
 TILE_PROPERTIES = {
-    'grass':  { 'color': (0.5, 0.7, 0.5),
-                'colorVar': (0.1, 0.1, 0.1),
-                'texture': 'grass',
-                'smooth': True },
-    'rock':   { 'color': (0.7, 0.5, 0.3),
-                'colorVar': (0.1, 0.1, 0.1),
-                'texture': 'stone',
-                'smooth': True,
-              },
-    'water':  { 'color': (0.5, 0.7, 0.5),
-                'colorVar': (0.1, 0.1, 0.1),
-                'texture': 'grass',
-                'smooth': True,
-                },
-    'stone':  { 'color': (0.8, 0.8, 0.8),
-                'colorVar': (0.1, 0.1, 0.1),
-                'texture': 'stone',
-                'smooth': False
-              },
-    'wood':   { 'color': (0.7, 0.7, 0.5),
-                'colorVar': (0.05, 0.05, 0.05),
-                'texture': 'wood-1',
-                'smooth': True },
-    'marble': { 'color': (0.6, 0.6, 0.6),
-                'colorVar': (0.05, 0.05, 0.05),
-                'texture': 'marble-slight',
-                'smooth': False},
-    }
+    "grass": {
+        "color": (0.5, 0.7, 0.5),
+        "colorVar": (0.1, 0.1, 0.1),
+        "texture": "grass",
+        "smooth": True,
+    },
+    "rock": {
+        "color": (0.7, 0.5, 0.3),
+        "colorVar": (0.1, 0.1, 0.1),
+        "texture": "stone",
+        "smooth": True,
+    },
+    "water": {
+        "color": (0.5, 0.7, 0.5),
+        "colorVar": (0.1, 0.1, 0.1),
+        "texture": "grass",
+        "smooth": True,
+    },
+    "stone": {
+        "color": (0.8, 0.8, 0.8),
+        "colorVar": (0.1, 0.1, 0.1),
+        "texture": "stone",
+        "smooth": False,
+    },
+    "wood": {
+        "color": (0.7, 0.7, 0.5),
+        "colorVar": (0.05, 0.05, 0.05),
+        "texture": "wood-1",
+        "smooth": True,
+    },
+    "marble": {
+        "color": (0.6, 0.6, 0.6),
+        "colorVar": (0.05, 0.05, 0.05),
+        "texture": "marble-slight",
+        "smooth": False,
+    },
+}
 
-LAYOUT = '''
+LAYOUT = """
 13grass   13grass   13grass   13grass   11water   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass
 13grass   13grass   13grass   13grass   11water   11water   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass
 13grass   13grass   13grass   13grass   13grass   11water   13grass   13grass   13grass   13grass   19grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass
@@ -59,4 +68,4 @@ LAYOUT = '''
 13grass   13grass   13grass   13grass   5water    13grass   20grass   18grass   19grass   18grass   26grass   19grass   20grass   20grass   18grass   13grass   13grass   13grass   13grass
 13grass   13grass   13grass   13grass   5water    13grass   13grass   13grass   13grass   13grass   19grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass
 13grass   13grass   13grass   13grass   5water    13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass   13grass
-'''
+"""

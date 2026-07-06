@@ -12,9 +12,8 @@ TARGET_TYPE = HOSTILE
 
 RANGE = Diamond(0, 4, 16)
 
-AOE = Diamond(0,1)
+AOE = Diamond(0, 1)
 
 EFFECTS = [DrainLife(power=2.0, percentDamageHealed=0.5, damageType=MAGICAL)]
 
-SOUND = 'fire'
-
+SOUND = "fire"

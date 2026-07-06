@@ -6,18 +6,19 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import math
+
 
 class Point3D(object):
     def __init__(self, x, y, z):
@@ -28,9 +29,9 @@ class Point3D(object):
     def asTuple(self):
         return (self.x, self.y, self.z)
 
+
 def rotate2d(pos, angle):
     x, y = pos
     s = math.sin(angle)
     c = math.cos(angle)
-    return (c * x - s * y,
-            s * x + c * y)
+    return (c * x - s * y, s * x + c * y)

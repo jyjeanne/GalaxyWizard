@@ -15,5 +15,3 @@ RANGE = Diamond(0, 5, 16)
 AOE = Single()
 
 EFFECTS = [Healing(power=2.0)]
-
-

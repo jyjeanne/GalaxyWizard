@@ -4,15 +4,15 @@ Initializes pygame and OpenGL context before running tests.
 """
 
 import os
-import sys
 
 # Set environment variables before any pygame/OpenGL imports
 # This MUST happen before pygame is imported
-os.environ['SDL_VIDEODRIVER'] = 'dummy'
-os.environ['SDL_AUDIODRIVER'] = 'dummy'
+os.environ["SDL_VIDEODRIVER"] = "dummy"
+os.environ["SDL_AUDIODRIVER"] = "dummy"
 
 # Initialize pygame immediately before any test imports
 import pygame
+
 pygame.init()
 
 # Create a minimal OpenGL-compatible display
@@ -31,6 +31,7 @@ except pygame.error as e:
 
 # Now it's safe to import pytest
 import pytest
+
 
 @pytest.fixture(scope="session", autouse=True)
 def pygame_cleanup():

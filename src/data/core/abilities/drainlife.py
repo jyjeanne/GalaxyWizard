@@ -16,5 +16,4 @@ AOE = Single()
 
 EFFECTS = [DrainLife(power=1.0, percentDamageHealed=1.0, damageType=MAGICAL)]
 
-SOUND = 'fire'
-
+SOUND = "fire"

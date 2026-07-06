@@ -9,21 +9,14 @@ HEIGHT = 22
 
 # Tile properties
 TILE_PROPERTIES = {
-    'w': { 'color': (0.8, 0.8, 0.8),
-           'colorVar': (0.05, 0.05, 0.05),
-           'texture': 'stone' }, 
-    'g': { 'color': (0.6, 0.6, 0.6),
-           'colorVar': (0.05, 0.05, 0.05),
-           'texture': 'marble-slight' }, 
-    't': { 'color': (0.7, 0.5, 0.3),
-           'texture': 'wood' }, 
-    '':  { 'color': (0.5, 0.7, 0.5),
-           'colorVar': (0.2, 0.2, 0.2),
-           'texture': 'grass' }, 
-    }
+    "w": {"color": (0.8, 0.8, 0.8), "colorVar": (0.05, 0.05, 0.05), "texture": "stone"},
+    "g": {"color": (0.6, 0.6, 0.6), "colorVar": (0.05, 0.05, 0.05), "texture": "marble-slight"},
+    "t": {"color": (0.7, 0.5, 0.3), "texture": "wood"},
+    "": {"color": (0.5, 0.7, 0.5), "colorVar": (0.2, 0.2, 0.2), "texture": "grass"},
+}
 
 # Layout of map tiles
-LAYOUT = '''
+LAYOUT = """
 4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   
 4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   
 4   4   4   4   0   0   0   0   0   0   0   0   0   4   4   4   4   
@@ -46,4 +39,4 @@ LAYOUT = '''
 4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4     
 4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4     
 4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4   4
-'''
+"""

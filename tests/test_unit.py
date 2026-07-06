@@ -1,14 +1,14 @@
 """
 Unit tests for the Unit class
 """
+
 import unittest
 import sys
 import os
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from engine.Unit import Unit
 from engine.Class import Class
 from engine.Effect import Status
 
@@ -45,7 +45,7 @@ class TestUnit(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
     def test_unit_creation(self):
@@ -154,5 +154,5 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(unit.posn3d(), (5, 7, 2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

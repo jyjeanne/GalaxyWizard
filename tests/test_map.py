@@ -1,15 +1,15 @@
 """
 Unit tests for the Map class and pathfinding
 """
+
 import unittest
 import sys
 import os
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from engine.Map import Map, MapSquare
-from engine.Unit import Unit
 from engine.Class import Class
 import numpy as np
 
@@ -25,7 +25,7 @@ class TestMapCreation(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -34,7 +34,7 @@ class TestMapCreation(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         self.assertIsNotNone(map_obj)
@@ -49,7 +49,7 @@ class TestMapCreation(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -58,7 +58,7 @@ class TestMapCreation(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         # Check all squares exist
@@ -77,7 +77,7 @@ class TestMapCreation(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -86,7 +86,7 @@ class TestMapCreation(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         # Valid coordinates
@@ -133,7 +133,7 @@ class TestMapPathfinding(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
     def create_test_map(self, width=10, height=10):
@@ -143,7 +143,7 @@ class TestMapPathfinding(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         return Map(
             width=width,
@@ -152,7 +152,7 @@ class TestMapPathfinding(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_get_potential_connections(self):
@@ -209,7 +209,7 @@ class TestMapPathfinding(unittest.TestCase):
         self.assertIsInstance(reachable, list)
 
         # All reachable positions should be valid
-        for (x, y) in reachable:
+        for x, y in reachable:
             self.assertTrue(map_obj.squareExists(x, y))
 
         # Should have at least one reachable square (the current position or nearby)
@@ -292,7 +292,7 @@ class TestMapGeneration(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -301,7 +301,7 @@ class TestMapGeneration(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         # Test that map can generate state
@@ -316,7 +316,7 @@ class TestMapGeneration(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -325,7 +325,7 @@ class TestMapGeneration(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         # Check that squares have texture method
@@ -340,18 +340,15 @@ class TestMapGeneration(unittest.TestCase):
         """Test map with height variations"""
         width, height = 5, 5
         # Create varied terrain
-        zdata = np.array([
-            [0, 0, 1, 1, 2],
-            [0, 1, 1, 2, 2],
-            [1, 1, 2, 2, 3],
-            [1, 2, 2, 3, 3],
-            [2, 2, 3, 3, 4]
-        ], dtype=float)
+        zdata = np.array(
+            [[0, 0, 1, 1, 2], [0, 1, 1, 2, 2], [1, 1, 2, 2, 3], [1, 2, 2, 3, 3], [2, 2, 3, 3, 4]],
+            dtype=float,
+        )
 
         tileProperties = np.zeros((width, height), dtype=object)
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         map_obj = Map(
             width=width,
@@ -360,7 +357,7 @@ class TestMapGeneration(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
         # Check heights are preserved
@@ -379,7 +376,7 @@ class TestMapBFS(unittest.TestCase):
 
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         return Map(
             width=width,
@@ -388,7 +385,7 @@ class TestMapBFS(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_bfs_basic(self):
@@ -425,5 +422,5 @@ class TestMapBFS(unittest.TestCase):
             self.assertLessEqual(square.search[0], max_distance)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
