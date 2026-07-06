@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -29,14 +29,14 @@ class FSM(object):
     def addEntryHook(self, state, hook):
         """hook(oldState, reason) will be called whenever we
         transition to state."""
-        l = self.entryHooks.setdefault(state, [])
-        l.append(hook)
+        hooks = self.entryHooks.setdefault(state, [])
+        hooks.append(hook)
 
     def addExitHook(self, state, hook):
         """hook(newState, reason) will be called whenever we
         transition from state."""
-        l = self.exitHooks.setdefault(state, [])
-        l.append(hook)
+        hooks = self.exitHooks.setdefault(state, [])
+        hooks.append(hook)
 
     def trans(self, newState, reason=None):
         """Transitions to the given state, calling hooks as

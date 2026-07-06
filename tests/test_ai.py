@@ -1,19 +1,18 @@
 """
 Unit tests for the AI system
 """
+
 import unittest
 import sys
 import os
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from ai.UnitAI import Base, HealWeakest, DamageWeakest, MoveToWeakest, Exhaustive
+from ai.UnitAI import Base, DamageWeakest, MoveToWeakest, Exhaustive
 from engine.Battle import Battle, UnitTurn, NEVER_ENDING
-from engine.Unit import Unit
 from engine.Class import Class
 from engine.Map import Map
-from engine.Faction import Faction
 import numpy as np
 
 
@@ -49,7 +48,7 @@ class TestAIBase(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
         # Create a simple 10x10 map
@@ -58,7 +57,7 @@ class TestAIBase(unittest.TestCase):
         tileProperties = np.zeros((width, height), dtype=object)
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         self.test_map = Map(
             width=width,
@@ -67,7 +66,7 @@ class TestAIBase(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_base_ai_creation(self):
@@ -87,7 +86,7 @@ class TestAIBase(unittest.TestCase):
         battle = Battle([NEVER_ENDING], units, self.test_map)
 
         ai = Base(unit)
-        result = ai.calc(battle, unit)
+        result = ai.calc(battle)
 
         # Base AI should return a UnitTurn (no-op)
         self.assertIsInstance(result, UnitTurn)
@@ -125,7 +124,7 @@ class TestAITurnEvaluators(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
         # Create a simple 10x10 map
@@ -134,7 +133,7 @@ class TestAITurnEvaluators(unittest.TestCase):
         tileProperties = np.zeros((width, height), dtype=object)
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         self.test_map = Map(
             width=width,
@@ -143,7 +142,7 @@ class TestAITurnEvaluators(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_move_to_weakest_empty_targets(self):
@@ -227,7 +226,7 @@ class TestAIExhaustive(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
         # Create a simple 10x10 map
@@ -236,7 +235,7 @@ class TestAIExhaustive(unittest.TestCase):
         tileProperties = np.zeros((width, height), dtype=object)
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         self.test_map = Map(
             width=width,
@@ -245,7 +244,7 @@ class TestAIExhaustive(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_exhaustive_ai_creation(self):
@@ -327,7 +326,7 @@ class TestAITargetSelection(unittest.TestCase):
             mdefMult=1.0,
             speedBase=50,
             speedGrowth=2.0,
-            speedMult=1.0
+            speedMult=1.0,
         )
 
         # Create a simple 10x10 map
@@ -336,7 +335,7 @@ class TestAITargetSelection(unittest.TestCase):
         tileProperties = np.zeros((width, height), dtype=object)
         for x in range(width):
             for y in range(height):
-                tileProperties[x, y] = {'tag': ''}
+                tileProperties[x, y] = {"tag": ""}
 
         self.test_map = Map(
             width=width,
@@ -345,7 +344,7 @@ class TestAITargetSelection(unittest.TestCase):
             tileProperties=tileProperties,
             globalWaterHeight=0,
             globalWaterColor=[0.3, 0.3, 0.6],
-            tags_={}
+            tags_={},
         )
 
     def test_damage_weakest_target_selection(self):
@@ -377,5 +376,5 @@ class TestAITargetSelection(unittest.TestCase):
         self.assertIsInstance(result, list)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

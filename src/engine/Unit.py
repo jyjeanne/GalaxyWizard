@@ -6,12 +6,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
@@ -22,18 +22,18 @@ import resources as Resources
 from engine import Equipment
 from engine import Effect
 import logging
-from gui import ScenarioGUI
 import constants as Constants
 import random
 from twisted.spread import pb
 
 logger = logging.getLogger("batt")
-#logger.setLevel(logging.DEBUG)
+# logger.setLevel(logging.DEBUG)
 
 NEUTER = 0
 FEMALE = 1
 MALE = 2
 FEMALE_OR_MALE = 3
+
 
 def genderAsString(gender):
     # Purposely NOT translated, so that sprite loading works properly
@@ -45,6 +45,7 @@ def genderAsString(gender):
         return "female"
     return "male"
 
+
 class Unit(pb.Copyable, pb.RemoteCopy):
     nextID = 0
 
@@ -54,7 +55,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def __init__(self, gender):
         self.unitID = Unit.nextID
         Unit.nextID += 1
-        
+
         self._faction = 0
 
         self._level = 0
@@ -64,7 +65,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._abilities = {}
         self._classLevels = {}
 
-        # Main stats        
+        # Main stats
         self._mhp = 0
         self._msp = 0
         self._watk = 0
@@ -80,7 +81,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._wdefGrowthMod = 0
         self._matkGrowthMod = 0
         self._mdefGrowthMod = 0
-        self._speedGrowthMod = 0      
+        self._speedGrowthMod = 0
 
         # Temp stats used for battles
         self._x = 0
@@ -96,9 +97,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._facing = Constants.N
         self._defenders = []
         self._defending = []
-        
+
         # List of sprites
-        self._spriteRoot = None # Set by Resources (FIXME)
+        self._spriteRoot = None  # Set by Resources (FIXME)
         self._sprites = None
         self._overSprites = None
 
@@ -124,12 +125,12 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def _loadSprites(self):
         genderStr = genderAsString(self._gender)
         spriteRoot = self._spriteRoot
-        
+
         # Get the sprite types we're looking for
-        spriteTypes = ['standing', 'melee', 'bow', 'throw', 'hand', 'defend']
-        
+        spriteTypes = ["standing", "melee", "bow", "throw", "hand", "defend"]
+
         sprites = {}
-        oversprites = {}# part of the sprite that shows above the weapon
+        oversprites = {}  # part of the sprite that shows above the weapon
 
         # Search for sprites of each type
         for t in spriteTypes:
@@ -142,9 +143,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
                 spriteName = "%s-%s-%s-%d" % (spriteRoot, "unisex", t, 1)
                 if Resources._getFilename("images", spriteName + ".png"):
                     foundGender = "unisex"
-            
+
             # if we've found a sprite of this type, add it to the sprites
-            if foundGender != None:
+            if foundGender is not None:
                 sprites[t] = []
                 oversprites[t] = []
                 i = 1
@@ -154,13 +155,12 @@ class Unit(pb.Copyable, pb.RemoteCopy):
                         oversprites[t].append(spriteName + "-over")
                     i += 1
                     spriteName = "%s-%s-%s-%d" % (spriteRoot, foundGender, t, i)
-        #Finally setting the sprites    
+        # Finally setting the sprites
         self.setSprites(sprites)
         self.setOverSprites(oversprites)
 
-
     def getSprites(self, spriteName):
-        if self._sprites == None:
+        if self._sprites is None:
             self._loadSprites()
         if spriteName in self._sprites:
             return self._sprites[spriteName]
@@ -171,7 +171,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._overSprites = sprites
 
     def getOverSprites(self, spriteName):
-        if self._overSprites == None:
+        if self._overSprites is None:
             self._loadSprites()
         if spriteName in self._overSprites:
             return self._overSprites[spriteName]
@@ -189,10 +189,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._defenders = []
         self._defending = []
         self._statusEffects.clear()
-        self._facing = random.choice([Constants.N,
-                                      Constants.E,
-                                      Constants.S,
-                                      Constants.W])
+        self._facing = random.choice([Constants.N, Constants.E, Constants.S, Constants.W])
 
     def setPosn(self, x, y, z):
         self._x = x
@@ -222,12 +219,12 @@ class Unit(pb.Copyable, pb.RemoteCopy):
 
     def y(self):
         return self._y
-    
+
     def z(self):
         return self._z
-    
+
     def hp(self):
-        return self._hp 
+        return self._hp
 
     def sp(self):
         return self._sp
@@ -241,21 +238,21 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def mhp(self):
         result = int(self._mhp * self._class.mhpMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.mhp()
         return result
 
     def msp(self):
         result = int(self._msp * self._class.mspMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.msp()
         return result
-    
+
     def watk(self):
         result = int(self._watk * self._class.watkMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.watk()
 
         increase = self._statusEffects.power(Effect.Status.PLUS_WATK)
@@ -267,9 +264,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def wdef(self):
         result = int(self._wdef * self._class.wdefMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.wdef()
-        
+
         increase = self._statusEffects.power(Effect.Status.PLUS_WDEF)
         decrease = self._statusEffects.power(Effect.Status.MINUS_WDEF)
         result *= self.statusEffectMult(increase, decrease)
@@ -281,9 +278,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def matk(self):
         result = int(self._matk * self._class.matkMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.matk()
-        
+
         increase = self._statusEffects.power(Effect.Status.PLUS_MATK)
         decrease = self._statusEffects.power(Effect.Status.MINUS_MATK)
         result *= self.statusEffectMult(increase, decrease)
@@ -293,9 +290,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def mdef(self):
         result = int(self._mdef * self._class.mdefMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.mdef()
-        
+
         increase = self._statusEffects.power(Effect.Status.PLUS_MDEF)
         decrease = self._statusEffects.power(Effect.Status.MINUS_MDEF)
         result *= self.statusEffectMult(increase, decrease)
@@ -305,9 +302,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def speed(self):
         result = int(self._speed * self._class.speedMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.speed()
-                
+
         increase = self._statusEffects.power(Effect.Status.HASTE)
         decrease = self._statusEffects.power(Effect.Status.SLOW)
         result *= self.statusEffectMult(increase, decrease)
@@ -317,7 +314,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def move(self):
         result = self._class.move
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.move()
         result += self._statusEffects.power(Effect.Status.PLUS_MOVE)
         result -= self._statusEffects.power(Effect.Status.MINUS_MOVE)
@@ -327,7 +324,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def jump(self):
         result = self._class.jump
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.jump()
         return result
 
@@ -354,19 +351,19 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         return self._ct
 
     def addDefender(self, unit):
-        if not unit in self._defenders:
+        if unit not in self._defenders:
             self._defenders.append(unit)
-                
+
     def removeDefender(self, unit):
         if unit in self._defenders:
             self._defenders.remove(unit)
-               
+
     def defenders(self):
         return self._defenders
-                
+
     def defending(self, unit):
         self._defending.append(unit)
-         
+
     def damageHP(self, amount, damageType):
         self._hp -= amount
         self._hp = min(self._hp, self.mhp())
@@ -379,9 +376,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._sp = min(self._sp, self._msp)
         self._sp = max(self._sp, 0)
 
-    def slow(self,modifier,duration):
-        self._slow.append([modifier,duration])
-        
+    def slow(self, modifier, duration):
+        self._slow.append([modifier, duration])
+
     def alive(self):
         return self._alive
 
@@ -411,7 +408,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
 
     def classLevel(self, className):
         if className not in self._classLevels:
-            self._classLevels[className] = 0       
+            self._classLevels[className] = 0
         return self._classLevels[className]
 
     def abilities(self):
@@ -437,7 +434,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def armor(self):
         return self._armor
 
-    def evade(self): # FIXME: actually do this right
+    def evade(self):  # FIXME: actually do this right
         if not self.canMove():
             return 0.0
         return 0.1
@@ -452,23 +449,27 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         return self._hasCancel
 
     def canMove(self):
-        return not (self._statusEffects.has(Effect.Status.PARALYZE_LEGS) or
-                    self._statusEffects.has(Effect.Status.TRIPPED) or
-                    self._statusEffects.has(Effect.Status.SLEEP) or
-                    self._statusEffects.has(Effect.Status.FREEZE) or
-                    self._statusEffects.has(Effect.Status.PARALYZE))
+        return not (
+            self._statusEffects.has(Effect.Status.PARALYZE_LEGS)
+            or self._statusEffects.has(Effect.Status.TRIPPED)
+            or self._statusEffects.has(Effect.Status.SLEEP)
+            or self._statusEffects.has(Effect.Status.FREEZE)
+            or self._statusEffects.has(Effect.Status.PARALYZE)
+        )
 
     def canAct(self):
-        return not (self._statusEffects.has(Effect.Status.PARALYZE_ARMS) or
-                    self._statusEffects.has(Effect.Status.SLEEP) or
-                    self._statusEffects.has(Effect.Status.FREEZE) or
-                    self._statusEffects.has(Effect.Status.PARALYZE))
-
+        return not (
+            self._statusEffects.has(Effect.Status.PARALYZE_ARMS)
+            or self._statusEffects.has(Effect.Status.SLEEP)
+            or self._statusEffects.has(Effect.Status.FREEZE)
+            or self._statusEffects.has(Effect.Status.PARALYZE)
+        )
 
     def addStatusEffect(self, effectType, duration, power):
-        logger.debug(("Added status effect to %s " +
-                      "(type=%d, duration=%d, power=%f)") %
-                     (str(self), effectType, duration, power))
+        logger.debug(
+            ("Added status effect to %s " + "(type=%d, duration=%d, power=%f)")
+            % (str(self), effectType, duration, power)
+        )
         self._statusEffects.add(effectType, duration, power)
 
     def statusEffects(self):
@@ -482,26 +483,27 @@ class Unit(pb.Copyable, pb.RemoteCopy):
             statusEffectMult *= 1.0 / (1.0 + decrease)
         return statusEffectMult
 
+
 class StatusEffects(pb.Copyable, pb.RemoteCopy):
     def __init__(self):
-        self._effects = [
-            None for i in range(0, Effect.Status.NUM_TYPES)]
+        self._effects: list[tuple[int, float] | None] = [
+            None for i in range(0, Effect.Status.NUM_TYPES)
+        ]
         self._colorStatus = []
         self._textureStatus = []
-        
+
     def clear(self):
-        self._effects = [
-            None for i in range(0, Effect.Status.NUM_TYPES)]
+        self._effects = [None for i in range(0, Effect.Status.NUM_TYPES)]
         self._colorStatus = []
         self._textureStatus = []
 
     def has(self, effectType):
-        return self._effects[effectType] != None
+        return self._effects[effectType] is not None
 
     def duration(self, effectType):
         if not self.has(effectType):
             return 0.0
-        return self._effects[effectType][0]       
+        return self._effects[effectType][0]
 
     def power(self, effectType):
         if not self.has(effectType):
@@ -519,7 +521,7 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
         # Decrement status-effect counters
         for i in range(0, len(self._effects)):
             e = self._effects[i]
-            if e == None:
+            if e is None:
                 continue
             (duration, power) = e
             duration -= 1
@@ -541,4 +543,3 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
 
     def texture(self):
         return self._textureStatus
-

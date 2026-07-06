@@ -15,4 +15,3 @@ RANGE = Diamond(1, 5, 16)
 AOE = Single()
 
 EFFECTS = [Status(Status.POISON, power=0.03, duration=5)]
-

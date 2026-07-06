@@ -4,6 +4,6 @@ CLASSES = [("healer", 1)]
 
 GENDER = FEMALE_OR_MALE
 
-WEAPON = 'staff'
+WEAPON = "staff"
 
-ARMOR = 'robes'
+ARMOR = "robes"

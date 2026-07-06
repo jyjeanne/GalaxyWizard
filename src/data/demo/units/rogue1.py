@@ -4,6 +4,6 @@ CLASSES = [("rogue", 1)]
 
 GENDER = FEMALE_OR_MALE
 
-WEAPON = 'dagger'
+WEAPON = "dagger"
 
-ARMOR = 'leather-jerkin'
+ARMOR = "leather-jerkin"

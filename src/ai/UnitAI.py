@@ -65,8 +65,8 @@ from engine import Ability
 from engine import Effect
 import constants as Constants
 
-logger = logging.getLogger('ai')
-#logger.setLevel(logging.DEBUG)
+logger = logging.getLogger("ai")
+# logger.setLevel(logging.DEBUG)
 
 
 class TemporaryUnitPosition:
@@ -82,6 +82,7 @@ class TemporaryUnitPosition:
             affected = action.affectedUnits(map_, unit, target)
         # Map is automatically restored to original state
     """
+
     def __init__(self, map_, unit, new_x, new_y, new_z):
         self.map_ = map_
         self.unit = unit
@@ -118,22 +119,23 @@ class Base(object):
     """Base is the base class of all unit AIs. By default, it
     returns a no-op action. Override the calc() method to change its
     behavior."""
+
     def __init__(self, unit):
         self._unit = unit
         self._result = None
 
     def result(self):
         return self._result
-        
+
     def __call__(self):
         startTime = time.time()
-        name = self.__class__.__name__ + ' unit AI'
+        name = self.__class__.__name__ + " unit AI"
         logger.debug(name + " started for " + str(self._unit))
         try:
             b = Battle.get()
             self._result = self.calc(b)
             logger.debug("Result: " + str(self._result))
-        except Exception as e:
+        except Exception:
             self._result = Battle.UnitTurn()
             logger.error(traceback.format_exc())
         if self._result.moveTarget() == self._unit.posn():
@@ -141,10 +143,10 @@ class Base(object):
         timeElapsed = time.time() - startTime
         logger.debug("%s finished (%.2fs elasped)" % (name, timeElapsed))
 
-    def calc(self, battle, unit):
+    def calc(self, battle):
         """@return an instance of Battle.UnitTurn."""
         return Battle.UnitTurn()
-            
+
 
 class TurnEvaluator(object):
     def __call__(self, unit, map_, turns):
@@ -152,6 +154,7 @@ class TurnEvaluator(object):
             return Battle.UnitTurn()
         else:
             return turns[0]
+
 
 class HealWeakest(TurnEvaluator):
     def __call__(self, battle, unit, turns):
@@ -161,12 +164,10 @@ class HealWeakest(TurnEvaluator):
         # Get a list of targets, sorted by lowest HP.
         targets = []
         for t in battle.units():
-            if (t.alive() and 
-                Faction.friendly(unit.faction(), t.faction()) and
-                t.hp() < t.mhp()):
+            if t.alive() and Faction.friendly(unit.faction(), t.faction()) and t.hp() < t.mhp():
                 targets.append(t)
         targets.sort(key=lambda t: t.hp())
-        
+
         # Get all turns that heal the weakest possible target
 
         # Optimized: Build lookup dictionary mapping targets to turns that can heal them
@@ -174,7 +175,7 @@ class HealWeakest(TurnEvaluator):
         target_to_turns = {}
         for turn in turns:
             action = turn.action()
-            if action == None:
+            if action is None:
                 continue
             # FIXME: more general way of filtering abilities
             # FIXME: we don't consider FRIENDLY_AND_HOSTILE yet
@@ -189,7 +190,7 @@ class HealWeakest(TurnEvaluator):
                 continue
 
             # Safely simulate unit position for range calculations
-            if turn.moveTarget() != None:
+            if turn.moveTarget() is not None:
                 (mtx, mty) = turn.moveTarget()
             else:
                 (mtx, mty) = unit.posn()
@@ -197,9 +198,7 @@ class HealWeakest(TurnEvaluator):
             # Use context manager to ensure map state is always restored
             with TemporaryUnitPosition(map_, unitCopy, mtx, mty, map_.squares[mtx][mty].z):
                 # Find out who's affected
-                affected = action.affectedUnits(map_,
-                                                unitCopy,
-                                                turn.actionTarget())
+                affected = action.affectedUnits(map_, unitCopy, turn.actionTarget())
 
             # Map each affected target to this turn
             for affected_unit in affected:
@@ -224,7 +223,7 @@ class DamageWeakest(TurnEvaluator):
             if t.alive() and Faction.hostile(unit.faction(), t.faction()):
                 targets.append(t)
         targets.sort(key=lambda t: t.hp())
-        
+
         # Get all turns that hit the weakest possible target
 
         # Optimized: Build lookup dictionary mapping targets to turns that can damage them
@@ -232,7 +231,7 @@ class DamageWeakest(TurnEvaluator):
         target_to_turns = {}
         for turn in turns:
             action = turn.action()
-            if action == None:
+            if action is None:
                 continue
             # FIXME: more general way of filtering abilities
             # FIXME: we don't consider FRIENDLY_AND_HOSTILE yet
@@ -240,18 +239,17 @@ class DamageWeakest(TurnEvaluator):
                 continue
             doesDamage = False
             for e in action.effects():
-                if (issubclass(e.__class__, Effect.Damage) or
-                    issubclass(e.__class__, Effect.DrainLife) or
-                    issubclass(e.__class__,
-                               Effect.HealFriendlyDamageHostile)):
+                if (
+                    issubclass(e.__class__, Effect.Damage)
+                    or issubclass(e.__class__, Effect.DrainLife)
+                    or issubclass(e.__class__, Effect.HealFriendlyDamageHostile)
+                ):
                     doesDamage = True
                     break
             if not doesDamage:
                 continue
 
-            affected = action.affectedUnits(map_,
-                                            unit,
-                                            turn.actionTarget())
+            affected = action.affectedUnits(map_, unit, turn.actionTarget())
             # Map each affected target to this turn
             for affected_unit in affected:
                 if affected_unit not in target_to_turns:
@@ -268,21 +266,18 @@ class DamageWeakest(TurnEvaluator):
                 newBestTurns = []
                 unitCopy = copy.copy(unit)
                 for turn in bestTurns:
-                    if turn.moveTarget() != None:
+                    if turn.moveTarget() is not None:
                         (mtx, mty) = turn.moveTarget()
                     else:
                         (mtx, mty) = unitCopy.posn()
                     unitCopy.setPosn(mtx, mty, map_.squares[mtx][mty].z)
                     action = turn.action()
                     damage = 0
-                    affected = action.affectedUnits(map_,
-                                                    unitCopy,
-                                                    turn.actionTarget())
+                    affected = action.affectedUnits(map_, unitCopy, turn.actionTarget())
                     for target in affected:
                         for e in action.effects():
                             if issubclass(e.__class__, Effect.Damage):
-                                (att, df) = e.calcAttackAndDefense(unitCopy,
-                                                                   target)
+                                (att, df) = e.calcAttackAndDefense(unitCopy, target)
                                 dmg = e.estimateDamage(att, df)
                                 damage += dmg
                     if damage > maxDamage:
@@ -302,11 +297,12 @@ class DamageWeakest(TurnEvaluator):
                             newNewBestTurns.append(turn)
                     # Filter again - prefer a turn with no move
                     for turn in newNewBestTurns:
-                        if turn.moveTarget() == None:
+                        if turn.moveTarget() is None:
                             return [turn]
                     return newNewBestTurns
                 break  # Found turns for weakest target, exit target loop
         return []
+
 
 class MoveToWeakest(TurnEvaluator):
     def __call__(self, battle, unit, turns):
@@ -331,10 +327,10 @@ class MoveToWeakest(TurnEvaluator):
         for turn in turns:
             move = turn.moveTarget()
             action = turn.action()
-            if move == None or action != None:
+            if move is None or action is not None:
                 continue
             search = map_.squares[move[0]][move[1]].search
-            if search == None:
+            if search is None:
                 continue
             distance = search[0]
             if distance < bestDistance:
@@ -344,12 +340,12 @@ class MoveToWeakest(TurnEvaluator):
                 bestTurns.append(turn)
         return bestTurns
 
+
 class Exhaustive(Base):
     def __init__(self, unit):
         Base.__init__(self, unit)
-        self._turnEvaluators = [HealWeakest(), DamageWeakest(),
-                                MoveToWeakest()]
-    
+        self._turnEvaluators = [HealWeakest(), DamageWeakest(), MoveToWeakest()]
+
     def allAbilities(self):
         abilities = []
         for a in self._unit.allAbilities():
@@ -367,7 +363,7 @@ class Exhaustive(Base):
 
         # This calculates all move-then-attack turns.
         if u.hasMove() and u.hasAct():
-            logger.debug('Considering move-attack turns')
+            logger.debug("Considering move-attack turns")
             for mt in moveTargets:
                 (mtx, mty) = mt
 
@@ -377,70 +373,74 @@ class Exhaustive(Base):
                         for abilityTarget in ability.range(map_, u):
                             turnsConsidered += 1
                             if ability.hasEffect(map_, u, abilityTarget):
-                                result.append(Battle.UnitTurn
-                                              (Battle.UnitTurn.MOVE_FIRST,
-                                               mt, ability, abilityTarget))
-                            
+                                result.append(
+                                    Battle.UnitTurn(
+                                        Battle.UnitTurn.MOVE_FIRST, mt, ability, abilityTarget
+                                    )
+                                )
+
         # This calculates all attack-then-move turns.
         # This enables hit-and-run tactics: attack from current position, then retreat.
         # Useful for ranged units that want to maintain distance, or for attacking
         # then moving to cover/safety.
         if u.hasMove() and u.hasAct():
-            logger.debug('Considering attack-move turns')
+            logger.debug("Considering attack-move turns")
             for ability in abilities:
                 for abilityTarget in ability.range(map_, u):
                     turnsConsidered += 1
                     if ability.hasEffect(map_, u, abilityTarget):
                         # After attacking, consider all possible move destinations
                         for mt in moveTargets:
-                            result.append(Battle.UnitTurn
-                                          (Battle.UnitTurn.ACT_FIRST,
-                                           mt, ability, abilityTarget))
+                            result.append(
+                                Battle.UnitTurn(
+                                    Battle.UnitTurn.ACT_FIRST, mt, ability, abilityTarget
+                                )
+                            )
 
         # This calculates all just-act turns (no movement).
         if u.hasAct():
-            logger.debug('Considering act-only turns')
+            logger.debug("Considering act-only turns")
             for ability in abilities:
                 for abilityTarget in ability.range(map_, u):
                     turnsConsidered += 1
                     if ability.hasEffect(map_, u, abilityTarget):
-                        result.append(Battle.UnitTurn
-                                      (Battle.UnitTurn.ACT_FIRST,
-                                       None, ability, abilityTarget))
+                        result.append(
+                            Battle.UnitTurn(Battle.UnitTurn.ACT_FIRST, None, ability, abilityTarget)
+                        )
 
         # This calculates all just-move turns.
         if u.hasMove():
-            logger.debug('Considering move-only turns')
+            logger.debug("Considering move-only turns")
             for mt in moveTargets:
-                result.append(Battle.UnitTurn(Battle.UnitTurn.MOVE_FIRST,
-                                              mt))
+                result.append(Battle.UnitTurn(Battle.UnitTurn.MOVE_FIRST, mt))
                 turnsConsidered += 1
 
         if turnsConsidered == 0:
-            logger.debug('No turns considered')
+            logger.debug("No turns considered")
         else:
-            logger.debug(('%d/%d turns are useful ' +
-                         '(%.2fs elapsed, %.4f each)') %
-                         (len(result), turnsConsidered,
-                          time.time() - startTime,
-                          (1.0 * len(result) / turnsConsidered *
-                           (time.time() - startTime))))
+            logger.debug(
+                ("%d/%d turns are useful " + "(%.2fs elapsed, %.4f each)")
+                % (
+                    len(result),
+                    turnsConsidered,
+                    time.time() - startTime,
+                    (1.0 * len(result) / turnsConsidered * (time.time() - startTime)),
+                )
+            )
         return result
 
     def calc(self, battle):
         turn = self.getTurn(battle)
         facing = self.getFacing(battle, turn.moveTarget())
-        return Battle.UnitTurn(turn.turnOrder(),
-                               turn.moveTarget(),
-                               turn.action(),
-                               turn.actionTarget(),
-                               facing)
+        return Battle.UnitTurn(
+            turn.turnOrder(), turn.moveTarget(), turn.action(), turn.actionTarget(), facing
+        )
 
     def getFacing(self, battle, moveTarget):
         u = self._unit
-        if moveTarget == None:
+        if moveTarget is None:
             moveTarget = (u.x(), u.y())
-        
+
         # Calculate the centroid of enemy units
         targets = []
         for t in battle.units():
@@ -462,7 +462,7 @@ class Exhaustive(Base):
         # Face toward the centroid
         dx = centroidX - moveTarget[0]
         dy = centroidY - moveTarget[1]
-        total = abs(dx)+abs(dy)
+        total = abs(dx) + abs(dy)
         if total == 0.0:
             return None
         rnd = random.uniform(0.0, total)
@@ -480,24 +480,21 @@ class Exhaustive(Base):
 
     def getTurn(self, battle):
         abilities = self.allAbilities()
-        logger.debug('Abilities: ' + str(abilities))
+        logger.debug("Abilities: " + str(abilities))
 
         moveTargets = battle.map().reachable(self._unit)
         moveTargets.append(self._unit.posn())
-        logger.debug('Move targets: ' + str(len(moveTargets)))
+        logger.debug("Move targets: " + str(len(moveTargets)))
 
         allTurns = self.generateAllTurns(battle, moveTargets, abilities)
         for evaluator in self._turnEvaluators:
             startTime = time.time()
-            logger.debug('Trying evaluator %s' % evaluator.__class__.__name__)
+            logger.debug("Trying evaluator %s" % evaluator.__class__.__name__)
             result = evaluator(battle, self._unit, allTurns)
-            logger.debug('Evaluator finished ' +
-                         '(%d actions returned, %.2fs elapsed)' %
-                         (len(result), (time.time() - startTime)))
+            logger.debug(
+                "Evaluator finished "
+                + "(%d actions returned, %.2fs elapsed)" % (len(result), (time.time() - startTime))
+            )
             if result:
                 return random.choice(result)
         return Battle.UnitTurn()
-
-
-
-

@@ -19,9 +19,7 @@ def build_exe():
     # Run PyInstaller with the spec file
     try:
         result = subprocess.run(
-            ["pyinstaller", "main.spec", "--clean"],
-            check=True,
-            capture_output=False
+            ["pyinstaller", "main.spec", "--clean"], check=True, capture_output=False
         )
         print("\n✅ Build completed successfully!")
         print("Executable location: dist/GalaxyWizard.exe")

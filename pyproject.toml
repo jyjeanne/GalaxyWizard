@@ -23,6 +23,83 @@ PyOpenGL_accelerate = "==3.1.7"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 pyinstaller = "^6.3.0"
+ruff = "^0.15.8"
+pyright = "^1.1.411"
+vulture = "^2.16"
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    # Game data DSL scripts and legacy test scaffolding
+    "src/data/*",
+    "src/test/*",
+]
+
+[tool.coverage.report]
+precision = 1
+skip_empty = true
+
+[tool.vulture]
+paths = ["src", "tests", "build_scripts.py"]
+exclude = ["src/data/", "src/test/data/"]
+# The codebase has many dynamically referenced names (Twisted pb remote_*
+# methods, GUI delegate callbacks, names read by exec()'d data scripts), so
+# only high-confidence findings are reported.
+min_confidence = 80
+sort_by_size = true
+# Context-manager protocol arguments (UnitAI.TemporaryUnitMove.__exit__).
+ignore_names = ["exc_type", "exc_val", "exc_tb"]
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["src", "tests", "build_scripts.py"]
+# Game data files are DSL scripts executed via exec() with names injected
+# into their namespace by src/resources.py; they are not importable modules.
+exclude = ["src/data", "src/test/data", "**/__pycache__"]
+# Modules import each other relative to src (e.g. "from gui import Sprite").
+extraPaths = ["src"]
+
+# The codebase predates type annotations, so the checks below drown real
+# problems in inference noise (singletons typed as "X | None", base classes
+# reading attributes defined only in subclasses, PyOpenGL's union-typed
+# constants). They are kept visible as warnings; definite-bug categories
+# (undefined names, call signatures, missing self, ...) remain errors.
+reportOptionalMemberAccess = "warning"
+reportOptionalSubscript = "warning"
+reportOptionalOperand = "warning"
+reportAttributeAccessIssue = "warning"
+reportOperatorIssue = "warning"
+reportArgumentType = "warning"
+reportIndexIssue = "warning"
+# `from OpenGL.GL import *` is the conventional PyOpenGL idiom (see the
+# matching per-file ignores in [tool.ruff.lint.per-file-ignores]).
+reportWildcardImportFromLibrary = "none"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E4",  # imports
+    "E7",  # statements
+    "E9",  # runtime errors
+    "F",   # pyflakes
+    "W",   # warnings
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Game data files are DSL scripts executed via exec() with names
+# (Damage, Status, ACTION, _, ...) injected into their namespace by
+# src/resources.py, so undefined-name checks do not apply.
+"src/data/**" = ["F821", "W291", "W293"]
+"src/test/data/**" = ["F821", "W291", "W293"]
+# OpenGL rendering code uses the conventional `from OpenGL.GL import *`
+# idiom; explicit imports of hundreds of gl* symbols are impractical.
+"src/engine/Map.py" = ["F403", "F405"]
+"src/gui/**" = ["F403", "F405"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

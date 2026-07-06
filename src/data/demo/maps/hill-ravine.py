@@ -4,21 +4,26 @@ WIDTH = 20
 HEIGHT = 20
 
 TILE_PROPERTIES = {
-    'grass':  { 'color': (0.5, 0.7, 0.5),
-                'colorVar': (0.2, 0.2, 0.2),
-                'texture': 'grass',
-                'smooth': True},
-    'rock':   { 'color': (0.7, 0.5, 0.3),
-                'colorVar': (0.1, 0.1, 0.1),
-                'texture': 'stone',
-                'smooth': True},
-    'water':  { 'color': (0.4, 0.4, 0.7),
-                'colorVar': (0.05, 0.05, 0.05),
-                'texture': 'none',
-              }
-    }
-    
-LAYOUT = '''
+    "grass": {
+        "color": (0.5, 0.7, 0.5),
+        "colorVar": (0.2, 0.2, 0.2),
+        "texture": "grass",
+        "smooth": True,
+    },
+    "rock": {
+        "color": (0.7, 0.5, 0.3),
+        "colorVar": (0.1, 0.1, 0.1),
+        "texture": "stone",
+        "smooth": True,
+    },
+    "water": {
+        "color": (0.4, 0.4, 0.7),
+        "colorVar": (0.05, 0.05, 0.05),
+        "texture": "none",
+    },
+}
+
+LAYOUT = """
 14rock    19rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   
 4water    4water    19rock    24rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   33grass   29grass   29grass   29grass   29grass   29grass   
 19rock    4water    19rock    19rock    19rock    24rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   33grass   37grass   33grass   29grass   29grass   29grass   29grass   
@@ -39,4 +44,4 @@ LAYOUT = '''
 29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   24rock    19rock    14rock    19rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   29grass   
 29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   24rock    19rock    14rock    19rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   29grass   
 29grass   29grass   29grass   29grass   29grass   29grass   29grass   29grass   24rock    19rock    14rock    19rock    24rock    29grass   29grass   29grass   29grass   29grass   29grass   29grass   
-'''
+"""

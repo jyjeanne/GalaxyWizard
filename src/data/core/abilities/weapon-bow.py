@@ -18,5 +18,4 @@ AOE = Single()
 
 EFFECTS = [Damage()]
 
-SOUND = 'arrow-hit'
-
+SOUND = "arrow-hit"

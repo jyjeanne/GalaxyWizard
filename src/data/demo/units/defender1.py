@@ -4,6 +4,6 @@ CLASSES = [("defender", 1)]
 
 GENDER = FEMALE_OR_MALE
 
-WEAPON = 'mace'
+WEAPON = "mace"
 
-ARMOR = 'chain-mail'
+ARMOR = "chain-mail"

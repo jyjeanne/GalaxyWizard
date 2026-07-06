@@ -4,4 +4,4 @@ TYPE = Weapon.SWORD
 
 WATK = 5
 
-SPRITE_ROOT = 'short-sword'
+SPRITE_ROOT = "short-sword"

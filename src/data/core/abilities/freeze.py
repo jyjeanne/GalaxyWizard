@@ -14,5 +14,4 @@ RANGE = Diamond(1, 5, 16)
 
 AOE = Single()
 
-EFFECTS = [Damage(power=1.0, damageType=ICE),
-           Status(Status.FREEZE, hit=0.1, duration=3)]
+EFFECTS = [Damage(power=1.0, damageType=ICE), Status(Status.FREEZE, hit=0.1, duration=3)]

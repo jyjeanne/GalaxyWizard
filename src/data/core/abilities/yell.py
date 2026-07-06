@@ -12,7 +12,6 @@ TARGET_TYPE = HOSTILE
 
 RANGE = Single()
 
-AOE = Diamond(0,3)
+AOE = Diamond(0, 3)
 
-EFFECTS = [Damage(power=0.5, damageType=MAGICAL),
-           Status(Status.PARALYZE, hit=.7, duration=1)]
+EFFECTS = [Damage(power=0.5, damageType=MAGICAL), Status(Status.PARALYZE, hit=0.7, duration=1)]

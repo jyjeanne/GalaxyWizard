@@ -6,26 +6,23 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 from gui import Sprite
-from gui import MapEditorGUI
-import util as Util
 from gui import GLUtil
-import resources as Resources
 import sound as Sound
 from gui import Input
 from gui import ScenarioGUI
-#import engine.Battle as Battle
+# import engine.Battle as Battle
 
 from OpenGL.GL import *
 
@@ -45,7 +42,7 @@ class MapEditorCursor(Sprite.Sprite):
     IN_DIALOG = 4
     SETTING_TAG = 5
     CREATING_TAG = 6
-    
+
     def __init__(self, map):
         Sprite.Sprite.__init__(self)
         self.map = map
@@ -69,10 +66,8 @@ class MapEditorCursor(Sprite.Sprite):
         glDisable(GL_LIGHTING)
         glPushMatrix()
         GLUtil.mapTrans(self.x, self.y, 0.0)
-        glColor4f(0.0, 0.0, 0.75,
-                  GUI.get().highlightAlpha())
-        GLUtil.makeCubeTop(self.mapSquare().z,
-                           self.mapSquare().cornerHeights)
+        glColor4f(0.0, 0.0, 0.75, GUI.get().highlightAlpha())
+        GLUtil.makeCubeTop(self.mapSquare().z, self.mapSquare().cornerHeights)
         glPopMatrix()
         glEnable(GL_LIGHTING)
 
@@ -91,23 +86,23 @@ class MapEditorCursor(Sprite.Sprite):
             self.state = MapEditorCursor.DISABLED
         self._selectedUnit = u
         ScenarioGUI.get().battleMenu().setSelectedUnit(u)
-    
+
     def selectSquare(self, x=None, y=None):
-        if x != None and y != None:
+        if x is not None and y is not None:
             self.x = x
             self.y = y
         GUI.get().topMenu().setEnabled(True)
         GUI.get().topMenu().setShowing(True)
         self.state = MapEditorCursor.SELECTED
-        #add stuff about units
-            
+        # add stuff about units
+
     def unclick(self):
         if self.state == MapEditorCursor.DISABLED:
             return
         elif self.state == MapEditorCursor.FREE:
             Sound.cursorCancel()
-#            if self.selectedSquare != None:
-#                pass#for now
+        #            if self.selectedSquare != None:
+        #                pass#for now
         elif self.state == MapEditorCursor.SELECTED:
             Sound.cursorCancel()
             self.state = MapEditorCursor.FREE
@@ -115,21 +110,21 @@ class MapEditorCursor(Sprite.Sprite):
             GUI.get().topMenu().setSelectedOption(0)
             GUI.get().topMenu().setEnabled(False)
             GUI.get().topMenu().setShowing(False)
-        elif (self.state == MapEditorCursor.IN_DIALOG):
+        elif self.state == MapEditorCursor.IN_DIALOG:
             Sound.cursorCancel()
             GUI.get().topMenu().setEnabled(True)
-            GUI.get().clearTopText() # from special menu
+            GUI.get().clearTopText()  # from special menu
             GUI.get().clearHighlights()
-        elif (self.state == MapEditorCursor.SETTING_TAG):
+        elif self.state == MapEditorCursor.SETTING_TAG:
             Sound.cursorCancel()
             self.state = MapEditorCursor.SELECTED
             GUI.get().topMenu().setEnabled(True)
             GUI.get().tagMenu().setEnabled(False)
             GUI.get().tagMenu().setShowing(False)
-            GUI.get().clearTopText() # from special menu
+            GUI.get().clearTopText()  # from special menu
             GUI.get().clearHighlights()
         else:
-            print('Error: unhandled unclick() call in MapEditorCursor')
+            print("Error: unhandled unclick() call in MapEditorCursor")
 
     def click(self):
         if self.state == MapEditorCursor.DISABLED:
@@ -137,7 +132,7 @@ class MapEditorCursor(Sprite.Sprite):
         elif self.state == MapEditorCursor.FREE:
             Sound.cursorClick()
             GUI.get().topMenu().setShowing(True)
-            return 'topMenu'
+            return "topMenu"
         elif self.state == MapEditorCursor.SELECTED:
             Sound.cursorClick()
             choice = GUI.get().topMenu().getSelection()
@@ -147,17 +142,17 @@ class MapEditorCursor(Sprite.Sprite):
             elif choice == Sprite.TopMenu.NEW_TAG:
                 self.state = MapEditorCursor.CREATING_TAG
                 GUI.get().topMenu().setEnabled(False)
-                #GUI.get().addTagDialog().setEnabled(True)
-                #GUI.get().addTagDialog().setShowing(True)
+                # GUI.get().addTagDialog().setEnabled(True)
+                # GUI.get().addTagDialog().setShowing(True)
                 GUI.get().addTagDialog().execute()
                 GUI.get().topMenu().setShowing(False)
                 self.state = MapEditorCursor.FREE
-            #elif choice == Sprite.TopMenu.EDIT_TAG:
+            # elif choice == Sprite.TopMenu.EDIT_TAG:
             #    self.state = MapEditorCursor.EDITING_TAG
             #    GUI.get().topMenu().setEnabled(False)
             #    GUI.get().editTagDialog().setEnabled(True)
             #    GUI.get().editTagDialog().setShowing(True)
-            #elif choice == Sprite.TopMenu.SAVE:
+            # elif choice == Sprite.TopMenu.SAVE:
             #    self.state = MapEditorCursor.SETTING_TAG
             #    GUI.get().topMenu().setEnabled(False)
             #    GUI.get().saveMapDialog().setEnabled(True)
@@ -175,8 +170,8 @@ class MapEditorCursor(Sprite.Sprite):
             GUI.get().tagMenu().setEnabled(False)
             GUI.get().tagMenu().setShowing(False)
             self.state = MapEditorCursor.FREE
-            #GUI.get().clearTopText() # from special menu
-            #GUI.get().clearHighlights()
+            # GUI.get().clearTopText() # from special menu
+            # GUI.get().clearHighlights()
         #    if ability == None:
         #        Sound.cursorInvalid()
         #        return
@@ -185,9 +180,9 @@ class MapEditorCursor(Sprite.Sprite):
         #    self.state = MapEditorCursor.CHOOSING_ABILITY_TARGET
         #    GUI.get().showAbilityRange(self.activeUnit,
         #                                       self.selectedAbility)
-        #    GUI.get().battleMenu().setEnabled(False)             
-        #    GUI.get().specialMenu().setEnabled(False)             
-        #elif self.state == MapEditorCursor.CHOOSING_ABILITY_TARGET:
+        #    GUI.get().battleMenu().setEnabled(False)
+        #    GUI.get().specialMenu().setEnabled(False)
+        # elif self.state == MapEditorCursor.CHOOSING_ABILITY_TARGET:
         #    Sound.cursorClick()
         #    a = self.selectedAbility
         #    if (self.x, self.y) not in a.range(self.map,
@@ -206,34 +201,34 @@ class MapEditorCursor(Sprite.Sprite):
         #    GUI.get().clearHighlights()
         #    self.x = self.activeUnit.x()
         #    self.y = self.activeUnit.y()
-        #elif self.state == MapEditorCursor.CHOOSING_MOVE_TARGET:
+        # elif self.state == MapEditorCursor.CHOOSING_MOVE_TARGET:
         #    if self.map.squares[self.x][self.y].unit != None:
-        #        Sound.cursorInvalid()                
+        #        Sound.cursorInvalid()
         #        return
         #    u = self._selectedUnit
         #    reachable = self.map.reachable(u)
         #    if (self.x, self.y) not in reachable:
-        #        Sound.cursorInvalid()                
+        #        Sound.cursorInvalid()
         #        return
         #    Sound.cursorClick()
         #    ScenarioGUI.get().moveUnit(u, (self.x, self.y))
         #    self.state = MapEditorCursor.UNIT_MOVING
-        #elif self.state == MapEditorCursor.UNIT_MOVING:
+        # elif self.state == MapEditorCursor.UNIT_MOVING:
         #    return
         else:
-            print('Error: unhandled click() call in MapEditorCursor')
+            print("Error: unhandled click() call in MapEditorCursor")
 
     def update(self, timeElapsed):
-#        if self.visible():
+        #        if self.visible():
         self.alpha += 2.0 * timeElapsed
-#        else:
-#            self.alpha -= 2.0 * timeElapsed
+        #        else:
+        #            self.alpha -= 2.0 * timeElapsed
         self.alpha = min(1.0, self.alpha)
         self.alpha = max(0.0, self.alpha)
 
     def canMove(self):
-        return (self.state == MapEditorCursor.FREE)
-    
+        return self.state == MapEditorCursor.FREE
+
     def move(self, pos):
         x, y = pos
         while x > 0:
@@ -248,13 +243,13 @@ class MapEditorCursor(Sprite.Sprite):
         while y < 0:
             self.moveUp()
             y += 1
-        
+
     def moveUp(self):
         if self.canMove() and self.y > 0:
             self.y -= 1
             Sound.cursorMove()
             GUI.get().scrollTo((self.x, self.y))
-            
+
     def moveDown(self):
         if self.canMove() and self.y < self.map.height - 1:
             self.y += 1
@@ -266,7 +261,7 @@ class MapEditorCursor(Sprite.Sprite):
             self.x -= 1
             Sound.cursorMove()
             GUI.get().scrollTo((self.x, self.y))
-            
+
     def moveRight(self):
         if self.canMove() and self.x < self.map.width - 1:
             self.x += 1
@@ -275,35 +270,35 @@ class MapEditorCursor(Sprite.Sprite):
 
     # Unit stuff
     def hoveredUnit(self):
-        if self.mapSquare().unit != None:
+        if self.mapSquare().unit is not None:
             return self.mapSquare().unit
-        return self._selectedUnit    
-            
+        return self._selectedUnit
+
     # Map editing stuff
     def plusTileHeight(self):
         self.map.squares[self.x][self.y].z += 1
-        
+
     def minusTileHeight(self):
         self.map.squares[self.x][self.y].z -= 1
 
     def plusCenterHeight(self):
         self.map.squares[self.x][self.y].plusHeight()
-        
+
     def minusCenterHeight(self):
         self.map.squares[self.x][self.y].minusHeight()
 
-    def setHeight(self,height):
+    def setHeight(self, height):
         self.map.squares[self.x][self.y].z = height
-        
-    def plusCornerHeight(self,corner):
+
+    def plusCornerHeight(self, corner):
         self.map.changeCorner(self.x, self.y, corner, 1)
-        
-    def minusCornerHeight(self,corner):
+
+    def minusCornerHeight(self, corner):
         self.map.changeCorner(self.x, self.y, corner, -1)
 
     def raiseWater(self):
         self.map.squares[self.x][self.y].waterHeight += 1
-        
+
     def lowerWater(self):
         self.map.squares[self.x][self.y].waterHeight -= 1
 
@@ -333,15 +328,11 @@ class MapEditorCursor(Sprite.Sprite):
         elif event.type == Input.LOWER_TILE:
             self.minusTileHeight()
             GUI.get().updateMap()
-        elif (event.type >= Input.RAISE_B_BL_CORNER and
-              event.type <= Input.RAISE_F_FR_CORNER):
-            self.plusCornerHeight(
-                GUI.get().camera.getCorner(event.type - Input.RAISE_B_BL_CORNER))
+        elif event.type >= Input.RAISE_B_BL_CORNER and event.type <= Input.RAISE_F_FR_CORNER:
+            self.plusCornerHeight(GUI.get().camera.getCorner(event.type - Input.RAISE_B_BL_CORNER))
             GUI.get().updateMap()
-        elif (event.type >= Input.LOWER_B_BL_CORNER and
-              event.type <= Input.LOWER_F_FR_CORNER):
-            self.minusCornerHeight(
-                GUI.get().camera.getCorner(event.type - Input.LOWER_B_BL_CORNER))
+        elif event.type >= Input.LOWER_B_BL_CORNER and event.type <= Input.LOWER_F_FR_CORNER:
+            self.minusCornerHeight(GUI.get().camera.getCorner(event.type - Input.LOWER_B_BL_CORNER))
             GUI.get().updateMap()
         elif event.type == Input.RAISE_WATER:
             self.raiseWater()

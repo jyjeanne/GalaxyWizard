@@ -15,4 +15,3 @@ RANGE = Diamond(1, 5, 16)
 AOE = Single()
 
 EFFECTS = [Status(Status.SLOW, power=1.0, hit=0.5, duration=5)]
-

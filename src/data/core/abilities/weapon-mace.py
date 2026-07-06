@@ -18,5 +18,4 @@ AOE = Single()
 
 EFFECTS = [Damage()]
 
-SOUND = 'mace-hit'
-
+SOUND = "mace-hit"

@@ -15,4 +15,3 @@ RANGE = Diamond(0, 4, 16)
 AOE = Single()
 
 EFFECTS = [Status(Status.INVULNERABLE, duration=1)]
-

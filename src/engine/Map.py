@@ -1,4 +1,4 @@
-## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by 
+## Automatically adapted for numpy.oldnumeric Jul 22, 2012 by
 
 # Copyright (C) 2005 Jeremy Jeanne <jyjeanne@gmail.com>
 #
@@ -8,20 +8,18 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # GalaxyWizard is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with GalaxyWizard; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
 import numpy as Numeric
-import pickle as cPickle
-import gzip
 import re
 import random
 import logging
@@ -29,7 +27,7 @@ from engine import Faction
 from OpenGL.GL import *
 from twisted.spread import pb
 
-logger = logging.getLogger('map')
+logger = logging.getLogger("map")
 
 
 # Helper functions for color/texture parsing
@@ -56,7 +54,7 @@ def parse_color_data(color_data, default_colors):
         if not color_data:
             return default_colors
 
-        elem_len = len(color_data[0]) if hasattr(color_data[0], '__len__') else 0
+        elem_len = len(color_data[0]) if hasattr(color_data[0], "__len__") else 0
 
         if elem_len in (3, 4):
             if len(color_data) == 1:
@@ -71,9 +69,9 @@ def parse_color_data(color_data, default_colors):
 
     return default_colors
 
+
 class MapSquare(pb.Copyable, pb.RemoteCopy):
-    def __init__(self, x, y, zBase, cornerHeights, color, smooth,
-                 tag, waterHeight, waterColor):
+    def __init__(self, x, y, zBase, cornerHeights, color, smooth, tag, waterHeight, waterColor):
         # Find our z offset
         self.cornerHeights = cornerHeights
         self.x = x
@@ -81,13 +79,15 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
         self.z = zBase
         self.unit = None
         self.guiData = {}
-#        self.texture = texture
+        #        self.texture = texture
         self.color = color
-        self.cornerColors = [[color[0], color[0], color[0], color[0]],
-                             [color[1], color[1], color[1], color[1]],
-                             [color[2], color[2], color[2], color[2]],
-                             [color[3], color[3], color[3], color[3]],
-                             [color[4], color[4], color[4], color[4]]]
+        self.cornerColors = [
+            [color[0], color[0], color[0], color[0]],
+            [color[1], color[1], color[1], color[1]],
+            [color[2], color[2], color[2], color[2]],
+            [color[3], color[3], color[3], color[3]],
+            [color[4], color[4], color[4], color[4]],
+        ]
         self.smooth = smooth
         self.tag = tag
         self.waterHeight = waterHeight
@@ -96,23 +96,26 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
         self.search = None
 
     def minHeight(self):
-        return min(self.z,
-                   self.z + self.cornerHeights[0],
-                   self.z + self.cornerHeights[1],
-                   self.z + self.cornerHeights[2],
-                   self.z + self.cornerHeights[3])
+        return min(
+            self.z,
+            self.z + self.cornerHeights[0],
+            self.z + self.cornerHeights[1],
+            self.z + self.cornerHeights[2],
+            self.z + self.cornerHeights[3],
+        )
 
     def maxHeight(self):
-        return max(self.z,
-                   self.z + self.cornerHeights[0],
-                   self.z + self.cornerHeights[1],
-                   self.z + self.cornerHeights[2],
-                   self.z + self.cornerHeights[3])
+        return max(
+            self.z,
+            self.z + self.cornerHeights[0],
+            self.z + self.cornerHeights[1],
+            self.z + self.cornerHeights[2],
+            self.z + self.cornerHeights[3],
+        )
 
     def setUnit(self, u):
-        if self.unit != None:
-            raise Exception("Unit was moved into a map square that " + 
-                            "already has a unit!")
+        if self.unit is not None:
+            raise Exception("Unit was moved into a map square that " + "already has a unit!")
         self.unit = u
         u.setPosn(self.x, self.y, self.z)
 
@@ -124,51 +127,50 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
 
     def __repr__(self):
         return "(%d,%d,%d)" % (self.x, self.y, self.z)
-    
+
     # Added for GuiMapEditor
-#    def texture(self):
-#        return self.guiData['texture']
-    
-#    def color(self):
-#        return self.guiData['color']
-    
+    #    def texture(self):
+    #        return self.guiData['texture']
+
+    #    def color(self):
+    #        return self.guiData['color']
+
     def height(self):
         return self.z
-   
+
     def texture(self):
-        if 'texture' in self.tag:
-            tex = self.tag['texture']
+        if "texture" in self.tag:
+            tex = self.tag["texture"]
             if isinstance(tex, str):
-                return [tex,tex,tex,tex,tex]
+                return [tex, tex, tex, tex, tex]
             elif isinstance(tex, list):
                 if len(tex) == 1:
-                    return [tex[0],tex[0],tex[0],tex[0],tex[0]]
+                    return [tex[0], tex[0], tex[0], tex[0], tex[0]]
                 elif len(tex) == 2:
-                    return [tex[0],tex[1],tex[1],tex[1],tex[1]]
+                    return [tex[0], tex[1], tex[1], tex[1], tex[1]]
                 elif len(tex) == 5:
-                    return [tex[0],tex[1],tex[2],tex[3],tex[4]]
+                    return [tex[0], tex[1], tex[2], tex[3], tex[4]]
                 else:
                     # Default for unsupported list lengths
-                    return ["none","none","none","none","none"]
+                    return ["none", "none", "none", "none", "none"]
             else:
-                return ["none","none","none","none","none"]
+                return ["none", "none", "none", "none", "none"]
         # Default when no texture in tag
-        return ["none","none","none","none","none"]
+        return ["none", "none", "none", "none", "none"]
 
-#    def color(self):
-#        return self.tag['color']
-    
+    #    def color(self):
+    #        return self.tag['color']
+
     def tagName(self):
-        if 'texture' in self.tag:
-            return self.tag['name']
-        return ''
-
+        if "texture" in self.tag:
+            return self.tag["name"]
+        return ""
 
     # FIXME: do smoothing here so we don't have to
     #         smooth the entire map on edits
-    def setTag(self,tag = None):
+    def setTag(self, tag=None):
         """Set the tag and update colors with variance."""
-        if tag == None:
+        if tag is None:
             tag = self.tag
         else:
             self.tag = tag
@@ -183,7 +185,7 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
 
         # Apply variance to colors
         self.color = []
-        for (color, var) in zip(colors, variance):
+        for color, var in zip(colors, variance):
             # Extend to 4 components if needed
             if len(color) == 3:
                 color = color + (1.0,)
@@ -191,43 +193,45 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
                 var = var + (0.0,)
 
             # Apply random variance
-            varied_color = tuple(
-                color[i] - random.random() * var[i]
-                for i in range(4)
-            )
+            varied_color = tuple(color[i] - random.random() * var[i] for i in range(4))
             self.color.append(varied_color)
 
-        self.cornerColors = [[self.color[0], self.color[0], self.color[0], self.color[0]],
-                             [self.color[1], self.color[1], self.color[1], self.color[1]],
-                             [self.color[2], self.color[2], self.color[2], self.color[2]],
-                             [self.color[3], self.color[3], self.color[3], self.color[3]],
-                             [self.color[4], self.color[4], self.color[4], self.color[4]]]
-        if 'waterColor' in tag:
-            self.waterColor = tag['waterColor']
-       
-    def setTexture(self,texture):
-        self.tag['texture'] = texture
-            
-    def setColor(self,color):
-        self.tag['color'] = color
-        
-    def plusHeight(self,height=1):
+        self.cornerColors = [
+            [self.color[0], self.color[0], self.color[0], self.color[0]],
+            [self.color[1], self.color[1], self.color[1], self.color[1]],
+            [self.color[2], self.color[2], self.color[2], self.color[2]],
+            [self.color[3], self.color[3], self.color[3], self.color[3]],
+            [self.color[4], self.color[4], self.color[4], self.color[4]],
+        ]
+        if "waterColor" in tag:
+            self.waterColor = tag["waterColor"]
+
+    def setTexture(self, texture):
+        self.tag["texture"] = texture
+
+    def setColor(self, color):
+        self.tag["color"] = color
+
+    def plusHeight(self, height=1):
         self.z += height
-        for i in range(0,4):
+        for i in range(0, 4):
             self.cornerHeights[i] -= height
 
-    def minusHeight(self,height=1):
+    def minusHeight(self, height=1):
         self.z -= height
-        for i in range(0,4):
+        for i in range(0, 4):
             self.cornerHeights[i] += height
-            
+
+
 #    def setCornerHeight(self,corner,height):
 #        self.cornerHeights[corner] = height
-    # End added for GuiMapEditor
-    
+# End added for GuiMapEditor
+
+
 class Map(pb.Copyable, pb.RemoteCopy):
-    def __init__(self, width, height, z, tileProperties,
-                 globalWaterHeight, globalWaterColor, tags_):
+    def __init__(
+        self, width, height, z, tileProperties, globalWaterHeight, globalWaterColor, tags_
+    ):
         self._loadString = ""
         self.waterHeight = globalWaterHeight
         self.waterColor = globalWaterColor
@@ -238,163 +242,238 @@ class Map(pb.Copyable, pb.RemoteCopy):
         for x in range(0, width):
             self.squares.append([])
             for y in range(0, height):
-                props = tileProperties[x,y]
+                props = tileProperties[x, y]
                 tag = {}
-                if props['tag'] in tags_:
-                    tag = tags_[props['tag']]
+                if props["tag"] in tags_:
+                    tag = tags_[props["tag"]]
 
-                #color list: Top, Left, Back, Right, Front.
-                [(tr, tg, tb, ta),
-                 (lr, lg, lb, la),
-                 (br, bg, bb, ba),
-                 (rr, rg, rb, ra),
-                 (fr, fg, fb, fa)] = [(1.0, 1.0, 1.0, 1.0),
-                                      (1.0, 1.0, 1.0, 1.0),
-                                      (1.0, 1.0, 1.0, 1.0),
-                                      (1.0, 1.0, 1.0, 1.0),
-                                      (1.0, 1.0, 1.0, 1.0)]
-                #variance list: Top, Left, Back, Right, Front
-                [(vtr, vtg, vtb, vta),
-                 (vlr, vlg, vlb, vla),
-                 (vbr, vbg, vbb, vba),
-                 (vrr, vrg, vrb, vra),
-                 (vfr, vfg, vfb, vfa)] = [(0.0, 0.0, 0.0, 0.0),
-                                          (0.0, 0.0, 0.0, 0.0),
-                                          (0.0, 0.0, 0.0, 0.0),
-                                          (0.0, 0.0, 0.0, 0.0),
-                                          (0.0, 0.0, 0.0, 0.0)]
+                # color list: Top, Left, Back, Right, Front.
+                [
+                    (tr, tg, tb, ta),
+                    (lr, lg, lb, la),
+                    (br, bg, bb, ba),
+                    (rr, rg, rb, ra),
+                    (fr, fg, fb, fa),
+                ] = [
+                    (1.0, 1.0, 1.0, 1.0),
+                    (1.0, 1.0, 1.0, 1.0),
+                    (1.0, 1.0, 1.0, 1.0),
+                    (1.0, 1.0, 1.0, 1.0),
+                    (1.0, 1.0, 1.0, 1.0),
+                ]
+                # variance list: Top, Left, Back, Right, Front
+                [
+                    (vtr, vtg, vtb, vta),
+                    (vlr, vlg, vlb, vla),
+                    (vbr, vbg, vbb, vba),
+                    (vrr, vrg, vrb, vra),
+                    (vfr, vfg, vfb, vfa),
+                ] = [
+                    (0.0, 0.0, 0.0, 0.0),
+                    (0.0, 0.0, 0.0, 0.0),
+                    (0.0, 0.0, 0.0, 0.0),
+                    (0.0, 0.0, 0.0, 0.0),
+                    (0.0, 0.0, 0.0, 0.0),
+                ]
 
-                texture = "none"
                 if "color" in tag:
                     c = tag["color"]
-                    if isinstance(c, tuple): #check for old format
+                    if isinstance(c, tuple):  # check for old format
                         if len(c) == 3:
-                            [(tr, tg, tb),
-                             (lr, lg, lb),
-                             (br, bg, bb),
-                             (rr, rg, rb),
-                             (fr, fg, fb)] = [c,c,c,c,c]
+                            [
+                                (tr, tg, tb),
+                                (lr, lg, lb),
+                                (br, bg, bb),
+                                (rr, rg, rb),
+                                (fr, fg, fb),
+                            ] = [c, c, c, c, c]
                         elif len(c) == 4:
-                            [(tr, tg, tb, ta),
-                             (lr, lg, lb, la),
-                             (br, bg, bb, ba),
-                             (rr, rg, rb, ra),
-                             (fr, fg, fb, fa)] = [c,c,c,c,c]
+                            [
+                                (tr, tg, tb, ta),
+                                (lr, lg, lb, la),
+                                (br, bg, bb, ba),
+                                (rr, rg, rb, ra),
+                                (fr, fg, fb, fa),
+                            ] = [c, c, c, c, c]
 
-                    elif isinstance(c, list): #under the new format, Top, Left, Back, Right, Front.  
+                    elif isinstance(
+                        c, list
+                    ):  # under the new format, Top, Left, Back, Right, Front.
                         if len(c[0]) == 3:
                             if len(c) == 1:
-                                [(tr, tg, tb),
-                                 (lr, lg, lb),
-                                 (br, bg, bb),
-                                 (rr, rg, rb),
-                                 (fr, fg, fb)] = [c[0],c[0],c[0],c[0],c[0]] #only one member makes all sides that color
+                                [
+                                    (tr, tg, tb),
+                                    (lr, lg, lb),
+                                    (br, bg, bb),
+                                    (rr, rg, rb),
+                                    (fr, fg, fb),
+                                ] = [
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                ]  # only one member makes all sides that color
                             if len(c) == 2:
-                                [(tr, tg, tb),
-                                 (lr, lg, lb),
-                                 (br, bg, bb),
-                                 (rr, rg, rb),
-                                 (fr, fg, fb)] = [c[0],c[1],c[1],c[1],c[1]] #two members makes the top the first
-                            if len(c) == 5:                                 #and the rest the second color
-                                [(tr, tg, tb),
-                                 (lr, lg, lb),
-                                 (br, bg, bb),
-                                 (rr, rg, rb),
-                                 (fr, fg, fb)] = [c[0],c[1],c[2],c[3],c[4]] #the other option is to specify all 5.
+                                [
+                                    (tr, tg, tb),
+                                    (lr, lg, lb),
+                                    (br, bg, bb),
+                                    (rr, rg, rb),
+                                    (fr, fg, fb),
+                                ] = [
+                                    c[0],
+                                    c[1],
+                                    c[1],
+                                    c[1],
+                                    c[1],
+                                ]  # two members makes the top the first
+                            if len(c) == 5:  # and the rest the second color
+                                [
+                                    (tr, tg, tb),
+                                    (lr, lg, lb),
+                                    (br, bg, bb),
+                                    (rr, rg, rb),
+                                    (fr, fg, fb),
+                                ] = [
+                                    c[0],
+                                    c[1],
+                                    c[2],
+                                    c[3],
+                                    c[4],
+                                ]  # the other option is to specify all 5.
                         elif len(c[0]) == 4:
                             if len(c) == 1:
-                                [(tr, tg, tb, ta),
-                                 (lr, lg, lb, la),
-                                 (br, bg, bb, ba),
-                                 (rr, rg, rb, ra),
-                                 (fr, fg, fb, fa)] = [c[0],c[0],c[0],c[0],c[0]] #same as above
+                                [
+                                    (tr, tg, tb, ta),
+                                    (lr, lg, lb, la),
+                                    (br, bg, bb, ba),
+                                    (rr, rg, rb, ra),
+                                    (fr, fg, fb, fa),
+                                ] = [c[0], c[0], c[0], c[0], c[0]]  # same as above
                             if len(c) == 2:
-                                [(tr, tg, tb, ta),
-                                 (lr, lg, lb, la),
-                                 (br, bg, bb, ba),
-                                 (rr, rg, rb, ra),
-                                 (fr, fg, fb, fa)] = [c[0],c[1],c[1],c[1],c[1]]
+                                [
+                                    (tr, tg, tb, ta),
+                                    (lr, lg, lb, la),
+                                    (br, bg, bb, ba),
+                                    (rr, rg, rb, ra),
+                                    (fr, fg, fb, fa),
+                                ] = [c[0], c[1], c[1], c[1], c[1]]
                             if len(c) == 5:
-                                [(tr, tg, tb, ta),
-                                 (lr, lg, lb, la),
-                                 (br, bg, bb, ba),
-                                 (rr, rg, rb, ra),
-                                 (fr, fg, fb, fa)] = [c[0],c[1],c[2],c[3],c[4]]
-                                
-                                
+                                [
+                                    (tr, tg, tb, ta),
+                                    (lr, lg, lb, la),
+                                    (br, bg, bb, ba),
+                                    (rr, rg, rb, ra),
+                                    (fr, fg, fb, fa),
+                                ] = [c[0], c[1], c[2], c[3], c[4]]
+
                     else:
-                        pass  #log? raise exception?
+                        pass  # log? raise exception?
 
                 if "colorVar" in tag:
                     c = tag["colorVar"]
-                    if isinstance(c, tuple): #check for old format
+                    if isinstance(c, tuple):  # check for old format
                         if len(c) == 3:
-                            [(vtr, vtg, vtb),
-                             (vlr, vlg, vlb),
-                             (vbr, vbg, vbb),
-                             (vrr, vrg, vrb),
-                             (vfr, vfg, vfb)] = [c,c,c,c,c]
+                            [
+                                (vtr, vtg, vtb),
+                                (vlr, vlg, vlb),
+                                (vbr, vbg, vbb),
+                                (vrr, vrg, vrb),
+                                (vfr, vfg, vfb),
+                            ] = [c, c, c, c, c]
                         elif len(c) == 4:
-                            [(vtr, vtg, vtb, vta),
-                             (vlr, vlg, vlb, vla),
-                             (vbr, vbg, vbb, vba),
-                             (vrr, vrg, vrb, vra),
-                             (vfr, vfg, vfb, vfa)] = [c,c,c,c,c]
+                            [
+                                (vtr, vtg, vtb, vta),
+                                (vlr, vlg, vlb, vla),
+                                (vbr, vbg, vbb, vba),
+                                (vrr, vrg, vrb, vra),
+                                (vfr, vfg, vfb, vfa),
+                            ] = [c, c, c, c, c]
 
-                    elif isinstance(c, list): #under the new format, Top, Left, Back, Right, Front.  
+                    elif isinstance(
+                        c, list
+                    ):  # under the new format, Top, Left, Back, Right, Front.
                         if len(c[0]) == 3:
                             if len(c) == 1:
-                                [(vtr, vtg, vtb),
-                                 (vlr, vlg, vlb),
-                                 (vbr, vbg, vbb),
-                                 (vrr, vrg, vrb),
-                                 (vfr, vfg, vfb)] = [c[0],c[0],c[0],c[0],c[0]] #only one member makes all sides that variance
+                                [
+                                    (vtr, vtg, vtb),
+                                    (vlr, vlg, vlb),
+                                    (vbr, vbg, vbb),
+                                    (vrr, vrg, vrb),
+                                    (vfr, vfg, vfb),
+                                ] = [
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                    c[0],
+                                ]  # only one member makes all sides that variance
                             if len(c) == 2:
-                                [(vtr, vtg, vtb),
-                                 (vlr, vlg, vlb),
-                                 (vbr, vbg, vbb),
-                                 (vrr, vrg, vrb),
-                                 (vfr, vfg, vfb)] = [c[0],c[1],c[1],c[1],c[1]] #two members makes the top the first
-                            if len(c) == 5:                                    #and the rest the second variance
-                                [(vtr, vtg, vtb),
-                                 (vlr, vlg, vlb),
-                                 (vbr, vbg, vbb),
-                                 (vrr, vrg, vrb),
-                                 (vfr, vfg, vfb)] = [c[0],c[1],c[2],c[3],c[4]] #the other option is to specify all 5.
+                                [
+                                    (vtr, vtg, vtb),
+                                    (vlr, vlg, vlb),
+                                    (vbr, vbg, vbb),
+                                    (vrr, vrg, vrb),
+                                    (vfr, vfg, vfb),
+                                ] = [
+                                    c[0],
+                                    c[1],
+                                    c[1],
+                                    c[1],
+                                    c[1],
+                                ]  # two members makes the top the first
+                            if len(c) == 5:  # and the rest the second variance
+                                [
+                                    (vtr, vtg, vtb),
+                                    (vlr, vlg, vlb),
+                                    (vbr, vbg, vbb),
+                                    (vrr, vrg, vrb),
+                                    (vfr, vfg, vfb),
+                                ] = [
+                                    c[0],
+                                    c[1],
+                                    c[2],
+                                    c[3],
+                                    c[4],
+                                ]  # the other option is to specify all 5.
                         elif len(c[0]) == 4:
                             if len(c) == 1:
-                                [(vtr, vtg, vtb, vta),
-                                 (vlr, vlg, vlb, vla),
-                                 (vbr, vbg, vbb, vba),
-                                 (vrr, vrg, vrb, vra),
-                                 (vfr, vfg, vfb, vfa)] = [c[0],c[0],c[0],c[0],c[0]] #same as above
+                                [
+                                    (vtr, vtg, vtb, vta),
+                                    (vlr, vlg, vlb, vla),
+                                    (vbr, vbg, vbb, vba),
+                                    (vrr, vrg, vrb, vra),
+                                    (vfr, vfg, vfb, vfa),
+                                ] = [c[0], c[0], c[0], c[0], c[0]]  # same as above
                             if len(c) == 2:
-                                [(vtr, vtg, vtb, vta),
-                                 (vlr, vlg, vlb, vla),
-                                 (vbr, vbg, vbb, vba),
-                                 (vrr, vrg, vrb, vra),
-                                 (vfr, vfg, vfb, vfa)] = [c[0],c[1],c[1],c[1],c[1]]
+                                [
+                                    (vtr, vtg, vtb, vta),
+                                    (vlr, vlg, vlb, vla),
+                                    (vbr, vbg, vbb, vba),
+                                    (vrr, vrg, vrb, vra),
+                                    (vfr, vfg, vfb, vfa),
+                                ] = [c[0], c[1], c[1], c[1], c[1]]
                             if len(c) == 5:
-                                [(vtr, vtg, vtb, vta),
-                                 (vlr, vlg, vlb, vla),
-                                 (vbr, vbg, vbb, vba),
-                                 (vrr, vrg, vrb, vra),
-                                 (vfr, vfg, vfb, vfa)] = [c[0],c[1],c[2],c[3],c[4]]
-                                
-                                
+                                [
+                                    (vtr, vtg, vtb, vta),
+                                    (vlr, vlg, vlb, vla),
+                                    (vbr, vbg, vbb, vba),
+                                    (vrr, vrg, vrb, vra),
+                                    (vfr, vfg, vfb, vfa),
+                                ] = [c[0], c[1], c[2], c[3], c[4]]
+
                     else:
-                        pass  #log? raise exception?
-                    
-                if "texture" in tag:
-                    texture = tag["texture"]
+                        pass  # log? raise exception?
+
                 waterHeight = globalWaterHeight
                 waterColor = globalWaterColor
-                if 'waterHeight' in props:
-                    waterHeight = props['waterHeight']
-                elif 'waterHeight' in tag:
-                    waterHeight = tag['waterHeight']
-                if 'waterColor' in tag:
-                    waterColor = tag['waterColor']
+                if "waterHeight" in props:
+                    waterHeight = props["waterHeight"]
+                elif "waterHeight" in tag:
+                    waterHeight = tag["waterHeight"]
+                if "waterColor" in tag:
+                    waterColor = tag["waterColor"]
                 smooth = False
                 if "smooth" in tag:
                     smooth = tag["smooth"]
@@ -405,37 +484,60 @@ class Map(pb.Copyable, pb.RemoteCopy):
                 elif "cornerHeights" in tag:
                     cornerHeights = list(tag["cornerHeights"])
                 else:
-                    cornerHeights = [0,0,0,0]
-                    if smooth and y-1 >= 0:
-                        up = self.squares[x][y-1]
+                    cornerHeights = [0, 0, 0, 0]
+                    if smooth and y - 1 >= 0:
+                        up = self.squares[x][y - 1]
                         if up.smooth:
                             smoothed = True
-                            cornerHeights[0] = up.z+up.cornerHeights[2]-z[x,y]
-                            cornerHeights[1] = up.z+up.cornerHeights[3]-z[x,y]
-                    if smooth and x-1 >= 0:
-                        left = self.squares[x-1][y]
+                            cornerHeights[0] = up.z + up.cornerHeights[2] - z[x, y]
+                            cornerHeights[1] = up.z + up.cornerHeights[3] - z[x, y]
+                    if smooth and x - 1 >= 0:
+                        left = self.squares[x - 1][y]
                         if left.smooth:
-                            cornerHeights[2] = left.z+left.cornerHeights[3]-z[x,y]
+                            cornerHeights[2] = left.z + left.cornerHeights[3] - z[x, y]
                             if not smoothed:
-                                cornerHeights[0] = left.z+left.cornerHeights[1]-z[x,y]
+                                cornerHeights[0] = left.z + left.cornerHeights[1] - z[x, y]
                             smoothed = True
-#                     for i in range(4):
-#                        if cornerHeights[i] < -8 or cornerHeights[i] > 8:
-#                            cornerHeights[i] = 0 # make a step
+                #                     for i in range(4):
+                #                        if cornerHeights[i] < -8 or cornerHeights[i] > 8:
+                #                            cornerHeights[i] = 0 # make a step
 
+                c = [
+                    (
+                        tr - random.random() * vtr,
+                        tg - random.random() * vtg,
+                        tb - random.random() * vtb,
+                        ta - random.random() * vta,
+                    ),
+                    (
+                        lr - random.random() * vlr,
+                        lg - random.random() * vlg,
+                        lb - random.random() * vlb,
+                        la - random.random() * vla,
+                    ),
+                    (
+                        br - random.random() * vbr,
+                        bg - random.random() * vbg,
+                        bb - random.random() * vbb,
+                        ba - random.random() * vba,
+                    ),
+                    (
+                        rr - random.random() * vrr,
+                        rg - random.random() * vrg,
+                        rb - random.random() * vrb,
+                        ra - random.random() * vra,
+                    ),
+                    (
+                        fr - random.random() * vfr,
+                        fg - random.random() * vfg,
+                        fb - random.random() * vfb,
+                        fa - random.random() * vfa,
+                    ),
+                ]
+                self.squares[x].append(
+                    MapSquare(x, y, z[x, y], cornerHeights, c, smooth, tag, waterHeight, waterColor)
+                )
 
-                c = [(tr - random.random() * vtr,tg - random.random() * vtg,tb - random.random() * vtb,ta - random.random() * vta),
-                     (lr - random.random() * vlr,lg - random.random() * vlg,lb - random.random() * vlb,la - random.random() * vla),
-                     (br - random.random() * vbr,bg - random.random() * vbg,bb - random.random() * vbb,ba - random.random() * vba),
-                     (rr - random.random() * vrr,rg - random.random() * vrg,rb - random.random() * vrb,ra - random.random() * vra),
-                     (fr - random.random() * vfr,fg - random.random() * vfg,fb - random.random() * vfb,fa - random.random() * vfa)]
-                self.squares[x].append(MapSquare(x, y, z[x,y],
-                                                 cornerHeights,
-                                                 c,
-                                                 smooth, tag,
-                                                 waterHeight,
-                                                 waterColor))
-                
         # Normalize z-heights of smoothed squares a bit, so that the
         # middle of the square is has a z-height in the middle of the
         # corner heights.
@@ -452,34 +554,34 @@ class Map(pb.Copyable, pb.RemoteCopy):
                     sq.cornerHeights[i] -= zDiff
 
         self.smoothColors()
-                    
+
         # If a square doesn't have a water height, but one of its
         # neighbors does, and this square was smoothed, inherit the
         # water height of its neighbor.
         for x in range(0, width):
             for y in range(0, height):
                 sq = self.squares[x][y]
-                if sq.waterHeight != 0: # or not sq.smoothed:
+                if sq.waterHeight != 0:  # or not sq.smoothed:
                     continue
                 highestWater = 0
                 waterColor = None
-                if y-1 >= 0:
-                    up = self.squares[x][y-1]
+                if y - 1 >= 0:
+                    up = self.squares[x][y - 1]
                     if up.waterHeight > highestWater:
                         waterColor = up.waterColor
                         highestWater = up.waterHeight
-                if y+1 < self.height:
-                    down = self.squares[x][y+1]
+                if y + 1 < self.height:
+                    down = self.squares[x][y + 1]
                     if down.waterHeight > highestWater:
                         waterColor = down.waterColor
                         highestWater = down.waterHeight
-                if x-1 >= 0:
-                    left = self.squares[x-1][y]
+                if x - 1 >= 0:
+                    left = self.squares[x - 1][y]
                     if left.waterHeight > highestWater:
                         waterColor = left.waterColor
                         highestWater = left.waterHeight
-                if x+1 < self.width:
-                    right = self.squares[x+1][y]
+                if x + 1 < self.width:
+                    right = self.squares[x + 1][y]
                     if right.waterHeight > highestWater:
                         waterColor = right.waterColor
                         highestWater = right.waterHeight
@@ -493,47 +595,47 @@ class Map(pb.Copyable, pb.RemoteCopy):
         for x in range(0, self.width):
             for y in range(0, self.height):
                 sq = self.squares[x][y]
-                #smooth topsides
-                smoothedUp = False 
-                if y-1 >= 0:
-                    up = self.squares[x][y-1]
+                # smooth topsides
+                smoothedUp = False
+                if y - 1 >= 0:
+                    up = self.squares[x][y - 1]
                     if up.tag == sq.tag:
                         smoothedUp = True
                         sq.cornerColors[0][0] = up.cornerColors[0][2]
                         sq.cornerColors[0][1] = up.cornerColors[0][3]
-                if x-1 >= 0:
-                    left = self.squares[x-1][y]
+                if x - 1 >= 0:
+                    left = self.squares[x - 1][y]
                     if left.tag == sq.tag:
                         sq.cornerColors[0][2] = left.cornerColors[0][3]
                         if not smoothedUp:
                             sq.cornerColors[0][0] = left.cornerColors[0][1]
-                #smooth leftsides
-                if y-1 >= 0:
-                    up = self.squares[x][y-1]
+                # smooth leftsides
+                if y - 1 >= 0:
+                    up = self.squares[x][y - 1]
                     if up.tag == sq.tag:
                         sq.cornerColors[1][0] = up.cornerColors[1][1]
                         sq.cornerColors[1][3] = up.cornerColors[1][2]
-                #smooth backsides
-                if x-1 >= 0:
-                    up = self.squares[x-1][y]
+                # smooth backsides
+                if x - 1 >= 0:
+                    up = self.squares[x - 1][y]
                     if up.tag == sq.tag:
                         sq.cornerColors[2][1] = up.cornerColors[2][0]
                         sq.cornerColors[2][2] = up.cornerColors[2][3]
-                #smooth rightsides
-                if y-1 >= 0:
-                    up = self.squares[x][y-1]
+                # smooth rightsides
+                if y - 1 >= 0:
+                    up = self.squares[x][y - 1]
                     if up.tag == sq.tag:
                         sq.cornerColors[3][1] = up.cornerColors[3][0]
                         sq.cornerColors[3][2] = up.cornerColors[3][3]
-                #smooth backsides
-                if x-1 >= 0:
-                    up = self.squares[x-1][y]
+                # smooth backsides
+                if x - 1 >= 0:
+                    up = self.squares[x - 1][y]
                     if up.tag == sq.tag:
                         sq.cornerColors[4][0] = up.cornerColors[4][1]
                         sq.cornerColors[4][3] = up.cornerColors[4][2]
-        
+
     def save(self, filename):
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             f.write(self.loadString())
 
     def getStateToCopy(self):
@@ -542,21 +644,23 @@ class Map(pb.Copyable, pb.RemoteCopy):
     def setCopyableState(self, state):
         m = MapIO.loadString("remote map", state)
         self.__dict__.update(m.__dict__)
-        
+
     def setLoadString(self, text):
         self._loadString = text
-        
+
     def loadString(self):
-        r = ("VERSION = 1\n\n"
-            +"WIDTH = %s\n" % self.width
-            +"HEIGHT = %s\n\n" % self.height
-            +"WATER_HEIGHT = %d\n" % self.waterHeight
-            +"WATER_COLOR = %s\n\n" % repr(self.waterColor)
-            +"TILE_PROPERTIES = {\n")
+        r = (
+            "VERSION = 1\n\n"
+            + "WIDTH = %s\n" % self.width
+            + "HEIGHT = %s\n\n" % self.height
+            + "WATER_HEIGHT = %d\n" % self.waterHeight
+            + "WATER_COLOR = %s\n\n" % repr(self.waterColor)
+            + "TILE_PROPERTIES = {\n"
+        )
         for tagName in self.tags.keys():
             tag = self.tags[tagName]
             r += "    '%s':\t{\n" % tagName
-            for k,v in tag.items():
+            for k, v in tag.items():
                 if k != "name":
                     r += "\t\t    '%s': %s,\n" % (k, repr(v))
             r = r[:-2] + "\n    },\n"
@@ -565,22 +669,20 @@ class Map(pb.Copyable, pb.RemoteCopy):
             for x in range(0, self.width):
                 sq = self.squares[x][y]
                 s = "%d" % sq.height()
-                if ((('cornerHeights' not in sq.tag) and
-                     sq.cornerHeights != [0, 0, 0, 0]) or
-                    ('cornerHeights' in sq.tag and
-                     sq.cornerHeights != sq.tag['cornerHeights'])):
+                if (("cornerHeights" not in sq.tag) and sq.cornerHeights != [0, 0, 0, 0]) or (
+                    "cornerHeights" in sq.tag and sq.cornerHeights != sq.tag["cornerHeights"]
+                ):
                     s += repr(sq.cornerHeights)
-                if (('waterHeight' not in sq.tag) or
-                    sq.waterHeight != sq.tag['waterHeight']):
+                if ("waterHeight" not in sq.tag) or sq.waterHeight != sq.tag["waterHeight"]:
                     s += "wh" + repr(sq.waterHeight)
                 s += sq.tagName()
                 r += "%-30s" % s
             r += "\n"
         r += "'''\n"
-        return r        
+        return r
 
     def squareExists(self, x, y):
-        return (x >= 0 and y >= 0 and x < self.width and y < self.height)
+        return x >= 0 and y >= 0 and x < self.width and y < self.height
 
     def resetSearchCosts(self):
         sq = self.squares
@@ -592,13 +694,13 @@ class Map(pb.Copyable, pb.RemoteCopy):
         result = []
         (x, y) = (square.x, square.y)
         if x > 0:
-            result.append(self.squares[x-1][y])
+            result.append(self.squares[x - 1][y])
         if x < self.width - 1:
-            result.append(self.squares[x+1][y])
+            result.append(self.squares[x + 1][y])
         if y > 0:
-            result.append(self.squares[x][y-1])
+            result.append(self.squares[x][y - 1])
         if y < self.height - 1:
-            result.append(self.squares[x][y+1])
+            result.append(self.squares[x][y + 1])
         return result
 
     def bfs(self, start, expand, visitPredicate, resultPredicate):
@@ -614,7 +716,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
             if resultPredicate(s):
                 result.append(s)
             for newS in expand(s):
-                if newS.search == None:
+                if newS.search is None:
                     newS.search = (s.search[0] + 1, s)
                     if visitPredicate(newS):
                         q.append(newS)
@@ -626,41 +728,57 @@ class Map(pb.Copyable, pb.RemoteCopy):
     # FIXME: this should be in the AI code, not here
     def closestUnits(self, unit, faction):
         def visit(s):
-            connectedOK = (s.search[1] == None or
-                           connected(s.search[1], s, unit))
+            connectedOK = s.search[1] is None or connected(s.search[1], s, unit)
             return connectedOK
+
         def resultp(s):
             for neighbor in self.getPotentialConnections(s):
-                if (neighbor.unit != None and
-                    neighbor.unit.faction() == faction and
-                    neighbor.unit.alive()):
+                if (
+                    neighbor.unit is not None
+                    and neighbor.unit.faction() == faction
+                    and neighbor.unit.alive()
+                ):
                     return True
             return False
+
         start = (unit.x(), unit.y())
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         result = self.bfs(start, expand, visit, resultp)
         return result
-    
+
     def reachable(self, unit):
         def visit(s):
             costOK = s.search[0] <= unit.move()
-            connectedOK = (s.search[1] == None or
-                           connected(s.search[1], s, unit))
+            connectedOK = s.search[1] is None or connected(s.search[1], s, unit)
             return costOK and connectedOK
+
         start = (unit.x(), unit.y())
-        resultp = lambda s: s.unit == None
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def resultp(s):
+            return s.unit is None
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         result = self.bfs(start, expand, visit, resultp)
         return [(s.x, s.y) for s in result]
 
     def fillDistances(self, unit, posn):
         def visit(s):
-            connectedOK = (s.search[1] == None or
-                           connectedIgnoringUnits(s.search[1], s, unit))
+            connectedOK = s.search[1] is None or connectedIgnoringUnits(s.search[1], s, unit)
             return connectedOK
+
         start = posn
-        resultp = lambda s: s.unit == None
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def resultp(s):
+            return s.unit is None
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         self.bfs(start, expand, visit, resultp)
 
     def shortestPath(self, targetX, targetY):
@@ -674,8 +792,8 @@ class Map(pb.Copyable, pb.RemoteCopy):
     def changeCorner(self, x, y, corner, change):
         sq = self.squares[x][y]
         getDiag = False
-        
-        if 'smooth' in sq.tag and sq.tag['smooth'] == True:
+
+        if "smooth" in sq.tag and sq.tag["smooth"]:
             # find the corner's neighbors: (x,y),(x,y+dy),(x+dx,y),(x+dx,y+dy)
             dx = 1
             dy = 1
@@ -683,49 +801,57 @@ class Map(pb.Copyable, pb.RemoteCopy):
                 dy = -1
             if corner % 2 == 0:
                 dx = -1
-                    
+
             # move them along with us if they match up (same tag, height)
-            if self.squareExists(x,y+dy):
-                nb = self.squares[x][y+dy]
-                if (nb.tag == sq.tag and
-                    nb.cornerHeights[corner-2*dy] + nb.height() ==
-                    sq.cornerHeights[corner] + sq.height()):
+            if self.squareExists(x, y + dy):
+                nb = self.squares[x][y + dy]
+                if (
+                    nb.tag == sq.tag
+                    and nb.cornerHeights[corner - 2 * dy] + nb.height()
+                    == sq.cornerHeights[corner] + sq.height()
+                ):
                     getDiag = True
-                    nb.cornerHeights[corner-2*dy] += change
-            if self.squareExists(x+dx,y):
-                nb = self.squares[x+dx][y]
-                if (nb.tag == sq.tag and
-                    nb.cornerHeights[corner-dx] + nb.height() ==
-                    sq.cornerHeights[corner] + sq.height()):
+                    nb.cornerHeights[corner - 2 * dy] += change
+            if self.squareExists(x + dx, y):
+                nb = self.squares[x + dx][y]
+                if (
+                    nb.tag == sq.tag
+                    and nb.cornerHeights[corner - dx] + nb.height()
+                    == sq.cornerHeights[corner] + sq.height()
+                ):
                     getDiag = True
-                    nb.cornerHeights[corner-dx] += change
-            if getDiag == True and self.squareExists(x+dx,y+dy):
-                nb = self.squares[x+dx][y+dy]
-                if (nb.tag == sq.tag and
-                    nb.cornerHeights[3-corner] + nb.height() ==
-                    sq.cornerHeights[corner] + sq.height()):
-                    nb.cornerHeights[3-corner] += change
+                    nb.cornerHeights[corner - dx] += change
+            if getDiag and self.squareExists(x + dx, y + dy):
+                nb = self.squares[x + dx][y + dy]
+                if (
+                    nb.tag == sq.tag
+                    and nb.cornerHeights[3 - corner] + nb.height()
+                    == sq.cornerHeights[corner] + sq.height()
+                ):
+                    nb.cornerHeights[3 - corner] += change
         sq.cornerHeights[corner] += change
 
     def index(self, x, y):
         return y * self.width + x
 
     def __repr__(self):
-        result = ''
+        result = ""
         sq = self.squares
         for y in range(0, self.height):
             for x in range(0, self.width):
-                result = result + '%s ' % sq[x][y].z
-            result = result + '\n'
+                result = result + "%s " % sq[x][y].z
+            result = result + "\n"
         return result
-   
-class MapIO(object):
 
+
+class MapIO(object):
+    @staticmethod
     def load(mapname):
-        with open(mapname, 'r') as mapfile:
+        with open(mapname, "r") as mapfile:
             text = mapfile.read()
         return MapIO.loadString(mapname, text)
-    
+
+    @staticmethod
     def loadString(mapname, text):
         """Load map data from string using safe literal evaluation.
 
@@ -738,21 +864,21 @@ class MapIO(object):
         mapData = {}
         try:
             # Split into assignment statements
-            lines = text.split('\n')
+            lines = text.split("\n")
             current_var = None
             current_value = []
             in_multiline = False
 
             for line in lines:
                 line = line.strip()
-                if not line or line.startswith('#'):
+                if not line or line.startswith("#"):
                     continue
 
                 # Handle multiline strings (''')
                 if "'''" in line:
                     if not in_multiline:
                         # Start of multiline string
-                        var_name = line.split('=')[0].strip()
+                        var_name = line.split("=")[0].strip()
                         in_multiline = True
                         current_var = var_name
                         current_value = []
@@ -765,7 +891,7 @@ class MapIO(object):
                             current_var = None
                     else:
                         # End of multiline string
-                        mapData[current_var] = '\n'.join(current_value)
+                        mapData[current_var] = "\n".join(current_value)
                         in_multiline = False
                         current_var = None
                         current_value = []
@@ -776,8 +902,8 @@ class MapIO(object):
                     continue
 
                 # Regular assignment
-                if '=' in line and not in_multiline:
-                    var_name, value = line.split('=', 1)
+                if "=" in line and not in_multiline:
+                    var_name, value = line.split("=", 1)
                     var_name = var_name.strip()
                     value = value.strip()
 
@@ -792,7 +918,7 @@ class MapIO(object):
             # This is expected for map files with Python code (variable definitions)
             logger.debug(f"Map '{mapname}' uses Python code, parsing with eval()")
             try:
-                compiled = compile(text, mapname, 'exec')
+                compiled = compile(text, mapname, "exec")
                 localVars = {}
                 eval(compiled, {}, localVars)
                 mapData = localVars
@@ -801,37 +927,37 @@ class MapIO(object):
 
         if mapData["VERSION"] != 1:
             raise ValueError(f"Map version {mapData['VERSION']} not supported")
-        width = mapData['WIDTH']
-        height = mapData['HEIGHT']
-#        tilePropertiesTemplate = {}
+        width = mapData["WIDTH"]
+        height = mapData["HEIGHT"]
+        #        tilePropertiesTemplate = {}
         waterHeight = 0
         waterColor = [0.3, 0.3, 0.6]
-        if 'WATER_HEIGHT' in mapData:
-            waterHeight = mapData['WATER_HEIGHT']
-        if 'WATER_COLOR' in mapData:
-            waterColor = mapData['WATER_COLOR']
-        if 'TILE_PROPERTIES' in mapData:
-            tags = mapData['TILE_PROPERTIES']
+        if "WATER_HEIGHT" in mapData:
+            waterHeight = mapData["WATER_HEIGHT"]
+        if "WATER_COLOR" in mapData:
+            waterColor = mapData["WATER_COLOR"]
+        if "TILE_PROPERTIES" in mapData:
+            tags = mapData["TILE_PROPERTIES"]
             for k in tags.keys():
-                tags[k]['name'] = k
-                if 'waterColor' not in tags[k]:
-                    tags[k]['waterColor'] = waterColor
-                if 'waterHeight' not in tags[k]:
-                    tags[k]['waterHeight'] = waterHeight
+                tags[k]["name"] = k
+                if "waterColor" not in tags[k]:
+                    tags[k]["waterColor"] = waterColor
+                if "waterHeight" not in tags[k]:
+                    tags[k]["waterHeight"] = waterHeight
         else:
             tags = {}
-        layoutLines = mapData['LAYOUT'].split('\n')
+        layoutLines = mapData["LAYOUT"].split("\n")
         layoutLines.pop(0)
         zdata = Numeric.zeros((width, height))
         tileProperties = Numeric.zeros((width, height), dtype=object)
         y = 0
         padded_lines = 0  # Track irregular map shape
         for line in layoutLines:
-            if re.match(re.compile(r'^\s*$'), line):
+            if re.match(re.compile(r"^\s*$"), line):
                 continue
             # Split on multiple spaces (2+) to handle padded tiles
             # The layout uses %-30s formatting which creates spaces between tiles
-            tiles = re.split(r'\s{2,}', line.strip())
+            tiles = re.split(r"\s{2,}", line.strip())
             # Filter out empty strings from the split
             tiles = [t for t in tiles if t.strip()]
 
@@ -840,43 +966,55 @@ class MapIO(object):
             if len(tiles) < width:
                 padded_lines += 1
                 # Pad with default tile data
-                tiles.extend(['0'] * (width - len(tiles)))
+                tiles.extend(["0"] * (width - len(tiles)))
 
             for x in range(0, width):
-                tileData = tiles[x] if x < len(tiles) else '0'
-                tileProperties[x,y] = {}
+                tileData = tiles[x] if x < len(tiles) else "0"
+                tileProperties[x, y] = {}
                 # Updated regex to handle floats in corner heights (including negative)
-                m = re.match(re.compile(
-                    r'(\d+)(\[(-?[\d.]+),\s*(-?[\d.]+),\s*(-?[\d.]+),\s*(-?[\d.]+)\])?(wh(\d+))?(\w*)'), tileData)
+                m = re.match(
+                    re.compile(
+                        r"(\d+)(\[(-?[\d.]+),\s*(-?[\d.]+),\s*(-?[\d.]+),\s*(-?[\d.]+)\])?(wh(\d+))?(\w*)"
+                    ),
+                    tileData,
+                )
                 if m is None:
                     raise ValueError(f"Invalid tile data at position ({x},{y}): '{tileData}'")
-                zdata[x,y] = int(m.group(1))
-                tileProperties[x,y]['tag'] = m.group(9) if m.group(9) else ''
-                if m.group(2) != None:
-                    tileProperties[x,y]['cornerHeights'] = [int(float(m.group(3))),int(float(m.group(4))),int(float(m.group(5))),int(float(m.group(6)))]
-                if m.group(7) != None:
-                    tileProperties[x,y]['waterHeight'] = int(m.group(8))
+                zdata[x, y] = int(m.group(1))
+                tileProperties[x, y]["tag"] = m.group(9) if m.group(9) else ""
+                if m.group(2) is not None:
+                    tileProperties[x, y]["cornerHeights"] = [
+                        int(float(m.group(3))),
+                        int(float(m.group(4))),
+                        int(float(m.group(5))),
+                        int(float(m.group(6))),
+                    ]
+                if m.group(7) is not None:
+                    tileProperties[x, y]["waterHeight"] = int(m.group(8))
             y += 1
 
         # Log map shape summary if irregular
         if padded_lines > 0:
-            logger.debug(f"Loaded irregular map: {mapname} ({width}x{height}, {padded_lines} padded rows)")
+            logger.debug(
+                f"Loaded irregular map: {mapname} ({width}x{height}, {padded_lines} padded rows)"
+            )
 
         m = Map(width, height, zdata, tileProperties, waterHeight, waterColor, tags)
         m.setLoadString(text)
         return m
 
-    load = staticmethod(load)
-    loadString = staticmethod(loadString)
 
 def connectedIgnoringUnits(sq1, sq2, unit):
     return connected(sq1, sq2, unit, True)
 
+
 def connected(sq1, sq2, unit, ignoreUnits=False):
     if not ignoreUnits:
-        if (sq2.unit != None and
-            sq2.unit.alive() and
-            not Faction.friendly(unit.faction(), sq2.unit.faction())):
+        if (
+            sq2.unit is not None
+            and sq2.unit.alive()
+            and not Faction.friendly(unit.faction(), sq2.unit.faction())
+        ):
             return False
     if sq1 is sq2:
         return False
@@ -884,10 +1022,9 @@ def connected(sq1, sq2, unit, ignoreUnits=False):
         return False
     if sq1.z + 4 < sq1.waterHeight or sq2.z + 4 < sq2.waterHeight:
         return False
-#    if sq1.maxHeight() - sq1.minHeight() > 16:
-#        return False
-#    if sq2.maxHeight() - sq2.minHeight() > 16:
-#        return False
+    #    if sq1.maxHeight() - sq1.minHeight() > 16:
+    #        return False
+    #    if sq2.maxHeight() - sq2.minHeight() > 16:
+    #        return False
     result = abs(sq1.z - sq2.z) <= unit.jump()
     return result
-
