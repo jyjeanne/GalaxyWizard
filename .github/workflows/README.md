@@ -1,5 +1,21 @@
 # GitHub Actions Workflows
 
+## knowledge-graph.yml - AI Knowledge Graph
+
+Runs on every push to `main` that touches `src/**/*.py` (or the generator
+itself), and on manual dispatch. It runs `python graphify.py` — a
+stdlib-only AST analysis, so no dependencies are installed — and commits
+the regenerated `doc/knowledge-graph.md` report and
+`doc/graph/knowledge_graph.json` graph back to the repository, so both
+always match the code on `main`.
+
+## uml-diagrams.yml - UML Diagrams
+
+Runs on every push to `main` that touches `src/**/*.py` (or the generator
+itself), and on manual dispatch. It installs pylint (for pyreverse), runs
+`python generate_uml.py` and commits the regenerated
+`doc/architecture.md` and `doc/uml/*.mmd` diagrams back to the repository.
+
 ## python-app.yml - Galaxy Wizard CI
 
 This workflow runs automatically on:
