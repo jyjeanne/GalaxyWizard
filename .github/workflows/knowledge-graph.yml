@@ -1,0 +1,47 @@
+# Regenerates the AI knowledge graph and architecture report in doc/
+# whenever the source code changes, and commits the result back to the
+# repository so that doc/knowledge-graph.md and
+# doc/graph/knowledge_graph.json always match the code on main.
+
+name: Knowledge Graph
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "src/**/*.py"
+      - "graphify.py"
+      - ".github/workflows/knowledge-graph.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # graphify.py analyses the sources with the stdlib ast module,
+      # so no third-party dependencies are required.
+      - name: Generate knowledge graph
+        run: python graphify.py
+
+      - name: Commit updated knowledge graph
+        run: |
+          if git diff --quiet -- doc/knowledge-graph.md doc/graph; then
+            echo "Knowledge graph is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add doc/knowledge-graph.md doc/graph
+          git commit -m "docs: regenerate knowledge graph from source"
+          git push

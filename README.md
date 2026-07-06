@@ -232,6 +232,27 @@ by CI on every push to `main` that touches `src/`, or manually with:
 poetry run galaxywizard-uml
 ```
 
+### AI Knowledge Graph
+
+An AI-ready knowledge graph of the codebase (packages, modules, classes,
+functions and the imports / inherits / uses relations between them) is
+generated automatically alongside a human-readable architecture report:
+
+- [doc/knowledge-graph.md](doc/knowledge-graph.md) - Architecture report
+  with package-dependency and class-inheritance diagrams (Mermaid), key
+  module rankings and a full module inventory
+- [doc/graph/knowledge_graph.json](doc/graph/knowledge_graph.json) -
+  Machine-readable graph for AI assistants, graph databases or
+  visualization tools
+
+Both are regenerated automatically by CI on every push to `main` that
+touches `src/`, or manually with:
+
+```bash
+# Stdlib only - no extra dependencies required
+poetry run galaxywizard-graphify
+```
+
 ### Development Setup
 
 1. **Fork and clone** the repository

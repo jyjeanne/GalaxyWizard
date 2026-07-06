@@ -1,0 +1,6298 @@
+{
+  "schema": "galaxywizard-knowledge-graph/1",
+  "generated_by": "graphify.py",
+  "project": "GalaxyWizard",
+  "stats": {
+    "packages": 4,
+    "modules": 37,
+    "classes": 136,
+    "functions": 82,
+    "methods": 759,
+    "lines_of_code": 9610,
+    "external_dependencies": {
+      "logging": 14,
+      "twisted": 14,
+      "OpenGL": 11,
+      "pygame": 11,
+      "random": 10,
+      "math": 5,
+      "time": 5,
+      "re": 4,
+      "os": 3,
+      "copy": 2,
+      "numpy": 2,
+      "traceback": 2,
+      "ast": 1,
+      "builtins": 1,
+      "gettext": 1,
+      "optparse": 1,
+      "platform": 1,
+      "string": 1,
+      "sys": 1,
+      "zope": 1
+    }
+  },
+  "edge_kinds": {
+    "contains": "structural ownership (package>module>class/function)",
+    "imports": "source module imports target module",
+    "inherits": "source class subclasses target class",
+    "uses": "source module references target class"
+  },
+  "nodes": [
+    {
+      "id": "package:ai",
+      "kind": "package",
+      "name": "ai",
+      "path": "src/ai"
+    },
+    {
+      "id": "package:core",
+      "kind": "package",
+      "name": "core",
+      "path": "src"
+    },
+    {
+      "id": "package:engine",
+      "kind": "package",
+      "name": "engine",
+      "path": "src/engine"
+    },
+    {
+      "id": "package:gui",
+      "kind": "package",
+      "name": "gui",
+      "path": "src/gui"
+    },
+    {
+      "id": "module:ai.UnitAI",
+      "kind": "module",
+      "name": "ai.UnitAI",
+      "package": "ai",
+      "path": "src/ai/UnitAI.py",
+      "doc": "AI system for computer-controlled units in GalaxyWizard.",
+      "loc": 436,
+      "external_imports": [
+        "copy",
+        "logging",
+        "random",
+        "time",
+        "traceback"
+      ]
+    },
+    {
+      "id": "module:constants",
+      "kind": "module",
+      "name": "constants",
+      "package": "core",
+      "path": "src/constants.py",
+      "doc": "",
+      "loc": 9,
+      "external_imports": []
+    },
+    {
+      "id": "module:engine.Ability",
+      "kind": "module",
+      "name": "engine.Ability",
+      "package": "engine",
+      "path": "src/engine/Ability.py",
+      "doc": "",
+      "loc": 115,
+      "external_imports": [
+        "twisted"
+      ]
+    },
+    {
+      "id": "module:engine.Battle",
+      "kind": "module",
+      "name": "engine.Battle",
+      "package": "engine",
+      "path": "src/engine/Battle.py",
+      "doc": "",
+      "loc": 291,
+      "external_imports": [
+        "logging",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Battle.get",
+      "kind": "function",
+      "name": "get",
+      "module": "engine.Battle"
+    },
+    {
+      "id": "module:engine.Class",
+      "kind": "module",
+      "name": "engine.Class",
+      "package": "engine",
+      "path": "src/engine/Class.py",
+      "doc": "",
+      "loc": 118,
+      "external_imports": [
+        "random",
+        "twisted"
+      ]
+    },
+    {
+      "id": "module:engine.Effect",
+      "kind": "module",
+      "name": "engine.Effect",
+      "package": "engine",
+      "path": "src/engine/Effect.py",
+      "doc": "",
+      "loc": 366,
+      "external_imports": [
+        "random",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Effect.isPhysicalDamage",
+      "kind": "function",
+      "name": "isPhysicalDamage",
+      "module": "engine.Effect"
+    },
+    {
+      "id": "module:engine.Equipment",
+      "kind": "module",
+      "name": "engine.Equipment",
+      "package": "engine",
+      "path": "src/engine/Equipment.py",
+      "doc": "",
+      "loc": 88,
+      "external_imports": [
+        "twisted"
+      ]
+    },
+    {
+      "id": "module:engine.Faction",
+      "kind": "module",
+      "name": "engine.Faction",
+      "package": "engine",
+      "path": "src/engine/Faction.py",
+      "doc": "",
+      "loc": 50,
+      "external_imports": []
+    },
+    {
+      "id": "function:engine.Faction.color",
+      "kind": "function",
+      "name": "color",
+      "module": "engine.Faction"
+    },
+    {
+      "id": "function:engine.Faction.friendly",
+      "kind": "function",
+      "name": "friendly",
+      "module": "engine.Faction"
+    },
+    {
+      "id": "function:engine.Faction.hostile",
+      "kind": "function",
+      "name": "hostile",
+      "module": "engine.Faction"
+    },
+    {
+      "id": "function:engine.Faction.playerControlled",
+      "kind": "function",
+      "name": "playerControlled",
+      "module": "engine.Faction"
+    },
+    {
+      "id": "function:engine.Faction.aiControlled",
+      "kind": "function",
+      "name": "aiControlled",
+      "module": "engine.Faction"
+    },
+    {
+      "id": "module:engine.Light",
+      "kind": "module",
+      "name": "engine.Light",
+      "package": "engine",
+      "path": "src/engine/Light.py",
+      "doc": "",
+      "loc": 133,
+      "external_imports": [
+        "random",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Light.defaultEnvironment",
+      "kind": "function",
+      "name": "defaultEnvironment",
+      "module": "engine.Light"
+    },
+    {
+      "id": "function:engine.Light.randomEnvironment",
+      "kind": "function",
+      "name": "randomEnvironment",
+      "module": "engine.Light"
+    },
+    {
+      "id": "module:engine.Map",
+      "kind": "module",
+      "name": "engine.Map",
+      "package": "engine",
+      "path": "src/engine/Map.py",
+      "doc": "",
+      "loc": 928,
+      "external_imports": [
+        "OpenGL",
+        "ast",
+        "logging",
+        "numpy",
+        "random",
+        "re",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Map.parse_color_data",
+      "kind": "function",
+      "name": "parse_color_data",
+      "module": "engine.Map"
+    },
+    {
+      "id": "function:engine.Map.connectedIgnoringUnits",
+      "kind": "function",
+      "name": "connectedIgnoringUnits",
+      "module": "engine.Map"
+    },
+    {
+      "id": "function:engine.Map.connected",
+      "kind": "function",
+      "name": "connected",
+      "module": "engine.Map"
+    },
+    {
+      "id": "module:engine.MapGenerator",
+      "kind": "module",
+      "name": "engine.MapGenerator",
+      "package": "engine",
+      "path": "src/engine/MapGenerator.py",
+      "doc": "",
+      "loc": 391,
+      "external_imports": [
+        "numpy",
+        "random"
+      ]
+    },
+    {
+      "id": "function:engine.MapGenerator.foreach",
+      "kind": "function",
+      "name": "foreach",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.properties",
+      "kind": "function",
+      "name": "properties",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.OutlinedRect",
+      "kind": "function",
+      "name": "OutlinedRect",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.All",
+      "kind": "function",
+      "name": "All",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.FilledRect",
+      "kind": "function",
+      "name": "FilledRect",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.OutlinedCircle",
+      "kind": "function",
+      "name": "OutlinedCircle",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.FilledCircle",
+      "kind": "function",
+      "name": "FilledCircle",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.Single",
+      "kind": "function",
+      "name": "Single",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.newMap",
+      "kind": "function",
+      "name": "newMap",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.raiseBy",
+      "kind": "function",
+      "name": "raiseBy",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.raiseTo",
+      "kind": "function",
+      "name": "raiseTo",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.lowerTo",
+      "kind": "function",
+      "name": "lowerTo",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.setTo",
+      "kind": "function",
+      "name": "setTo",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.erode",
+      "kind": "function",
+      "name": "erode",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.normalize",
+      "kind": "function",
+      "name": "normalize",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.hill",
+      "kind": "function",
+      "name": "hill",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.valley",
+      "kind": "function",
+      "name": "valley",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.ridge",
+      "kind": "function",
+      "name": "ridge",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.canyon",
+      "kind": "function",
+      "name": "canyon",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.river",
+      "kind": "function",
+      "name": "river",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.save",
+      "kind": "function",
+      "name": "save",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "function:engine.MapGenerator.generateRandom",
+      "kind": "function",
+      "name": "generateRandom",
+      "module": "engine.MapGenerator"
+    },
+    {
+      "id": "module:engine.Name",
+      "kind": "module",
+      "name": "engine.Name",
+      "package": "engine",
+      "path": "src/engine/Name.py",
+      "doc": "",
+      "loc": 51,
+      "external_imports": [
+        "random",
+        "re"
+      ]
+    },
+    {
+      "id": "function:engine.Name.random",
+      "kind": "function",
+      "name": "random",
+      "module": "engine.Name"
+    },
+    {
+      "id": "function:engine.Name._load",
+      "kind": "function",
+      "name": "_load",
+      "module": "engine.Name"
+    },
+    {
+      "id": "module:engine.Range",
+      "kind": "module",
+      "name": "engine.Range",
+      "package": "engine",
+      "path": "src/engine/Range.py",
+      "doc": "",
+      "loc": 109,
+      "external_imports": [
+        "copy",
+        "twisted"
+      ]
+    },
+    {
+      "id": "module:engine.Scenario",
+      "kind": "module",
+      "name": "engine.Scenario",
+      "package": "engine",
+      "path": "src/engine/Scenario.py",
+      "doc": "",
+      "loc": 155,
+      "external_imports": [
+        "random",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Scenario.blankMap",
+      "kind": "function",
+      "name": "blankMap",
+      "module": "engine.Scenario"
+    },
+    {
+      "id": "function:engine.Scenario.generateRandom",
+      "kind": "function",
+      "name": "generateRandom",
+      "module": "engine.Scenario"
+    },
+    {
+      "id": "module:engine.Unit",
+      "kind": "module",
+      "name": "engine.Unit",
+      "package": "engine",
+      "path": "src/engine/Unit.py",
+      "doc": "",
+      "loc": 441,
+      "external_imports": [
+        "logging",
+        "random",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:engine.Unit.genderAsString",
+      "kind": "function",
+      "name": "genderAsString",
+      "module": "engine.Unit"
+    },
+    {
+      "id": "module:engine.netsupport",
+      "kind": "module",
+      "name": "engine.netsupport",
+      "package": "engine",
+      "path": "src/engine/netsupport.py",
+      "doc": "",
+      "loc": 44,
+      "external_imports": [
+        "twisted"
+      ]
+    },
+    {
+      "id": "module:fsm",
+      "kind": "module",
+      "name": "fsm",
+      "package": "core",
+      "path": "src/fsm.py",
+      "doc": "",
+      "loc": 44,
+      "external_imports": []
+    },
+    {
+      "id": "module:gui.Camera",
+      "kind": "module",
+      "name": "gui.Camera",
+      "package": "gui",
+      "path": "src/gui/Camera.py",
+      "doc": "",
+      "loc": 222,
+      "external_imports": [
+        "math"
+      ]
+    },
+    {
+      "id": "module:gui.Clock",
+      "kind": "module",
+      "name": "gui.Clock",
+      "package": "gui",
+      "path": "src/gui/Clock.py",
+      "doc": "",
+      "loc": 54,
+      "external_imports": [
+        "time"
+      ]
+    },
+    {
+      "id": "function:gui.Clock.get",
+      "kind": "function",
+      "name": "get",
+      "module": "gui.Clock"
+    },
+    {
+      "id": "module:gui.Cursor",
+      "kind": "module",
+      "name": "gui.Cursor",
+      "package": "gui",
+      "path": "src/gui/Cursor.py",
+      "doc": "",
+      "loc": 102,
+      "external_imports": [
+        "OpenGL"
+      ]
+    },
+    {
+      "id": "module:gui.GLUtil",
+      "kind": "module",
+      "name": "gui.GLUtil",
+      "package": "gui",
+      "path": "src/gui/GLUtil.py",
+      "doc": "",
+      "loc": 619,
+      "external_imports": [
+        "OpenGL",
+        "logging",
+        "math",
+        "pygame",
+        "time"
+      ]
+    },
+    {
+      "id": "function:gui.GLUtil.mapTrans",
+      "kind": "function",
+      "name": "mapTrans",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.cross",
+      "kind": "function",
+      "name": "cross",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeCube",
+      "kind": "function",
+      "name": "makeCube",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeCubeTop",
+      "kind": "function",
+      "name": "makeCubeTop",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.drawAt",
+      "kind": "function",
+      "name": "drawAt",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.switchToOrthographicMode",
+      "kind": "function",
+      "name": "switchToOrthographicMode",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.switchFromOrthographicMode",
+      "kind": "function",
+      "name": "switchFromOrthographicMode",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.drawBar",
+      "kind": "function",
+      "name": "drawBar",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.createBorder",
+      "kind": "function",
+      "name": "createBorder",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.renderTextToTexture",
+      "kind": "function",
+      "name": "renderTextToTexture",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.drawText",
+      "kind": "function",
+      "name": "drawText",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeRect",
+      "kind": "function",
+      "name": "makeRect",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeTexture",
+      "kind": "function",
+      "name": "makeTexture",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.drawFloatingText",
+      "kind": "function",
+      "name": "drawFloatingText",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeUnit",
+      "kind": "function",
+      "name": "makeUnit",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "function:gui.GLUtil.makeStatus",
+      "kind": "function",
+      "name": "makeStatus",
+      "module": "gui.GLUtil"
+    },
+    {
+      "id": "module:gui.Geometry",
+      "kind": "module",
+      "name": "gui.Geometry",
+      "package": "gui",
+      "path": "src/gui/Geometry.py",
+      "doc": "",
+      "loc": 31,
+      "external_imports": [
+        "math"
+      ]
+    },
+    {
+      "id": "function:gui.Geometry.rotate2d",
+      "kind": "function",
+      "name": "rotate2d",
+      "module": "gui.Geometry"
+    },
+    {
+      "id": "module:gui.Input",
+      "kind": "module",
+      "name": "gui.Input",
+      "package": "gui",
+      "path": "src/gui/Input.py",
+      "doc": "",
+      "loc": 284,
+      "external_imports": [
+        "logging",
+        "pygame"
+      ]
+    },
+    {
+      "id": "function:gui.Input.get",
+      "kind": "function",
+      "name": "get",
+      "module": "gui.Input"
+    },
+    {
+      "id": "function:gui.Input.postUserEvent",
+      "kind": "function",
+      "name": "postUserEvent",
+      "module": "gui.Input"
+    },
+    {
+      "id": "module:gui.MainWindow",
+      "kind": "module",
+      "name": "gui.MainWindow",
+      "package": "gui",
+      "path": "src/gui/MainWindow.py",
+      "doc": "",
+      "loc": 197,
+      "external_imports": [
+        "OpenGL",
+        "logging",
+        "platform",
+        "pygame",
+        "time",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:gui.MainWindow.get",
+      "kind": "function",
+      "name": "get",
+      "module": "gui.MainWindow"
+    },
+    {
+      "id": "module:gui.MapEditorCursor",
+      "kind": "module",
+      "name": "gui.MapEditorCursor",
+      "package": "gui",
+      "path": "src/gui/MapEditorCursor.py",
+      "doc": "",
+      "loc": 308,
+      "external_imports": [
+        "OpenGL"
+      ]
+    },
+    {
+      "id": "module:gui.MapEditorGUI",
+      "kind": "module",
+      "name": "gui.MapEditorGUI",
+      "package": "gui",
+      "path": "src/gui/MapEditorGUI.py",
+      "doc": "",
+      "loc": 471,
+      "external_imports": [
+        "OpenGL",
+        "logging",
+        "math",
+        "pygame"
+      ]
+    },
+    {
+      "id": "function:gui.MapEditorGUI.get",
+      "kind": "function",
+      "name": "get",
+      "module": "gui.MapEditorGUI"
+    },
+    {
+      "id": "module:gui.MapEditorSprite",
+      "kind": "module",
+      "name": "gui.MapEditorSprite",
+      "package": "gui",
+      "path": "src/gui/MapEditorSprite.py",
+      "doc": "",
+      "loc": 440,
+      "external_imports": [
+        "OpenGL",
+        "pygame"
+      ]
+    },
+    {
+      "id": "module:gui.ScenarioChooser",
+      "kind": "module",
+      "name": "gui.ScenarioChooser",
+      "package": "gui",
+      "path": "src/gui/ScenarioChooser.py",
+      "doc": "",
+      "loc": 151,
+      "external_imports": [
+        "OpenGL",
+        "pygame"
+      ]
+    },
+    {
+      "id": "module:gui.ScenarioGUI",
+      "kind": "module",
+      "name": "gui.ScenarioGUI",
+      "package": "gui",
+      "path": "src/gui/ScenarioGUI.py",
+      "doc": "",
+      "loc": 793,
+      "external_imports": [
+        "OpenGL",
+        "logging",
+        "math",
+        "pygame",
+        "twisted"
+      ]
+    },
+    {
+      "id": "function:gui.ScenarioGUI.get",
+      "kind": "function",
+      "name": "get",
+      "module": "gui.ScenarioGUI"
+    },
+    {
+      "id": "module:gui.Sprite",
+      "kind": "module",
+      "name": "gui.Sprite",
+      "package": "gui",
+      "path": "src/gui/Sprite.py",
+      "doc": "",
+      "loc": 910,
+      "external_imports": [
+        "OpenGL",
+        "pygame",
+        "string",
+        "time"
+      ]
+    },
+    {
+      "id": "module:log",
+      "kind": "module",
+      "name": "log",
+      "package": "core",
+      "path": "src/log.py",
+      "doc": "",
+      "loc": 17,
+      "external_imports": [
+        "logging"
+      ]
+    },
+    {
+      "id": "function:log.setUpLogging",
+      "kind": "function",
+      "name": "setUpLogging",
+      "module": "log"
+    },
+    {
+      "id": "module:main",
+      "kind": "module",
+      "name": "main",
+      "package": "core",
+      "path": "src/main.py",
+      "doc": "",
+      "loc": 40,
+      "external_imports": [
+        "logging",
+        "optparse",
+        "os",
+        "pygame"
+      ]
+    },
+    {
+      "id": "function:main.main",
+      "kind": "function",
+      "name": "main",
+      "module": "main"
+    },
+    {
+      "id": "module:resources",
+      "kind": "module",
+      "name": "resources",
+      "package": "core",
+      "path": "src/resources.py",
+      "doc": "",
+      "loc": 482,
+      "external_imports": [
+        "OpenGL",
+        "logging",
+        "os",
+        "pygame",
+        "random",
+        "re",
+        "sys"
+      ]
+    },
+    {
+      "id": "function:resources._get_base_path",
+      "kind": "function",
+      "name": "_get_base_path",
+      "module": "resources"
+    },
+    {
+      "id": "function:resources._getFilename",
+      "kind": "function",
+      "name": "_getFilename",
+      "module": "resources"
+    },
+    {
+      "id": "function:resources.setCampaign",
+      "kind": "function",
+      "name": "setCampaign",
+      "module": "resources"
+    },
+    {
+      "id": "module:sound",
+      "kind": "module",
+      "name": "sound",
+      "package": "core",
+      "path": "src/sound.py",
+      "doc": "",
+      "loc": 57,
+      "external_imports": [
+        "pygame"
+      ]
+    },
+    {
+      "id": "function:sound._play",
+      "kind": "function",
+      "name": "_play",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.setQuiet",
+      "kind": "function",
+      "name": "setQuiet",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.toggleQuiet",
+      "kind": "function",
+      "name": "toggleQuiet",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.playMusic",
+      "kind": "function",
+      "name": "playMusic",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.playTune",
+      "kind": "function",
+      "name": "playTune",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.cursorClick",
+      "kind": "function",
+      "name": "cursorClick",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.cursorCancel",
+      "kind": "function",
+      "name": "cursorCancel",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.cursorMove",
+      "kind": "function",
+      "name": "cursorMove",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.cursorInvalid",
+      "kind": "function",
+      "name": "cursorInvalid",
+      "module": "sound"
+    },
+    {
+      "id": "function:sound.action",
+      "kind": "function",
+      "name": "action",
+      "module": "sound"
+    },
+    {
+      "id": "module:translate",
+      "kind": "module",
+      "name": "translate",
+      "package": "core",
+      "path": "src/translate.py",
+      "doc": "",
+      "loc": 28,
+      "external_imports": [
+        "builtins",
+        "gettext",
+        "os"
+      ]
+    },
+    {
+      "id": "module:twistedmain",
+      "kind": "module",
+      "name": "twistedmain",
+      "package": "core",
+      "path": "src/twistedmain.py",
+      "doc": "",
+      "loc": 614,
+      "external_imports": [
+        "logging",
+        "re",
+        "twisted",
+        "zope"
+      ]
+    },
+    {
+      "id": "function:twistedmain.runMapEditor",
+      "kind": "function",
+      "name": "runMapEditor",
+      "module": "twistedmain"
+    },
+    {
+      "id": "function:twistedmain.startGame",
+      "kind": "function",
+      "name": "startGame",
+      "module": "twistedmain"
+    },
+    {
+      "id": "function:twistedmain.run",
+      "kind": "function",
+      "name": "run",
+      "module": "twistedmain"
+    },
+    {
+      "id": "module:util",
+      "kind": "module",
+      "name": "util",
+      "package": "core",
+      "path": "src/util.py",
+      "doc": "",
+      "loc": 21,
+      "external_imports": [
+        "logging",
+        "traceback"
+      ]
+    },
+    {
+      "id": "function:util.sign",
+      "kind": "function",
+      "name": "sign",
+      "module": "util"
+    },
+    {
+      "id": "function:util.delay",
+      "kind": "function",
+      "name": "delay",
+      "module": "util"
+    },
+    {
+      "id": "class:ai.UnitAI.TemporaryUnitPosition",
+      "kind": "class",
+      "name": "TemporaryUnitPosition",
+      "module": "ai.UnitAI",
+      "doc": "Context manager for safely simulating unit position changes during AI calculations.",
+      "line": 72,
+      "methods": [
+        "__init__",
+        "__enter__",
+        "__exit__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.Base",
+      "kind": "class",
+      "name": "Base",
+      "module": "ai.UnitAI",
+      "doc": "Base is the base class of all unit AIs. By default, it",
+      "line": 118,
+      "methods": [
+        "__init__",
+        "result",
+        "__call__",
+        "calc"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.TurnEvaluator",
+      "kind": "class",
+      "name": "TurnEvaluator",
+      "module": "ai.UnitAI",
+      "doc": "",
+      "line": 151,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.HealWeakest",
+      "kind": "class",
+      "name": "HealWeakest",
+      "module": "ai.UnitAI",
+      "doc": "",
+      "line": 159,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.DamageWeakest",
+      "kind": "class",
+      "name": "DamageWeakest",
+      "module": "ai.UnitAI",
+      "doc": "",
+      "line": 216,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.MoveToWeakest",
+      "kind": "class",
+      "name": "MoveToWeakest",
+      "module": "ai.UnitAI",
+      "doc": "",
+      "line": 307,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:ai.UnitAI.Exhaustive",
+      "kind": "class",
+      "name": "Exhaustive",
+      "module": "ai.UnitAI",
+      "doc": "",
+      "line": 344,
+      "methods": [
+        "__init__",
+        "allAbilities",
+        "generateAllTurns",
+        "calc",
+        "getFacing",
+        "getTurn"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Ability.Ability",
+      "kind": "class",
+      "name": "Ability",
+      "module": "engine.Ability",
+      "doc": "",
+      "line": 37,
+      "methods": [
+        "setCopyableState",
+        "__init__",
+        "description",
+        "sound",
+        "targetType",
+        "range",
+        "rangeObject",
+        "requiredWeapons",
+        "aoe",
+        "correctWeapon",
+        "hasEffect",
+        "affectedUnits",
+        "effects",
+        "cost",
+        "name",
+        "__str__",
+        "__repr__"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Battle.Battle",
+      "kind": "class",
+      "name": "Battle",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 36,
+      "methods": [
+        "__init__",
+        "units",
+        "map",
+        "_step",
+        "_statusCheck",
+        "_slowActionCharging",
+        "_slowActionResolution",
+        "_ctCharging",
+        "_activeTimeResolution",
+        "unitMoved",
+        "unitCanceled",
+        "unitActed",
+        "unitSetFacing",
+        "unitDone",
+        "status",
+        "pickNextUnit"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Battle.UnitTurn",
+      "kind": "class",
+      "name": "UnitTurn",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 246,
+      "methods": [
+        "__init__",
+        "turnOrder",
+        "moveTarget",
+        "setMoveTarget",
+        "action",
+        "actionTarget",
+        "facing",
+        "__repr__",
+        "__str__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Battle.EndingCondition",
+      "kind": "class",
+      "name": "EndingCondition",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 298,
+      "methods": [
+        "__call__",
+        "description"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Battle.DefeatAllEnemies",
+      "kind": "class",
+      "name": "DefeatAllEnemies",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 308,
+      "methods": [
+        "__call__",
+        "description"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Battle.PlayerDefeated",
+      "kind": "class",
+      "name": "PlayerDefeated",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 323,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Battle.LastTeamStanding",
+      "kind": "class",
+      "name": "LastTeamStanding",
+      "module": "engine.Battle",
+      "doc": "",
+      "line": 334,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Class.Class",
+      "kind": "class",
+      "name": "Class",
+      "module": "engine.Class",
+      "doc": "",
+      "line": 25,
+      "methods": [
+        "__init__",
+        "createUnit",
+        "levelUp",
+        "addAbilities",
+        "equip",
+        "spriteRoot"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Effect.Effect",
+      "kind": "class",
+      "name": "Effect",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 52,
+      "methods": [
+        "affect",
+        "attackIsFromRear",
+        "attackIsFromFront",
+        "attackIsFromSide",
+        "calcAttackAndDefense",
+        "estimateDamage",
+        "calcDamage",
+        "getDefenders"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Effect.EffectResult",
+      "kind": "class",
+      "name": "EffectResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 156,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Effect.MissResult",
+      "kind": "class",
+      "name": "MissResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 162,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.DamageResult",
+      "kind": "class",
+      "name": "DamageResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 167,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.DamageSPResult",
+      "kind": "class",
+      "name": "DamageSPResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 173,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.HealResult",
+      "kind": "class",
+      "name": "HealResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 179,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.StatusResult",
+      "kind": "class",
+      "name": "StatusResult",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 185,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.Damage",
+      "kind": "class",
+      "name": "Damage",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 193,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.DamageSP",
+      "kind": "class",
+      "name": "DamageSP",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 216,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.DrainLife",
+      "kind": "class",
+      "name": "DrainLife",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 239,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.HealFriendlyDamageHostile",
+      "kind": "class",
+      "name": "HealFriendlyDamageHostile",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 271,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.Healing",
+      "kind": "class",
+      "name": "Healing",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 302,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.Defend",
+      "kind": "class",
+      "name": "Defend",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 321,
+      "methods": [
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Effect.Status",
+      "kind": "class",
+      "name": "Status",
+      "module": "engine.Effect",
+      "doc": "",
+      "line": 335,
+      "methods": [
+        "beneficial",
+        "isColor",
+        "__init__",
+        "affect"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Equipment.Equipment",
+      "kind": "class",
+      "name": "Equipment",
+      "module": "engine.Equipment",
+      "doc": "",
+      "line": 27,
+      "methods": [
+        "__init__",
+        "name",
+        "mhp",
+        "msp",
+        "watk",
+        "wdef",
+        "matk",
+        "mdef",
+        "move",
+        "jump",
+        "speed",
+        "setSprites",
+        "getSprites"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Equipment.Weapon",
+      "kind": "class",
+      "name": "Weapon",
+      "module": "engine.Equipment",
+      "doc": "",
+      "line": 80,
+      "methods": [
+        "__init__",
+        "weaponType",
+        "attack"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Equipment.Armor",
+      "kind": "class",
+      "name": "Armor",
+      "module": "engine.Equipment",
+      "doc": "",
+      "line": 111,
+      "methods": [],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Faction.Faction",
+      "kind": "class",
+      "name": "Faction",
+      "module": "engine.Faction",
+      "doc": "",
+      "line": 25,
+      "methods": [
+        "__init__",
+        "faction",
+        "units"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Light.Light",
+      "kind": "class",
+      "name": "Light",
+      "module": "engine.Light",
+      "doc": "",
+      "line": 25,
+      "methods": [
+        "__init__",
+        "position",
+        "ambient",
+        "diffuse",
+        "specular",
+        "constantAttenuation",
+        "linearAttenuation",
+        "quadraticAttenuation"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Light.Foo",
+      "kind": "class",
+      "name": "Foo",
+      "module": "engine.Light",
+      "doc": "",
+      "line": 75,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Light.White",
+      "kind": "class",
+      "name": "White",
+      "module": "engine.Light",
+      "doc": "",
+      "line": 80,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Light.Point",
+      "kind": "class",
+      "name": "Point",
+      "module": "engine.Light",
+      "doc": "",
+      "line": 90,
+      "methods": [],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Light.Environment",
+      "kind": "class",
+      "name": "Environment",
+      "module": "engine.Light",
+      "doc": "",
+      "line": 94,
+      "methods": [
+        "__init__",
+        "addLight",
+        "setFog",
+        "setAmbientLight",
+        "lights",
+        "ambientLight",
+        "fogEnabled",
+        "fogColor",
+        "fogStart",
+        "fogEnd",
+        "fogDensity",
+        "skyColor",
+        "setSkyColor"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Map.MapSquare",
+      "kind": "class",
+      "name": "MapSquare",
+      "module": "engine.Map",
+      "doc": "",
+      "line": 73,
+      "methods": [
+        "__init__",
+        "minHeight",
+        "maxHeight",
+        "setUnit",
+        "posn2d",
+        "posn",
+        "__repr__",
+        "height",
+        "texture",
+        "tagName",
+        "setTag",
+        "setTexture",
+        "setColor",
+        "plusHeight",
+        "minusHeight"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Map.Map",
+      "kind": "class",
+      "name": "Map",
+      "module": "engine.Map",
+      "doc": "",
+      "line": 231,
+      "methods": [
+        "__init__",
+        "smoothColors",
+        "save",
+        "getStateToCopy",
+        "setCopyableState",
+        "setLoadString",
+        "loadString",
+        "squareExists",
+        "resetSearchCosts",
+        "getPotentialConnections",
+        "bfs",
+        "closestUnits",
+        "reachable",
+        "fillDistances",
+        "shortestPath",
+        "changeCorner",
+        "index",
+        "__repr__"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Map.MapIO",
+      "kind": "class",
+      "name": "MapIO",
+      "module": "engine.Map",
+      "doc": "",
+      "line": 847,
+      "methods": [
+        "load",
+        "loadString"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Range.Range",
+      "kind": "class",
+      "name": "Range",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 24,
+      "methods": [
+        "__init__",
+        "__call__",
+        "affectedSquares"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Range.Line",
+      "kind": "class",
+      "name": "Line",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 49,
+      "methods": [
+        "__init__",
+        "affectedSquares"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Range.Cross",
+      "kind": "class",
+      "name": "Cross",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 72,
+      "methods": [
+        "__init__",
+        "affectedSquares"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Range.Diamond",
+      "kind": "class",
+      "name": "Diamond",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 90,
+      "methods": [
+        "__init__",
+        "affectedSquares",
+        "__str__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Range.DiamondExtend",
+      "kind": "class",
+      "name": "DiamondExtend",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 113,
+      "methods": [
+        "__init__",
+        "affectedSquares"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Range.Single",
+      "kind": "class",
+      "name": "Single",
+      "module": "engine.Range",
+      "doc": "",
+      "line": 126,
+      "methods": [
+        "affectedSquares"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Scenario.Scenario",
+      "kind": "class",
+      "name": "Scenario",
+      "module": "engine.Scenario",
+      "doc": "",
+      "line": 30,
+      "methods": [
+        "__init__",
+        "map",
+        "units",
+        "lightEnvironment",
+        "battle",
+        "ai",
+        "music",
+        "unitFromID"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Scenario.ScenarioIO",
+      "kind": "class",
+      "name": "ScenarioIO",
+      "module": "engine.Scenario",
+      "doc": "",
+      "line": 132,
+      "methods": [
+        "load"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:engine.Unit.Unit",
+      "kind": "class",
+      "name": "Unit",
+      "module": "engine.Unit",
+      "doc": "",
+      "line": 49,
+      "methods": [
+        "update",
+        "__init__",
+        "setMoveActCancel",
+        "setFacing",
+        "facing",
+        "setSprites",
+        "_loadSprites",
+        "getSprites",
+        "setOverSprites",
+        "getOverSprites",
+        "battleInit",
+        "setPosn",
+        "posn",
+        "posn3d",
+        "readyTurn",
+        "canceled",
+        "x",
+        "y",
+        "z",
+        "hp",
+        "sp",
+        "setSP",
+        "equipment",
+        "mhp",
+        "msp",
+        "watk",
+        "wdef",
+        "matk",
+        "mdef",
+        "speed",
+        "move",
+        "jump",
+        "name",
+        "level",
+        "className",
+        "faction",
+        "setFaction",
+        "setCT",
+        "ct",
+        "addDefender",
+        "removeDefender",
+        "defenders",
+        "defending",
+        "damageHP",
+        "damageSP",
+        "slow",
+        "alive",
+        "active",
+        "getAI",
+        "__str__",
+        "__repr__",
+        "addAbility",
+        "incrementClassLevel",
+        "classLevel",
+        "abilities",
+        "allAbilities",
+        "attack",
+        "equipWeapon",
+        "weapon",
+        "equipArmor",
+        "armor",
+        "evade",
+        "hasMove",
+        "hasAct",
+        "hasCancel",
+        "canMove",
+        "canAct",
+        "addStatusEffect",
+        "statusEffects",
+        "statusEffectMult"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:engine.Unit.StatusEffects",
+      "kind": "class",
+      "name": "StatusEffects",
+      "module": "engine.Unit",
+      "doc": "",
+      "line": 487,
+      "methods": [
+        "__init__",
+        "clear",
+        "has",
+        "duration",
+        "power",
+        "add",
+        "update",
+        "color",
+        "texture"
+      ],
+      "external_bases": [
+        "pb.Copyable",
+        "pb.RemoteCopy"
+      ]
+    },
+    {
+      "id": "class:fsm.FSM",
+      "kind": "class",
+      "name": "FSM",
+      "module": "fsm",
+      "doc": "",
+      "line": 21,
+      "methods": [
+        "__init__",
+        "addEntryHook",
+        "addExitHook",
+        "trans"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Camera.Camera",
+      "kind": "class",
+      "name": "Camera",
+      "module": "gui.Camera",
+      "doc": "",
+      "line": 26,
+      "methods": [
+        "__init__",
+        "reset",
+        "changed",
+        "get",
+        "offset",
+        "height",
+        "setHeight",
+        "setOffset",
+        "scrollTo",
+        "pitch",
+        "setPitch",
+        "change",
+        "rotate",
+        "setRotation",
+        "mapRotation",
+        "set",
+        "adjustCamera",
+        "_adjustTranslation",
+        "scrolling",
+        "_adjustRotation",
+        "sortSprites",
+        "cursorMovement",
+        "getCorner",
+        "mouseMovement"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Clock.Clock",
+      "kind": "class",
+      "name": "Clock",
+      "module": "gui.Clock",
+      "doc": "",
+      "line": 24,
+      "methods": [
+        "__init__",
+        "tick",
+        "getFPS",
+        "getTime",
+        "getTimeElapsed"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Cursor.Cursor",
+      "kind": "class",
+      "name": "Cursor",
+      "module": "gui.Cursor",
+      "doc": "",
+      "line": 28,
+      "methods": [
+        "__init__",
+        "setPosn",
+        "draw",
+        "mapSquare",
+        "posn",
+        "posn3d",
+        "selectUnit",
+        "hoveredUnit",
+        "setFacingMode",
+        "move",
+        "moveUp",
+        "moveDown",
+        "moveLeft",
+        "moveRight"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Geometry.Point3D",
+      "kind": "class",
+      "name": "Point3D",
+      "module": "gui.Geometry",
+      "doc": "",
+      "line": 23,
+      "methods": [
+        "__init__",
+        "asTuple"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Input.Event",
+      "kind": "class",
+      "name": "Event",
+      "module": "gui.Input",
+      "doc": "",
+      "line": 65,
+      "methods": [
+        "__init__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Input.Input",
+      "kind": "class",
+      "name": "Input",
+      "module": "gui.Input",
+      "doc": "",
+      "line": 76,
+      "methods": [
+        "__init__",
+        "joyButton",
+        "joyHat",
+        "joyAxis",
+        "setInDialog",
+        "update",
+        "updateGuiEvents",
+        "buttonPressed"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MainWindow.MainWindow",
+      "kind": "class",
+      "name": "MainWindow",
+      "module": "gui.MainWindow",
+      "doc": "",
+      "line": 45,
+      "methods": [
+        "__init__",
+        "size",
+        "fps",
+        "update",
+        "_update",
+        "setDelegate",
+        "_chooseDisplaySize",
+        "_setDisplayMode",
+        "_resize",
+        "_initOpenGL",
+        "_handleEvents",
+        "_handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MainWindow.MainWindowDelegate",
+      "kind": "class",
+      "name": "MainWindowDelegate",
+      "module": "gui.MainWindow",
+      "doc": "",
+      "line": 218,
+      "methods": [
+        "update",
+        "handleEvent",
+        "resize"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorCursor.MapEditorCursor",
+      "kind": "class",
+      "name": "MapEditorCursor",
+      "module": "gui.MapEditorCursor",
+      "doc": "",
+      "line": 37,
+      "methods": [
+        "__init__",
+        "setPosn",
+        "disable",
+        "draw",
+        "mapSquare",
+        "posn3d",
+        "selectUnit",
+        "selectSquare",
+        "unclick",
+        "click",
+        "update",
+        "canMove",
+        "move",
+        "moveUp",
+        "moveDown",
+        "moveLeft",
+        "moveRight",
+        "hoveredUnit",
+        "plusTileHeight",
+        "minusTileHeight",
+        "plusCenterHeight",
+        "minusCenterHeight",
+        "setHeight",
+        "plusCornerHeight",
+        "minusCornerHeight",
+        "raiseWater",
+        "lowerWater",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorGUI.MapEditorGUI",
+      "kind": "class",
+      "name": "MapEditorGUI",
+      "module": "gui.MapEditorGUI",
+      "doc": "",
+      "line": 47,
+      "methods": [
+        "__init__",
+        "__del__",
+        "setCenteredText",
+        "clearCenteredText",
+        "setTopText",
+        "clearTopText",
+        "topMenu",
+        "tagMenu",
+        "chooseTagMenu",
+        "editTagDialog",
+        "addTagDialog",
+        "saveDialog",
+        "tileInfoDisplayer",
+        "highlightAlpha",
+        "scrollTo",
+        "scrolling",
+        "saveMap",
+        "compileMapSquareList",
+        "setLighting",
+        "resize",
+        "setCursorPosn",
+        "setTopMenuShowing",
+        "setHighlights",
+        "clearHighlights",
+        "setUpCamera",
+        "drawBG",
+        "update",
+        "updateMap",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TileDataDisplayer",
+      "kind": "class",
+      "name": "TileDataDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 39,
+      "methods": [
+        "__init__",
+        "getFont",
+        "getBorder"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TileColorDisplayer",
+      "kind": "class",
+      "name": "TileColorDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 51,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TileTextureDisplayer",
+      "kind": "class",
+      "name": "TileTextureDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 62,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TileTagDisplayer",
+      "kind": "class",
+      "name": "TileTagDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 72,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.FirstHeightDisplayer",
+      "kind": "class",
+      "name": "FirstHeightDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 78,
+      "methods": [
+        "__init__",
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.SecondHeightDisplayer",
+      "kind": "class",
+      "name": "SecondHeightDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 89,
+      "methods": [
+        "__init__",
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.ThirdHeightDisplayer",
+      "kind": "class",
+      "name": "ThirdHeightDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 104,
+      "methods": [
+        "__init__",
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TopMenu",
+      "kind": "class",
+      "name": "TopMenu",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 115,
+      "methods": [
+        "__init__",
+        "setEnabled",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TagMenu",
+      "kind": "class",
+      "name": "TagMenu",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 172,
+      "methods": [
+        "__init__",
+        "setEnabled",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TagMenu2",
+      "kind": "class",
+      "name": "TagMenu2",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 202,
+      "methods": [
+        "__init__",
+        "setEnabled",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.TileInfoDisplayer",
+      "kind": "class",
+      "name": "TileInfoDisplayer",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 233,
+      "methods": [
+        "__init__",
+        "update",
+        "evalResult",
+        "draw",
+        "setShowing",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.Dialog",
+      "kind": "class",
+      "name": "Dialog",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 307,
+      "methods": [
+        "__init__",
+        "update",
+        "evalResult",
+        "draw",
+        "setShowing",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.AddTagDialog",
+      "kind": "class",
+      "name": "AddTagDialog",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 371,
+      "methods": [
+        "__init__",
+        "evalResult"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.EditTagDialog",
+      "kind": "class",
+      "name": "EditTagDialog",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 413,
+      "methods": [
+        "__init__",
+        "setShowing",
+        "evalResult"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.SaveDialog",
+      "kind": "class",
+      "name": "SaveDialog",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 484,
+      "methods": [
+        "__init__",
+        "evalResult"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.MapEditorSprite.InputBox",
+      "kind": "class",
+      "name": "InputBox",
+      "module": "gui.MapEditorSprite",
+      "doc": "",
+      "line": 499,
+      "methods": [
+        "__init__",
+        "append",
+        "delChar"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.ScenarioChooser.ScenarioChooser",
+      "kind": "class",
+      "name": "ScenarioChooser",
+      "module": "gui.ScenarioChooser",
+      "doc": "",
+      "line": 31,
+      "methods": [
+        "__init__",
+        "result",
+        "update",
+        "handleEvent",
+        "resize"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.ScenarioChooser.ScenarioChooserMenu",
+      "kind": "class",
+      "name": "ScenarioChooserMenu",
+      "module": "gui.ScenarioChooser",
+      "doc": "",
+      "line": 123,
+      "methods": [
+        "__init__",
+        "result",
+        "update"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.ScenarioChooser.ScenarioChooserFSM",
+      "kind": "class",
+      "name": "ScenarioChooserFSM",
+      "module": "gui.ScenarioChooser",
+      "doc": "",
+      "line": 137,
+      "methods": [
+        "__init__",
+        "doNothing",
+        "enter_multiplayer",
+        "enter_scenario",
+        "enter_hostGame",
+        "enter_serverAddress"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.ScenarioGUI.ScenarioGUI",
+      "kind": "class",
+      "name": "ScenarioGUI",
+      "module": "gui.ScenarioGUI",
+      "doc": "",
+      "line": 51,
+      "methods": [
+        "__init__",
+        "__del__",
+        "moveUnit",
+        "activateUnit",
+        "moveActCancel",
+        "done",
+        "showMessage",
+        "showActionPerformed",
+        "showActionResults",
+        "showEffect",
+        "setCenteredText",
+        "clearCenteredText",
+        "setTopText",
+        "clearTopText",
+        "showAbilityRange",
+        "showAbilityAOE",
+        "showMovementRange",
+        "battleMenu",
+        "specialMenu",
+        "highlightAlpha",
+        "scrollTo",
+        "scrolling",
+        "unitMoving",
+        "_updateUnitSlide",
+        "compileMapSquareList",
+        "setLighting",
+        "resize",
+        "setCursorPosn",
+        "setBattleMenuShowing",
+        "setHighlights",
+        "clearHighlights",
+        "setUpCamera",
+        "drawBG",
+        "update",
+        "unitDisplayer",
+        "handleEvent"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.ScenarioGUI.ScenarioGUIFSM",
+      "kind": "class",
+      "name": "ScenarioGUIFSM",
+      "module": "gui.ScenarioGUI",
+      "doc": "",
+      "line": 752,
+      "methods": [
+        "__init__",
+        "checkMoveResult",
+        "checkActResult",
+        "checkFacingResult",
+        "accept",
+        "cancel",
+        "doNothing",
+        "clearEverything",
+        "enter_disabled",
+        "enter_roaming",
+        "cancel_roaming",
+        "enter_opponentTurn",
+        "cancel_opponentTurn",
+        "accept_opponentTurn",
+        "enter_battleMenu",
+        "accept_battleMenu",
+        "cancel_battleMenu",
+        "enter_specialMenu",
+        "accept_specialMenu",
+        "cancel_specialMenu",
+        "enter_abilityTarget",
+        "accept_abilityTarget",
+        "cancel_abilityTarget",
+        "enter_moveTarget",
+        "accept_moveTarget",
+        "cancel_moveTarget",
+        "enter_facing",
+        "accept_facing",
+        "cancel_facing",
+        "exit_facing"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.Sprite",
+      "kind": "class",
+      "name": "Sprite",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 36,
+      "methods": [
+        "__init__",
+        "draw",
+        "update"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitDisplayer",
+      "kind": "class",
+      "name": "UnitDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 47,
+      "methods": [
+        "__init__",
+        "isActing",
+        "Acting",
+        "notActing",
+        "__del__",
+        "update",
+        "draw",
+        "addAnimation",
+        "resetSlide",
+        "slide",
+        "setPosn",
+        "getX",
+        "getY",
+        "getZ"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.TextDisplayer",
+      "kind": "class",
+      "name": "TextDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 313,
+      "methods": [
+        "__init__",
+        "__del__",
+        "getText",
+        "setText",
+        "getFont",
+        "setFont",
+        "getColor",
+        "setColor",
+        "getBorder",
+        "setBorder",
+        "getPosn",
+        "setPosn",
+        "getBackgroundColor",
+        "getCenterX",
+        "getCenterY",
+        "setCenterX",
+        "setCenterY",
+        "toggle",
+        "setEnabled",
+        "invalidate",
+        "draw"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.FPSDisplayer",
+      "kind": "class",
+      "name": "FPSDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 454,
+      "methods": [
+        "__init__",
+        "getText",
+        "getFont",
+        "getPosn",
+        "getBackgroundColor"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.CursorPosnDisplayer",
+      "kind": "class",
+      "name": "CursorPosnDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 472,
+      "methods": [
+        "__init__",
+        "getFont",
+        "getPosn",
+        "getText",
+        "getBorder"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitStatsDisplayer",
+      "kind": "class",
+      "name": "UnitStatsDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 491,
+      "methods": [
+        "__init__",
+        "getFont",
+        "getBorder"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitNameDisplayer",
+      "kind": "class",
+      "name": "UnitNameDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 504,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitBarDisplayer",
+      "kind": "class",
+      "name": "UnitBarDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 513,
+      "methods": [
+        "__init__",
+        "draw"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitHPDisplayer",
+      "kind": "class",
+      "name": "UnitHPDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 529,
+      "methods": [
+        "__init__",
+        "getText",
+        "draw"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitSPDisplayer",
+      "kind": "class",
+      "name": "UnitSPDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 548,
+      "methods": [
+        "__init__",
+        "getText",
+        "draw"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitMovementDisplayer",
+      "kind": "class",
+      "name": "UnitMovementDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 567,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitPhysicalDisplayer",
+      "kind": "class",
+      "name": "UnitPhysicalDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 576,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitMagicalDisplayer",
+      "kind": "class",
+      "name": "UnitMagicalDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 585,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitClassDisplayer",
+      "kind": "class",
+      "name": "UnitClassDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 594,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.UnitSpeedDisplayer",
+      "kind": "class",
+      "name": "UnitSpeedDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 603,
+      "methods": [
+        "getText"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.TextDisplayerBox",
+      "kind": "class",
+      "name": "TextDisplayerBox",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 612,
+      "methods": [
+        "__init__",
+        "__del__",
+        "size",
+        "makeBorder",
+        "draw",
+        "setPosn",
+        "invalidate"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.TextMenu",
+      "kind": "class",
+      "name": "TextMenu",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 702,
+      "methods": [
+        "__init__",
+        "size",
+        "__del__",
+        "setSelectedOption",
+        "setOptions",
+        "setOptionEnabled",
+        "clearOptions",
+        "draw",
+        "moveUp",
+        "moveUpHelper",
+        "moveDown",
+        "moveDownHelper",
+        "getSelection",
+        "setEnabled",
+        "setShowing",
+        "enabled",
+        "showing",
+        "setPosn",
+        "invalidate"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.BattleMenu",
+      "kind": "class",
+      "name": "BattleMenu",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 828,
+      "methods": [
+        "__init__",
+        "setSelectedUnit",
+        "moveActCancel"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.SpecialMenu",
+      "kind": "class",
+      "name": "SpecialMenu",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 855,
+      "methods": [
+        "__init__",
+        "setSelectedUnit",
+        "getSelection",
+        "update"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.Animation",
+      "kind": "class",
+      "name": "Animation",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 899,
+      "methods": [
+        "done"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.DamageDisplayer",
+      "kind": "class",
+      "name": "DamageDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 912,
+      "methods": [
+        "__init__",
+        "__del__",
+        "update",
+        "draw",
+        "done"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.AttackDisplayer",
+      "kind": "class",
+      "name": "AttackDisplayer",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 958,
+      "methods": [
+        "__init__",
+        "__del__",
+        "update",
+        "draw",
+        "done"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:gui.Sprite.TextEntry",
+      "kind": "class",
+      "name": "TextEntry",
+      "module": "gui.Sprite",
+      "doc": "",
+      "line": 1056,
+      "methods": [
+        "__init__",
+        "setEnabled",
+        "result",
+        "addEvent",
+        "update"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:log.CustomLogger",
+      "kind": "class",
+      "name": "CustomLogger",
+      "module": "log",
+      "doc": "",
+      "line": 21,
+      "methods": [
+        "debug2"
+      ],
+      "external_bases": [
+        "logging.Logger"
+      ]
+    },
+    {
+      "id": "class:resources.FontLoader",
+      "kind": "class",
+      "name": "FontLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 68,
+      "methods": [
+        "__init__",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.MapLoader",
+      "kind": "class",
+      "name": "MapLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 91,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.ImageLoader",
+      "kind": "class",
+      "name": "ImageLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 107,
+      "methods": [
+        "__init__",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.TextureLoader",
+      "kind": "class",
+      "name": "TextureLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 123,
+      "methods": [
+        "__init__",
+        "setTextureSize",
+        "__call__",
+        "clear",
+        "__del__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.ScenarioLoader",
+      "kind": "class",
+      "name": "ScenarioLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 174,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.AbilityLoader",
+      "kind": "class",
+      "name": "AbilityLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 191,
+      "methods": [
+        "__init__",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.ClassLoader",
+      "kind": "class",
+      "name": "ClassLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 261,
+      "methods": [
+        "__init__",
+        "_loadClass",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.UnitLoader",
+      "kind": "class",
+      "name": "UnitLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 325,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.EquipmentLoader",
+      "kind": "class",
+      "name": "EquipmentLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 397,
+      "methods": [
+        "__init__",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.MusicLoader",
+      "kind": "class",
+      "name": "MusicLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 462,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.TextLoader",
+      "kind": "class",
+      "name": "TextLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 480,
+      "methods": [
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.SoundLoader",
+      "kind": "class",
+      "name": "SoundLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 491,
+      "methods": [
+        "__init__",
+        "__call__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:resources.SpriteConfigLoader",
+      "kind": "class",
+      "name": "SpriteConfigLoader",
+      "module": "resources",
+      "doc": "",
+      "line": 510,
+      "methods": [
+        "__init__",
+        "spriteTypes",
+        "hand",
+        "grip"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:translate.Translate",
+      "kind": "class",
+      "name": "Translate",
+      "module": "translate",
+      "doc": "",
+      "line": 6,
+      "methods": [
+        "getLanguageDict",
+        "__init__",
+        "setLanguage"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.Access",
+      "kind": "class",
+      "name": "Access",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 24,
+      "methods": [],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameObserver",
+      "kind": "class",
+      "name": "GameObserver",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 30,
+      "methods": [
+        "__init__",
+        "perspective_info",
+        "perspective_chat",
+        "perspective_readyForGame",
+        "perspective_readyToDisplay"
+      ],
+      "external_bases": [
+        "pb.Avatar"
+      ]
+    },
+    {
+      "id": "class:twistedmain.GamePlayer",
+      "kind": "class",
+      "name": "GamePlayer",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 58,
+      "methods": [
+        "__init__",
+        "perspective_unitMove",
+        "perspective_unitAct",
+        "perspective_unitFacing"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameCreator",
+      "kind": "class",
+      "name": "GameCreator",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 73,
+      "methods": [
+        "__init__",
+        "perspective_setScenario"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameClient",
+      "kind": "class",
+      "name": "GameClient",
+      "module": "twistedmain",
+      "doc": "Client interface. Handles talking to the server but doesn't",
+      "line": 86,
+      "methods": [
+        "__init__",
+        "start",
+        "remote_startGame",
+        "remote_chat",
+        "remote_serverMessage",
+        "remote_unitBeginTurn",
+        "remote_unitUpdate",
+        "remote_unitMoveActCancel",
+        "remote_unitMoved",
+        "remote_unitSetFacing",
+        "remote_actionResults",
+        "remote_actionPerformed",
+        "remote",
+        "error",
+        "gotPerspective",
+        "gotInfo"
+      ],
+      "external_bases": [
+        "pb.Referenceable"
+      ]
+    },
+    {
+      "id": "class:twistedmain.InteractiveClient",
+      "kind": "class",
+      "name": "InteractiveClient",
+      "module": "twistedmain",
+      "doc": "Interactive client -- the normal player GUI.",
+      "line": 212,
+      "methods": [
+        "__init__",
+        "gotInfo",
+        "gotPerspective",
+        "remote_startGame",
+        "remote_chat",
+        "remote_serverMessage",
+        "remote_unitBeginTurn",
+        "remote_unitMoveActCancel",
+        "remote_unitMoved",
+        "remote_unitSetFacing",
+        "remote_actionResults",
+        "remote_actionPerformed"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.AIFSM",
+      "kind": "class",
+      "name": "AIFSM",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 284,
+      "methods": [
+        "__init__",
+        "enter_begin",
+        "enter_calc",
+        "executeTurn",
+        "doNothing"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.AIClient",
+      "kind": "class",
+      "name": "AIClient",
+      "module": "twistedmain",
+      "doc": "AI client -- just sends moves to the server when needed.",
+      "line": 325,
+      "methods": [
+        "__init__",
+        "remote_unitBeginTurn",
+        "remote_unitMoveActCancel",
+        "remote_unitMoved",
+        "remote_unitSetFacing",
+        "remote_actionResults"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.UnitState",
+      "kind": "class",
+      "name": "UnitState",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 358,
+      "methods": [
+        "__init__",
+        "moveActCancel"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameState",
+      "kind": "class",
+      "name": "GameState",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 368,
+      "methods": [
+        "__init__",
+        "_validate_name",
+        "setScenario",
+        "update",
+        "_update",
+        "startGame",
+        "clientsReadyToDisplay",
+        "setClientsReadyToDisplay",
+        "unitController",
+        "unitMove",
+        "sendBattleStatus",
+        "sendUnitMove",
+        "unitAct",
+        "sendUnitAct",
+        "unitFacing",
+        "sendUnitFacing"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.ClientInfo",
+      "kind": "class",
+      "name": "ClientInfo",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 556,
+      "methods": [
+        "__init__",
+        "__str__"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.UsernameChecker",
+      "kind": "class",
+      "name": "UsernameChecker",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 574,
+      "methods": [
+        "__init__",
+        "requestAvatarId"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameServer",
+      "kind": "class",
+      "name": "GameServer",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 597,
+      "methods": [
+        "__init__",
+        "start",
+        "error",
+        "requestAvatar",
+        "handleDisconnect",
+        "remote",
+        "remoteAll"
+      ],
+      "external_bases": []
+    },
+    {
+      "id": "class:twistedmain.GameServerException",
+      "kind": "class",
+      "name": "GameServerException",
+      "module": "twistedmain",
+      "doc": "",
+      "line": 685,
+      "methods": [],
+      "external_bases": [
+        "Exception"
+      ]
+    },
+    {
+      "id": "class:util.Lock",
+      "kind": "class",
+      "name": "Lock",
+      "module": "util",
+      "doc": "",
+      "line": 13,
+      "methods": [
+        "__init__",
+        "release",
+        "acquire"
+      ],
+      "external_bases": []
+    }
+  ],
+  "edges": [
+    {
+      "kind": "contains",
+      "source": "package:ai",
+      "target": "module:ai.UnitAI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:ai.UnitAI",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:ai.UnitAI",
+      "target": "module:engine.Ability"
+    },
+    {
+      "kind": "imports",
+      "source": "module:ai.UnitAI",
+      "target": "module:engine.Battle"
+    },
+    {
+      "kind": "imports",
+      "source": "module:ai.UnitAI",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:ai.UnitAI",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:constants"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Ability"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Ability",
+      "target": "module:engine.Equipment"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Ability",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Battle"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Battle",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Battle",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Battle",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Battle",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Battle",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "function:engine.Battle.get"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Class"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Class",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Effect",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Effect",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Effect",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Effect",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "function:engine.Effect.isPhysicalDamage"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Equipment"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Equipment",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "function:engine.Faction.color"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "function:engine.Faction.friendly"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "function:engine.Faction.hostile"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "function:engine.Faction.playerControlled"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "function:engine.Faction.aiControlled"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Light"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Light",
+      "target": "module:constants"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "function:engine.Light.defaultEnvironment"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "function:engine.Light.randomEnvironment"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Map"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Map",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "function:engine.Map.parse_color_data"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "function:engine.Map.connectedIgnoringUnits"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "function:engine.Map.connected"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.MapGenerator"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.MapGenerator",
+      "target": "module:engine.Map"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.MapGenerator",
+      "target": "module:util"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.foreach"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.properties"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.OutlinedRect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.All"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.FilledRect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.OutlinedCircle"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.FilledCircle"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.Single"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.newMap"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.raiseBy"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.raiseTo"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.lowerTo"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.setTo"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.erode"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.normalize"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.hill"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.valley"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.ridge"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.canyon"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.river"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.save"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.MapGenerator",
+      "target": "function:engine.MapGenerator.generateRandom"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Name"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Name",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Name",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Name",
+      "target": "function:engine.Name.random"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Name",
+      "target": "function:engine.Name._load"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Scenario"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Scenario",
+      "target": "module:engine.Battle"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Scenario",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Scenario",
+      "target": "module:engine.Light"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Scenario",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Scenario",
+      "target": "function:engine.Scenario.blankMap"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Scenario",
+      "target": "function:engine.Scenario.generateRandom"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Unit",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Unit",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Unit",
+      "target": "module:engine.Equipment"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Unit",
+      "target": "module:engine.Name"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.Unit",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Unit",
+      "target": "function:engine.Unit.genderAsString"
+    },
+    {
+      "kind": "contains",
+      "source": "package:engine",
+      "target": "module:engine.netsupport"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Ability"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Battle"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Class"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Equipment"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Light"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Map"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Range"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Scenario"
+    },
+    {
+      "kind": "imports",
+      "source": "module:engine.netsupport",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:fsm"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Camera"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Camera",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Camera",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Camera",
+      "target": "module:gui.Geometry"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Clock",
+      "target": "function:gui.Clock.get"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Cursor"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Cursor",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Cursor",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Cursor",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Cursor",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.GLUtil",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.GLUtil",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.GLUtil",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.GLUtil",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.mapTrans"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.cross"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeCube"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeCubeTop"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.drawAt"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.switchToOrthographicMode"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.switchFromOrthographicMode"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.drawBar"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.createBorder"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.renderTextToTexture"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.drawText"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeRect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeTexture"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.drawFloatingText"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeUnit"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.GLUtil",
+      "target": "function:gui.GLUtil.makeStatus"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Geometry"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Geometry",
+      "target": "function:gui.Geometry.rotate2d"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Input",
+      "target": "function:gui.Input.get"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Input",
+      "target": "function:gui.Input.postUserEvent"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:main"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:resources"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MainWindow",
+      "target": "module:sound"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MainWindow",
+      "target": "function:gui.MainWindow.get"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.MapEditorCursor"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:gui.MapEditorGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorCursor",
+      "target": "module:sound"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.MapEditorGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:engine.Light"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.Camera"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.MapEditorCursor"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.MapEditorSprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorGUI",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorGUI",
+      "target": "function:gui.MapEditorGUI.get"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.MapEditorSprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorSprite",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorSprite",
+      "target": "module:gui.MapEditorGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorSprite",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.MapEditorSprite",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.ScenarioChooser"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:fsm"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:main"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:resources"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioChooser",
+      "target": "module:twistedmain"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:engine.Ability"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:engine.Class"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:fsm"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.Camera"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.Cursor"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:resources"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:sound"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.ScenarioGUI",
+      "target": "module:util"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioGUI",
+      "target": "function:gui.ScenarioGUI.get"
+    },
+    {
+      "kind": "contains",
+      "source": "package:gui",
+      "target": "module:gui.Sprite"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:constants"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:engine.Effect"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:engine.Faction"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:gui.Clock"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:gui.Input"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:gui.Sprite",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:log"
+    },
+    {
+      "kind": "contains",
+      "source": "module:log",
+      "target": "function:log.setUpLogging"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:main"
+    },
+    {
+      "kind": "imports",
+      "source": "module:main",
+      "target": "module:resources"
+    },
+    {
+      "kind": "imports",
+      "source": "module:main",
+      "target": "module:sound"
+    },
+    {
+      "kind": "imports",
+      "source": "module:main",
+      "target": "module:translate"
+    },
+    {
+      "kind": "imports",
+      "source": "module:main",
+      "target": "module:twistedmain"
+    },
+    {
+      "kind": "contains",
+      "source": "module:main",
+      "target": "function:main.main"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:resources"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Ability"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Class"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Equipment"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Map"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.MapGenerator"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Scenario"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:engine.Unit"
+    },
+    {
+      "kind": "imports",
+      "source": "module:resources",
+      "target": "module:gui.GLUtil"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "function:resources._get_base_path"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "function:resources._getFilename"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "function:resources.setCampaign"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:sound"
+    },
+    {
+      "kind": "imports",
+      "source": "module:sound",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound._play"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.setQuiet"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.toggleQuiet"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.playMusic"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.playTune"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.cursorClick"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.cursorCancel"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.cursorMove"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.cursorInvalid"
+    },
+    {
+      "kind": "contains",
+      "source": "module:sound",
+      "target": "function:sound.action"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:translate"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:twistedmain"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:ai.UnitAI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:engine.Battle"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:engine.netsupport"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:fsm"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:gui.MainWindow"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:gui.MapEditorGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:gui.ScenarioChooser"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:gui.ScenarioGUI"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:main"
+    },
+    {
+      "kind": "imports",
+      "source": "module:twistedmain",
+      "target": "module:resources"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "function:twistedmain.runMapEditor"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "function:twistedmain.startGame"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "function:twistedmain.run"
+    },
+    {
+      "kind": "contains",
+      "source": "package:core",
+      "target": "module:util"
+    },
+    {
+      "kind": "contains",
+      "source": "module:util",
+      "target": "function:util.sign"
+    },
+    {
+      "kind": "contains",
+      "source": "module:util",
+      "target": "function:util.delay"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.TemporaryUnitPosition"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.Base"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.TurnEvaluator"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.HealWeakest"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:ai.UnitAI.HealWeakest",
+      "target": "class:ai.UnitAI.TurnEvaluator"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.DamageWeakest"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:ai.UnitAI.DamageWeakest",
+      "target": "class:ai.UnitAI.TurnEvaluator"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.MoveToWeakest"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:ai.UnitAI.MoveToWeakest",
+      "target": "class:ai.UnitAI.TurnEvaluator"
+    },
+    {
+      "kind": "contains",
+      "source": "module:ai.UnitAI",
+      "target": "class:ai.UnitAI.Exhaustive"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:ai.UnitAI.Exhaustive",
+      "target": "class:ai.UnitAI.Base"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Ability",
+      "target": "class:engine.Ability.Ability"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.Battle"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.UnitTurn"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.EndingCondition"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.DefeatAllEnemies"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Battle.DefeatAllEnemies",
+      "target": "class:engine.Battle.EndingCondition"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.PlayerDefeated"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Battle.PlayerDefeated",
+      "target": "class:engine.Battle.EndingCondition"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Battle.LastTeamStanding"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Battle.LastTeamStanding",
+      "target": "class:engine.Battle.EndingCondition"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Class",
+      "target": "class:engine.Class.Class"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.MissResult"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.MissResult",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.DamageResult"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.DamageResult",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.DamageSPResult"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.DamageSPResult",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.HealResult"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.HealResult",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.StatusResult"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.StatusResult",
+      "target": "class:engine.Effect.EffectResult"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.Damage"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.Damage",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.DamageSP"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.DamageSP",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.DrainLife"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.DrainLife",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.HealFriendlyDamageHostile"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.HealFriendlyDamageHostile",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.Healing"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.Healing",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.Defend"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.Defend",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Effect",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Effect.Status",
+      "target": "class:engine.Effect.Effect"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Equipment",
+      "target": "class:engine.Equipment.Equipment"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Equipment",
+      "target": "class:engine.Equipment.Weapon"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Equipment.Weapon",
+      "target": "class:engine.Equipment.Equipment"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Equipment",
+      "target": "class:engine.Equipment.Armor"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Equipment.Armor",
+      "target": "class:engine.Equipment.Equipment"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Faction",
+      "target": "class:engine.Faction.Faction"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "class:engine.Light.Light"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "class:engine.Light.Foo"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "class:engine.Light.White"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Light.White",
+      "target": "class:engine.Light.Light"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "class:engine.Light.Point"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Light.Point",
+      "target": "class:engine.Light.Light"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Light",
+      "target": "class:engine.Light.Environment"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "class:engine.Map.MapSquare"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "class:engine.Map.Map"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Map",
+      "target": "class:engine.Map.MapIO"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.Line"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Range.Line",
+      "target": "class:engine.Range.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.Cross"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Range.Cross",
+      "target": "class:engine.Range.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.Diamond"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Range.Diamond",
+      "target": "class:engine.Range.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.DiamondExtend"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Range.DiamondExtend",
+      "target": "class:engine.Range.Diamond"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Range",
+      "target": "class:engine.Range.Single"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:engine.Range.Single",
+      "target": "class:engine.Range.Range"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Scenario",
+      "target": "class:engine.Scenario.Scenario"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Scenario",
+      "target": "class:engine.Scenario.ScenarioIO"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Unit",
+      "target": "class:engine.Unit.Unit"
+    },
+    {
+      "kind": "contains",
+      "source": "module:engine.Unit",
+      "target": "class:engine.Unit.StatusEffects"
+    },
+    {
+      "kind": "contains",
+      "source": "module:fsm",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Camera",
+      "target": "class:gui.Camera.Camera"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Clock",
+      "target": "class:gui.Clock.Clock"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Cursor",
+      "target": "class:gui.Cursor.Cursor"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Cursor.Cursor",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Geometry",
+      "target": "class:gui.Geometry.Point3D"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Input",
+      "target": "class:gui.Input.Event"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Input",
+      "target": "class:gui.Input.Input"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MainWindow",
+      "target": "class:gui.MainWindow.MainWindow"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MainWindow",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorCursor",
+      "target": "class:gui.MapEditorCursor.MapEditorCursor"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorCursor.MapEditorCursor",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorGUI.MapEditorGUI"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorGUI.MapEditorGUI",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TileDataDisplayer",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TileColorDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TileColorDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TileTextureDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TileTextureDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TileTagDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TileTagDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.FirstHeightDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.FirstHeightDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.SecondHeightDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.SecondHeightDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.ThirdHeightDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.ThirdHeightDisplayer",
+      "target": "class:gui.MapEditorSprite.TileDataDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TopMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TopMenu",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TagMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TagMenu",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TagMenu2"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TagMenu2",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.TileInfoDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.TileInfoDisplayer",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.Dialog"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.Dialog",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.AddTagDialog"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.AddTagDialog",
+      "target": "class:gui.MapEditorSprite.Dialog"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.EditTagDialog"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.EditTagDialog",
+      "target": "class:gui.MapEditorSprite.Dialog"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.SaveDialog"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.SaveDialog",
+      "target": "class:gui.MapEditorSprite.Dialog"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.MapEditorSprite.InputBox"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.MapEditorSprite.InputBox",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.ScenarioChooser.ScenarioChooser"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.ScenarioChooser.ScenarioChooser",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.ScenarioChooser.ScenarioChooserMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.ScenarioChooser.ScenarioChooserMenu",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.ScenarioChooser.ScenarioChooserFSM"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.ScenarioChooser.ScenarioChooserFSM",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.ScenarioGUI.ScenarioGUI"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.ScenarioGUI.ScenarioGUI",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.ScenarioGUI.ScenarioGUIFSM"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.ScenarioGUI.ScenarioGUIFSM",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitDisplayer",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.TextDisplayer",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.FPSDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.FPSDisplayer",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.CursorPosnDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.CursorPosnDisplayer",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitStatsDisplayer",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitNameDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitNameDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitBarDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitBarDisplayer",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitHPDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitHPDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitSPDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitSPDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitMovementDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitMovementDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitPhysicalDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitPhysicalDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitMagicalDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitMagicalDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitClassDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitClassDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.UnitSpeedDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.UnitSpeedDisplayer",
+      "target": "class:gui.Sprite.UnitStatsDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.TextDisplayerBox",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.TextMenu",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.BattleMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.BattleMenu",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.SpecialMenu"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.SpecialMenu",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.Animation"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.Animation",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.DamageDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.DamageDisplayer",
+      "target": "class:gui.Sprite.Animation"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.AttackDisplayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.AttackDisplayer",
+      "target": "class:gui.Sprite.Animation"
+    },
+    {
+      "kind": "contains",
+      "source": "module:gui.Sprite",
+      "target": "class:gui.Sprite.TextEntry"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:gui.Sprite.TextEntry",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:log",
+      "target": "class:log.CustomLogger"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.FontLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.MapLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.ImageLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.TextureLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.ScenarioLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.AbilityLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.ClassLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.UnitLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.EquipmentLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.MusicLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.TextLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.SoundLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:resources",
+      "target": "class:resources.SpriteConfigLoader"
+    },
+    {
+      "kind": "contains",
+      "source": "module:translate",
+      "target": "class:translate.Translate"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.Access"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameObserver"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GamePlayer"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:twistedmain.GamePlayer",
+      "target": "class:twistedmain.GameObserver"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameCreator"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:twistedmain.GameCreator",
+      "target": "class:twistedmain.GamePlayer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameClient"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.InteractiveClient"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:twistedmain.InteractiveClient",
+      "target": "class:twistedmain.GameClient"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.AIFSM"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:twistedmain.AIFSM",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.AIClient"
+    },
+    {
+      "kind": "inherits",
+      "source": "class:twistedmain.AIClient",
+      "target": "class:twistedmain.GameClient"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.UnitState"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameState"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.ClientInfo"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.UsernameChecker"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameServer"
+    },
+    {
+      "kind": "contains",
+      "source": "module:twistedmain",
+      "target": "class:twistedmain.GameServerException"
+    },
+    {
+      "kind": "contains",
+      "source": "module:util",
+      "target": "class:util.Lock"
+    },
+    {
+      "kind": "uses",
+      "source": "module:ai.UnitAI",
+      "target": "class:engine.Battle.UnitTurn"
+    },
+    {
+      "kind": "uses",
+      "source": "module:ai.UnitAI",
+      "target": "class:engine.Effect.Healing"
+    },
+    {
+      "kind": "uses",
+      "source": "module:ai.UnitAI",
+      "target": "class:engine.Effect.Damage"
+    },
+    {
+      "kind": "uses",
+      "source": "module:ai.UnitAI",
+      "target": "class:engine.Effect.DrainLife"
+    },
+    {
+      "kind": "uses",
+      "source": "module:ai.UnitAI",
+      "target": "class:engine.Effect.HealFriendlyDamageHostile"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Battle",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Battle",
+      "target": "class:gui.Sprite.DamageDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Class",
+      "target": "class:engine.Unit.Unit"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Effect",
+      "target": "class:gui.Sprite.DamageDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.MapGenerator",
+      "target": "class:engine.Map.MapIO"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Scenario",
+      "target": "class:engine.Battle.Battle"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.Unit",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Light.Light"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Map.MapSquare"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Map.Map"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Unit.Unit"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Unit.StatusEffects"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Ability.Ability"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Class.Class"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Scenario.Scenario"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Range.Line"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Range.Cross"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Range.Diamond"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Range.DiamondExtend"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Range.Single"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.Damage"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.DamageSP"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.DrainLife"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.HealFriendlyDamageHostile"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.Healing"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Light.White"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Light.Point"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Light.Environment"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Equipment.Weapon"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Equipment.Armor"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Battle.Battle"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Battle.DefeatAllEnemies"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Battle.PlayerDefeated"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.MissResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.DamageResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.DamageSPResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.HealResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:engine.netsupport",
+      "target": "class:engine.Effect.StatusResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.Camera",
+      "target": "class:gui.Geometry.Point3D"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.Cursor",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MainWindow",
+      "target": "class:gui.Input.Input"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MainWindow",
+      "target": "class:gui.Sprite.FPSDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorCursor",
+      "target": "class:gui.Sprite.Sprite"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:engine.Light.Environment"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.Camera.Camera"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorCursor.MapEditorCursor"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TopMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TagMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TagMenu2"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.AddTagDialog"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.EditTagDialog"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.SaveDialog"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TileInfoDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.Sprite.CursorPosnDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TileTextureDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TileColorDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.TileTagDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.FirstHeightDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.SecondHeightDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.MapEditorSprite.ThirdHeightDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorGUI",
+      "target": "class:engine.Light.White"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.MapEditorSprite",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.Sprite.TextMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioChooser",
+      "target": "class:gui.Sprite.TextEntry"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.MainWindow.MainWindowDelegate"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Camera.Camera"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.TextEntry"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.TextDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Cursor.Cursor"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.CursorPosnDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitNameDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitMovementDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitHPDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitSPDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitPhysicalDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitMagicalDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitClassDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitSpeedDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.TextDisplayerBox"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.BattleMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.SpecialMenu"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.MissResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.UnitDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.AttackDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:gui.Sprite.DamageDisplayer"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Ability.Ability"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.DamageResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.DamageSPResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.HealResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.StatusResult"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.ScenarioGUI",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "uses",
+      "source": "module:gui.Sprite",
+      "target": "class:engine.Effect.Status"
+    },
+    {
+      "kind": "uses",
+      "source": "module:main",
+      "target": "class:translate.Translate"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Class.Class"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Map.MapIO"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Ability.Ability"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Scenario.Scenario"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Equipment.Weapon"
+    },
+    {
+      "kind": "uses",
+      "source": "module:resources",
+      "target": "class:engine.Equipment.Armor"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:fsm.FSM"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:resources.MapLoader"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:gui.MainWindow.MainWindow"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:gui.ScenarioGUI.ScenarioGUI"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:gui.MapEditorGUI.MapEditorGUI"
+    },
+    {
+      "kind": "uses",
+      "source": "module:twistedmain",
+      "target": "class:engine.Battle.Battle"
+    }
+  ]
+}

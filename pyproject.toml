@@ -11,6 +11,7 @@ packages = [{include = "src"}]
 galaxywizard = "src.main:main"
 galaxywizard-build = "build_scripts:build_exe"
 galaxywizard-uml = "generate_uml:main"
+galaxywizard-graphify = "graphify:main"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
