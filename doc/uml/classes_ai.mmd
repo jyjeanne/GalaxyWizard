@@ -1,0 +1,34 @@
+classDiagram
+  class Base {
+    calc(battle)
+    result()
+  }
+  class DamageWeakest {
+  }
+  class Exhaustive {
+    allAbilities()
+    calc(battle)
+    generateAllTurns(battle, moveTargets, abilities)
+    getFacing(battle, moveTarget)
+    getTurn(battle)
+  }
+  class HealWeakest {
+  }
+  class MoveToWeakest {
+  }
+  class TemporaryUnitPosition {
+    map_
+    new_x
+    new_y
+    new_z
+    old_x
+    old_y
+    old_z
+    unit
+  }
+  class TurnEvaluator {
+  }
+  DamageWeakest --|> TurnEvaluator
+  Exhaustive --|> Base
+  HealWeakest --|> TurnEvaluator
+  MoveToWeakest --|> TurnEvaluator

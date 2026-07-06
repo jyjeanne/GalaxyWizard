@@ -220,6 +220,18 @@ poetry run pyinstaller main.spec --clean
 - All game data from `src/data/` is bundled into the executable
 - Resource paths are automatically resolved for both normal and executable modes
 
+### Architecture & UML Diagrams
+
+Auto-generated UML diagrams (package dependencies and per-package class
+diagrams) are available in [doc/architecture.md](doc/architecture.md) and
+render directly on GitHub via Mermaid. They are regenerated automatically
+by CI on every push to `main` that touches `src/`, or manually with:
+
+```bash
+# Requires dev dependencies (pylint provides pyreverse)
+poetry run galaxywizard-uml
+```
+
 ### Development Setup
 
 1. **Fork and clone** the repository

@@ -1,0 +1,216 @@
+classDiagram
+  class AIClient {
+    fsm
+    remote_actionResults()
+    remote_unitBeginTurn(unitID)
+    remote_unitMoveActCancel(move, act, cancel)
+    remote_unitMoved(x, y)
+    remote_unitSetFacing(facing)
+  }
+  class AIFSM {
+    aiClient
+    turn : NoneType
+    unit : NoneType
+    doNothing()*
+    enter_begin(oldState, unitID)
+    enter_calc(oldState, xxx_todo_changeme2)
+    executeTurn(turn)
+  }
+  class AbilityLoader {
+    cache : dict
+  }
+  class Access {
+    CREATOR : str
+    OBSERVER : str
+    PLAYER : str
+  }
+  class ClassLoader {
+    cache : dict
+  }
+  class ClientInfo {
+    accessLevel
+    address
+    faction : int
+    name
+    nextFaction : int
+    readyForGame : bool
+    readyToDisplay : bool
+    ref
+  }
+  class CustomLogger {
+    debug2(msg)
+  }
+  class EquipmentLoader {
+    cache : dict
+  }
+  class FSM {
+    entryHooks : dict
+    exitHooks : dict
+    state
+    states
+    addEntryHook(state, hook)
+    addExitHook(state, hook)
+    trans(newState, reason)
+  }
+  class FontLoader {
+    files : dict
+    fonts : dict
+  }
+  class GameClient {
+    accessLevel : str
+    faction : NoneType
+    name : NoneType
+    perspective : NoneType
+    scenario : NoneType
+    server
+    serverPort
+    unit : NoneType
+    username
+    error(failure, op)
+    gotInfo(xxx_todo_changeme)
+    gotPerspective(perspective)
+    remote(methodName)
+    remote_actionPerformed(abilityID)*
+    remote_actionResults(actionResults)*
+    remote_chat(username, message)*
+    remote_serverMessage(message)*
+    remote_startGame(scenario)
+    remote_unitBeginTurn(unitID)
+    remote_unitMoveActCancel(move, act, cancel)*
+    remote_unitMoved(x, y)
+    remote_unitSetFacing(facing)
+    remote_unitUpdate(unitID, newUnit)
+    start()
+  }
+  class GameCreator {
+    accessLevel : str
+    faction : int
+    perspective_setScenario(campaign, scenario)
+  }
+  class GameObserver {
+    accessLevel : str
+    clientRef
+    faction : NoneType
+    gameState
+    name
+    server
+    perspective_chat(message)
+    perspective_info(version)
+    perspective_readyForGame()
+    perspective_readyToDisplay()
+  }
+  class GamePlayer {
+    accessLevel : str
+    faction : int
+    perspective_unitAct(abilityID, x, y)
+    perspective_unitFacing(facing)
+    perspective_unitMove(x, y)
+  }
+  class GameServer {
+    clients : dict
+    port
+    state
+    error(failure, op)
+    handleDisconnect(client)
+    remote(client, methodName)
+    remoteAll(methodName)
+    requestAvatar(name, clientRef)
+    start()
+  }
+  class GameServerException {
+  }
+  class GameState {
+    DONE : int
+    PLAYING : int
+    WAITING_FOR_PLAYERS : int
+    clientCommandQueue : list
+    factions : dict
+    scenario : NoneType
+    server
+    state : int
+    unitState : NoneType
+    clientsReadyToDisplay()
+    sendBattleStatus(winner)
+    sendUnitAct(client, abilityID, affectedUnits, allEffectResults)
+    sendUnitFacing(facing)
+    sendUnitMove(client, x, y)
+    setClientsReadyToDisplay(ready)
+    setScenario(campaign, scenario)
+    startGame()
+    unitAct(client, abilityID, x, y)
+    unitController(client)
+    unitFacing(client, facing)
+    unitMove(client, x, y)
+    update()
+  }
+  class ImageLoader {
+    cache : dict
+  }
+  class InteractiveClient {
+    aiPlayers
+    scenarioGUI : NoneType, ScenarioGUI
+    scenarioName
+    window
+    gotInfo(xxx_todo_changeme1)
+    gotPerspective(perspective)
+    remote_actionPerformed(abilityID)
+    remote_actionResults(actionResults)
+    remote_chat(username, message)
+    remote_serverMessage(message)
+    remote_startGame(scenario)
+    remote_unitBeginTurn(unitID)
+    remote_unitMoveActCancel(move, act, cancel)
+    remote_unitMoved(x, y)
+    remote_unitSetFacing(facing)
+  }
+  class Lock {
+    acquire()
+    release()
+  }
+  class MapLoader {
+  }
+  class MusicLoader {
+  }
+  class ScenarioLoader {
+  }
+  class SoundLoader {
+    cache : dict
+  }
+  class SpriteConfigLoader {
+    grip(sprite)
+    hand(sprite)
+    spriteTypes()
+  }
+  class TextLoader {
+  }
+  class TextureLoader {
+    cache : dict
+    clear()
+    setTextureSize(textureSize)
+  }
+  class Translate {
+    langDict : dict
+    getLanguageDict(lang)
+    setLanguage(lang)
+  }
+  class UnitLoader {
+  }
+  class UnitState {
+    controller
+    originalPosn
+    unit
+    moveActCancel()
+  }
+  class UsernameChecker {
+    credentialInterfaces : tuple
+    users : dict
+    requestAvatarId(credentials)
+  }
+  AIClient --|> GameClient
+  AIFSM --|> FSM
+  GameCreator --|> GamePlayer
+  GamePlayer --|> GameObserver
+  InteractiveClient --|> GameClient
+  AIFSM --* AIClient : fsm
+  GameState --* GameServer : state
+  UnitState --* GameState : unitState
