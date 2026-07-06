@@ -81,7 +81,7 @@ class FontLoader(object):
                 raise Exception('Font family should be "sans", "serif"' + ', or "mono"')
             filename = self.files[family][bold]
             fontFile = _getFilename("fonts", filename)
-            if fontFile == None:
+            if fontFile is None:
                 raise Exception('Font file "%s" not found' % filename)
             f = pygame.font.Font(fontFile, size)
             self.fonts[key] = f
@@ -99,7 +99,7 @@ class MapLoader(object):
         if ("/" not in mapName) and ("." not in mapName):
             filename = mapName + ".py"
             mapName = _getFilename("maps", filename)
-        if mapName == None:
+        if mapName is None:
             raise Exception('Map file "%s" not found' % filename)
         return Map.MapIO.load(mapName)
 
@@ -112,10 +112,10 @@ class ImageLoader(object):
         if imageName not in self.cache:
             filename = imageName + ".png"
             fileName = _getFilename(dirName, filename)
-            if fileName == None:
+            if fileName is None:
                 raise Exception('Image file "%s/%s" not found' % (dirName, filename))
             self.cache[imageName] = pygame.image.load(fileName)
-            if pygame.display.get_surface() != None:
+            if pygame.display.get_surface() is not None:
                 self.cache[imageName] = self.cache[imageName].convert_alpha()
         return self.cache[imageName]
 
@@ -166,7 +166,7 @@ class TextureLoader(object):
         """Cleanup textures when loader is destroyed."""
         try:
             self.clear()
-        except:
+        except Exception:
             # Ignore errors during shutdown
             pass
 
@@ -183,7 +183,7 @@ class ScenarioLoader(object):
             return engine.Scenario.generateRandom(2)
         filename = scenarioName + ".py"
         scenarioFilename = _getFilename("scenarios", filename)
-        if scenarioFilename == None:
+        if scenarioFilename is None:
             raise Exception('Scenario file "%s" not found' % filename)
         return engine.Scenario.ScenarioIO.load(scenarioFilename)
 
@@ -198,7 +198,7 @@ class AbilityLoader(object):
 
             filename = abilityName + ".py"
             f = _getFilename("abilities", filename)
-            if f == None:
+            if f is None:
                 raise Exception('Ability file "%s" not found' % f)
             with open(f, "r") as abilityFile:
                 abilityText = abilityFile.read()
@@ -266,7 +266,7 @@ class ClassLoader(object):
         import engine.Class as Class_
 
         filename = _getFilename("classes", className + ".py")
-        if filename == None:
+        if filename is None:
             raise Exception('Class file "%s" not found' % filename)
         with open(filename, "r") as classFile:
             classText = classFile.read()
@@ -329,7 +329,7 @@ class UnitLoader(object):
 
         filename = unitName + ".py"
         unitFilename = _getFilename("units", filename)
-        if unitFilename == None:
+        if unitFilename is None:
             raise Exception('Unit file "%s" not found' % filename)
         with open(unitFilename, "r") as unitFile:
             unitText = unitFile.read()
@@ -409,7 +409,7 @@ class EquipmentLoader(object):
 
             filename = equipmentName + ".py"
             equipmentFilename = _getFilename("items/" + subdir, filename)
-            if equipmentFilename == None:
+            if equipmentFilename is None:
                 raise Exception('Equipment file "%s" not found' % filename)
             with open(equipmentFilename, "r") as equipmentFile:
                 equipmentText = equipmentFile.read()
@@ -451,7 +451,7 @@ class EquipmentLoader(object):
                 spriteRoot = equipmentData["SPRITE_ROOT"]
                 # spriteName = "%s-%s-%s-%d" % (spriteRoot, genderStr, "standing", 1)
                 spriteName = spriteRoot
-            if spriteName != None and not _getFilename("images", spriteName + ".png"):
+            if spriteName is not None and not _getFilename("images", spriteName + ".png"):
                 spriteName = None
                 # spriteName = "%s-%s-%s-%d" % (spriteRoot, "unisex", "standing", 1)
             self.cache[equipmentName].setSprites({"standing": [spriteName]})
@@ -461,10 +461,10 @@ class EquipmentLoader(object):
 
 class MusicLoader(object):
     def __call__(self, musicName, loop=True):
-        if musicName == None or musicName == "":
+        if musicName is None or musicName == "":
             return
         musicFile = _getFilename("music", musicName + ".ogg")
-        if musicFile == None:
+        if musicFile is None:
             return
         try:
             pygame.mixer.music.load(musicFile)
@@ -481,7 +481,7 @@ class TextLoader(object):
     def __call__(self, textName):
         filename = textName + ".txt"
         textFile = _getFilename("text", filename)
-        if textFile == None:
+        if textFile is None:
             raise Exception('Text file "%s" not found' % filename)
         with open(textFile, "r") as f:
             text = f.readlines()
@@ -493,11 +493,11 @@ class SoundLoader(object):
         self.cache = {}
 
     def __call__(self, soundName):
-        if soundName == None:
+        if soundName is None:
             return None
         if soundName not in self.cache:
             soundFile = _getFilename("sounds", soundName + ".ogg")
-            if soundFile == None:
+            if soundFile is None:
                 soundFile = _getFilename("sounds", soundName + ".wav")
             try:
                 s = pygame.mixer.Sound(soundFile)
@@ -512,7 +512,7 @@ class SpriteConfigLoader(object):
         self._hand = {}
         self._grip = {}
         spriteConfigFilename = _getFilename("images", "spriteconfig.py")
-        if spriteConfigFilename != None:
+        if spriteConfigFilename is not None:
             with open(spriteConfigFilename, "r", newline=None) as spriteConfigFile:
                 spriteConfigText = spriteConfigFile.read()
 
@@ -549,7 +549,8 @@ class SpriteConfigLoader(object):
 
 
 def setCampaign(c):
-    global campaign, font, map, image, texture, scenario, class_, ability, weapon, spriteConfig
+    global campaign, font, map, image, texture, scenario, class_, ability, spriteConfig
+    global music, text, unit, sound, equipment
     logger.debug('Set campaign to "%s"' % c)
     campaign = c
     # Clear filename cache when campaign changes
