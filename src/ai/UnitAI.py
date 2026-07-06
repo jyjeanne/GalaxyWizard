@@ -175,7 +175,7 @@ class HealWeakest(TurnEvaluator):
         target_to_turns = {}
         for turn in turns:
             action = turn.action()
-            if action == None:
+            if action is None:
                 continue
             # FIXME: more general way of filtering abilities
             # FIXME: we don't consider FRIENDLY_AND_HOSTILE yet
@@ -190,7 +190,7 @@ class HealWeakest(TurnEvaluator):
                 continue
 
             # Safely simulate unit position for range calculations
-            if turn.moveTarget() != None:
+            if turn.moveTarget() is not None:
                 (mtx, mty) = turn.moveTarget()
             else:
                 (mtx, mty) = unit.posn()
@@ -231,7 +231,7 @@ class DamageWeakest(TurnEvaluator):
         target_to_turns = {}
         for turn in turns:
             action = turn.action()
-            if action == None:
+            if action is None:
                 continue
             # FIXME: more general way of filtering abilities
             # FIXME: we don't consider FRIENDLY_AND_HOSTILE yet
@@ -266,7 +266,7 @@ class DamageWeakest(TurnEvaluator):
                 newBestTurns = []
                 unitCopy = copy.copy(unit)
                 for turn in bestTurns:
-                    if turn.moveTarget() != None:
+                    if turn.moveTarget() is not None:
                         (mtx, mty) = turn.moveTarget()
                     else:
                         (mtx, mty) = unitCopy.posn()
@@ -297,7 +297,7 @@ class DamageWeakest(TurnEvaluator):
                             newNewBestTurns.append(turn)
                     # Filter again - prefer a turn with no move
                     for turn in newNewBestTurns:
-                        if turn.moveTarget() == None:
+                        if turn.moveTarget() is None:
                             return [turn]
                     return newNewBestTurns
                 break  # Found turns for weakest target, exit target loop
@@ -327,10 +327,10 @@ class MoveToWeakest(TurnEvaluator):
         for turn in turns:
             move = turn.moveTarget()
             action = turn.action()
-            if move == None or action != None:
+            if move is None or action is not None:
                 continue
             search = map_.squares[move[0]][move[1]].search
-            if search == None:
+            if search is None:
                 continue
             distance = search[0]
             if distance < bestDistance:
@@ -438,7 +438,7 @@ class Exhaustive(Base):
 
     def getFacing(self, battle, moveTarget):
         u = self._unit
-        if moveTarget == None:
+        if moveTarget is None:
             moveTarget = (u.x(), u.y())
 
         # Calculate the centroid of enemy units

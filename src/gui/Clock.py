@@ -31,7 +31,7 @@ class Clock(object):
         self.time = 0.0
 
     def tick(self, frameRate=None):
-        if frameRate != None:
+        if frameRate is not None:
             now = time.time()
             timeElapsed = now - self.previousFrameTime
             sleepTime = max(0.0, 1.0 / frameRate - timeElapsed)

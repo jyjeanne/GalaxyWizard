@@ -57,12 +57,12 @@ class UnitDisplayer(Sprite):
         self.__weaponGrip = None
         self.__unitHand = None
 
-        if unit.weapon() != None:
+        if unit.weapon() is not None:
             wimageName = unit.weapon().getSprites("standing")[0]
             self.__weaponGrip = Resources.spriteConfig.grip(wimageName)
             self.__unitHand = Resources.spriteConfig.hand(imageName)
 
-        if wimageName != None:
+        if wimageName is not None:
             self.__wtexture = GLUtil.makeTexture(Resources.image(wimageName))[0]
             oimageName = unit.getOverSprites("standing")
             if oimageName != []:
@@ -183,12 +183,15 @@ class UnitDisplayer(Sprite):
                 if self._textureStatus >= len(unitStatus.texture()):
                     self._textureStatus = 0
             try:
-                if Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]] != None:
+                if (
+                    Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]]
+                    is not None
+                ):
                     GLUtil.makeStatus(
                         Effect.Status.effectTextures[unitStatus.texture()[self._textureStatus]],
                         self._color,
                     )
-            except:
+            except (IndexError, KeyError):
                 # when the status is over this can happen
                 pass
 
@@ -202,15 +205,15 @@ class UnitDisplayer(Sprite):
                 if self._colorStatus >= len(unitStatus.color()):
                     self._colorStatus = 0
             try:
-                if Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]] != None:
+                if Effect.Status.effectTextures[unitStatus.color()[self._colorStatus]] is not None:
                     statuscolor = Effect.Status.effectTextures[
                         unitStatus.color()[self._colorStatus]
                     ]
-            except:
+            except (IndexError, KeyError):
                 pass
 
-        if statuscolor == None:
-            if self.isActing() == True:
+        if statuscolor is None:
+            if self.isActing():
                 self._unitStatusColor = self._color
             else:
                 GLUtil.makeUnit(
@@ -222,7 +225,7 @@ class UnitDisplayer(Sprite):
                     unitHand=self.__unitHand,
                 )
         else:
-            if self.isActing() == True:
+            if self.isActing():
                 self._unitStatusColor = statuscolor
             else:
                 GLUtil.makeUnit(
@@ -259,17 +262,17 @@ class UnitDisplayer(Sprite):
         try:
             unit_x = self.__unit.x()
             self.__offsetX = x - (unit_x if hasattr(unit_x, "__sub__") else 0.0)
-        except:
+        except Exception:
             self.__offsetX = x
         try:
             unit_y = self.__unit.y()
             self.__offsetY = y - (unit_y if hasattr(unit_y, "__sub__") else 0.0)
-        except:
+        except Exception:
             self.__offsetY = y
         try:
             unit_z = self.__unit.z()
             self.__offsetZ = z - (unit_z if hasattr(unit_z, "__sub__") else 0.0)
-        except:
+        except Exception:
             self.__offsetZ = z
 
     def getX(self):
@@ -279,7 +282,7 @@ class UnitDisplayer(Sprite):
                 return unit_x + self.__offsetX
             else:
                 return 0.0 + self.__offsetX
-        except:
+        except Exception:
             return 0.0 + self.__offsetX
 
     def getY(self):
@@ -289,7 +292,7 @@ class UnitDisplayer(Sprite):
                 return unit_y + self.__offsetY
             else:
                 return 0.0 + self.__offsetY
-        except:
+        except Exception:
             return 0.0 + self.__offsetY
 
     def getZ(self):
@@ -299,7 +302,7 @@ class UnitDisplayer(Sprite):
                 return unit_z + self.__offsetZ
             else:
                 return 0.0 + self.__offsetZ
-        except:
+        except Exception:
             return 0.0 + self.__offsetZ
 
     x = property(getX)
@@ -501,7 +504,7 @@ class UnitStatsDisplayer(TextDisplayer):
 class UnitNameDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return unit.name()
@@ -530,7 +533,7 @@ class UnitHPDisplayer(UnitStatsDisplayer):
 
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("HP: %d/%d") % (unit.hp(), unit.mhp())
@@ -549,7 +552,7 @@ class UnitSPDisplayer(UnitStatsDisplayer):
 
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("SP: %d/%d") % (unit.sp(), unit.msp())
@@ -564,7 +567,7 @@ class UnitSPDisplayer(UnitStatsDisplayer):
 class UnitMovementDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("Move: %d  Jump: %d") % (unit.move(), unit.jump())
@@ -573,7 +576,7 @@ class UnitMovementDisplayer(UnitStatsDisplayer):
 class UnitPhysicalDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("W.Atk: %d  W.Def: %d") % (unit.watk(), unit.wdef())
@@ -582,7 +585,7 @@ class UnitPhysicalDisplayer(UnitStatsDisplayer):
 class UnitMagicalDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("M.Atk: %d  M.Def: %d") % (unit.matk(), unit.mdef())
@@ -591,7 +594,7 @@ class UnitMagicalDisplayer(UnitStatsDisplayer):
 class UnitClassDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("Lv. %d %s") % (unit.level(), unit.className())
@@ -600,7 +603,7 @@ class UnitClassDisplayer(UnitStatsDisplayer):
 class UnitSpeedDisplayer(UnitStatsDisplayer):
     def getText(self):
         unit = self.cursor.hoveredUnit()
-        if unit == None:
+        if unit is None:
             return ""
         else:
             return _("Speed: %d") % unit.speed()
@@ -647,7 +650,7 @@ class TextDisplayerBox(Sprite):
     def makeBorder(self):
         width = self.width
         height = self.height
-        if height == None:
+        if height is None:
             height = len(self.displayers)
         height *= 20
 
@@ -840,7 +843,7 @@ class BattleMenu(TextMenu):
         self.selectedUnit = u
 
     def moveActCancel(self, move, act, cancel):
-        if self.selectedUnit != None:
+        if self.selectedUnit is not None:
             self.setOptionEnabled(0, move)
             self.setOptionEnabled(1, act)
             self.setOptionEnabled(2, act and self.selectedUnit.abilities())
@@ -860,7 +863,7 @@ class SpecialMenu(TextMenu):
 
     def setSelectedUnit(self, u):
         self.selectedUnit = u
-        if u == None:
+        if u is None:
             self.setShowing(False)
             return
         self._abilities = list(u.abilities())
@@ -881,7 +884,7 @@ class SpecialMenu(TextMenu):
         # form a circular import at module load time.
         from gui import ScenarioGUI
 
-        if self.selectedUnit != None:
+        if self.selectedUnit is not None:
             enabled = False
             for i in range(0, len(self.options)):
                 enoughSP = self.selectedUnit.sp() >= self._abilities[i].cost()
@@ -976,9 +979,9 @@ class AttackDisplayer(Animation):
         # Load the weapon textures
         self._wtexture = None
         self._weapGrip = None
-        if unit.weapon() != None:
+        if unit.weapon() is not None:
             wimage = unit.weapon().getSprites("standing")[0]
-            if wimage != None:
+            if wimage is not None:
                 self._wtexture = GLUtil.makeTexture(Resources.image(wimage))[0]
                 self._weapGrip = Resources.spriteConfig.grip(wimage)
         else:
@@ -986,7 +989,7 @@ class AttackDisplayer(Animation):
 
         # Load the over textures
         self._otexture = []
-        if wimage != None:
+        if wimage is not None:
             oimages = unit.getOverSprites(attackStyle)
             if len(oimages) < self._maxFrame:
                 oimages = []

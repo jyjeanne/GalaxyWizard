@@ -393,9 +393,15 @@ class TestMapBFS(unittest.TestCase):
         map_obj = self.create_test_map(10, 10)
 
         start = (5, 5)
-        expand = lambda s: map_obj.getPotentialConnections(s)
-        visit = lambda s: True  # Visit all squares
-        result = lambda s: s.x == 7 and s.y == 7  # Find specific square
+
+        def expand(s):
+            return map_obj.getPotentialConnections(s)
+
+        def visit(s):
+            return True  # Visit all squares
+
+        def result(s):
+            return s.x == 7 and s.y == 7  # Find specific square
 
         results = map_obj.bfs(start, expand, visit, result)
 
@@ -411,9 +417,15 @@ class TestMapBFS(unittest.TestCase):
 
         start = (5, 5)
         max_distance = 3
-        expand = lambda s: map_obj.getPotentialConnections(s)
-        visit = lambda s: s.search[0] <= max_distance
-        result = lambda s: True  # Return all visited squares
+
+        def expand(s):
+            return map_obj.getPotentialConnections(s)
+
+        def visit(s):
+            return s.search[0] <= max_distance
+
+        def result(s):
+            return True  # Return all visited squares
 
         results = map_obj.bfs(start, expand, visit, result)
 

@@ -104,7 +104,7 @@ class MainWindow(object):
 
         self._input.update(timeElapsed)
 
-        if self._delegate != None:
+        if self._delegate is not None:
             self._delegate.update(timeElapsed)
 
         # Draw FPS on top, if enabled
@@ -156,7 +156,7 @@ class MainWindow(object):
         if platform.system() == "Linux":
             self.screen = pygame.display.set_mode(self._size, videoFlags)
         self._fpsDisplayer.invalidate()
-        if self._delegate != None:
+        if self._delegate is not None:
             self._delegate.resize(self._size)
 
     def _initOpenGL(self):
@@ -182,7 +182,7 @@ class MainWindow(object):
             if event.type == pygame.USEREVENT:
                 event = event.event
             if not self._handleEvent(event):
-                if self._delegate != None:
+                if self._delegate is not None:
                     self._delegate.handleEvent(event)
 
     def _handleEvent(self, event):

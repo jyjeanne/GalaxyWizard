@@ -30,7 +30,7 @@ except pygame.error as e:
         print(f"Error: Could not initialize pygame display: {e2}")
 
 # Now it's safe to import pytest
-import pytest
+import pytest  # noqa: E402
 
 
 @pytest.fixture(scope="session", autouse=True)

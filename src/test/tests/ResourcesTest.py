@@ -59,7 +59,7 @@ class ResourceLoadingLocationTestCase(unittest.TestCase):
     def testShouldErrorIfDataDoesNotExist(self):
         """Should return an error if trying to load missing data"""
         try:
-            data = Resources.class_("missing")
+            Resources.class_("missing")
         except Exception as e:
             self.assertEqual(str(e), 'Class file "None" not found')
 

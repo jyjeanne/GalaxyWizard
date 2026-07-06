@@ -27,6 +27,8 @@
 # Add main source file dir to our module path
 import os
 import sys
+import unittest
+import getopt
 
 if os.path.isdir(sys.path[0]):
     os.chdir(sys.path[0])
@@ -39,10 +41,6 @@ testdir = sys.path[0]  # remember the dir we are in
 os.chdir(os.path.join("..", ".."))  # move back to the root dir
 translateConfig = translate.Translate()  # setup translation support
 os.chdir(testdir)  # change back to the test dir
-
-# Get unittest support so we can run suites
-import unittest
-import getopt
 
 
 def usage():
@@ -57,7 +55,7 @@ def usage():
 def getTests(testpackage=None):
     """return all the tests available"""
     tests = []
-    if testpackage != None:
+    if testpackage is not None:
         for mod in os.listdir(testpackage):
             if mod[-7:] == "Test" + os.extsep + "py":
                 module = mod[:-3]
@@ -100,7 +98,7 @@ if __name__ == "__main__":
             verbosity = 2
 
     # If specific tests weren't given, load all tests
-    if singlemodule != True and singlepackage != True:
+    if not singlemodule and not singlepackage:
         tests = getTests()
 
     # Collect all the tests

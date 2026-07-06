@@ -88,7 +88,7 @@ class MapEditorCursor(Sprite.Sprite):
         ScenarioGUI.get().battleMenu().setSelectedUnit(u)
 
     def selectSquare(self, x=None, y=None):
-        if x != None and y != None:
+        if x is not None and y is not None:
             self.x = x
             self.y = y
         GUI.get().topMenu().setEnabled(True)
@@ -270,7 +270,7 @@ class MapEditorCursor(Sprite.Sprite):
 
     # Unit stuff
     def hoveredUnit(self):
-        if self.mapSquare().unit != None:
+        if self.mapSquare().unit is not None:
             return self.mapSquare().unit
         return self._selectedUnit
 

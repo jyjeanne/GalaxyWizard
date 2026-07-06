@@ -64,7 +64,7 @@ class Cursor(Sprite):
 
     def hoveredUnit(self):
         u = self.map.squares[self.x][self.y].unit
-        if u != None:
+        if u is not None:
             return u
         return self.selectedUnit
 

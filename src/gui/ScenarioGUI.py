@@ -266,7 +266,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         self._battleMenu.moveActCancel(move, act, cancel)
 
     def done(self):
-        return self.nextUnitMovePosn == None
+        return self.nextUnitMovePosn is None
 
     def showMessage(self, text):
         self.chatBox1.setText(self.chatBox2.getText())
@@ -387,10 +387,10 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         return self.camera.scrolling()
 
     def unitMoving(self):
-        return self.nextUnitMovePosn != None
+        return self.nextUnitMovePosn is not None
 
     def _updateUnitSlide(self, timeElapsed):
-        if self.nextUnitMovePosn == None:
+        if self.nextUnitMovePosn is None:
             return
         squareMoveTime = 0.2
         zSpeedup = 3.0
@@ -487,16 +487,16 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         lightIndex = GL_LIGHT0
         for light in range(GL_LIGHT0, GL_LIGHT7 + 1):
             glDisable(light)
-        for l in self.lightEnv.lights():
+        for light in self.lightEnv.lights():
             if lightIndex > GL_LIGHT7:
                 break
             glEnable(lightIndex)
-            glLightfv(lightIndex, GL_AMBIENT, l.ambient())
-            glLightfv(lightIndex, GL_DIFFUSE, l.diffuse())
-            glLightfv(lightIndex, GL_SPECULAR, l.specular())
-            glLightf(lightIndex, GL_CONSTANT_ATTENUATION, l.constantAttenuation())
-            glLightf(lightIndex, GL_LINEAR_ATTENUATION, l.linearAttenuation())
-            glLightf(lightIndex, GL_QUADRATIC_ATTENUATION, l.quadraticAttenuation())
+            glLightfv(lightIndex, GL_AMBIENT, light.ambient())
+            glLightfv(lightIndex, GL_DIFFUSE, light.diffuse())
+            glLightfv(lightIndex, GL_SPECULAR, light.specular())
+            glLightf(lightIndex, GL_CONSTANT_ATTENUATION, light.constantAttenuation())
+            glLightf(lightIndex, GL_LINEAR_ATTENUATION, light.linearAttenuation())
+            glLightf(lightIndex, GL_QUADRATIC_ATTENUATION, light.quadraticAttenuation())
             lightIndex += 1
 
         if self.lightEnv.fogEnabled():
@@ -518,7 +518,6 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         gluPerspective(45, 1.0 * width / height, 0.2, 100.0)
         glMatrixMode(GL_MODELVIEW)
 
-        tdbWidth = 250
         tdbHeight = 8
         tdbY = MainWindow.get().size()[1] - tdbHeight * 20 - 30
         self._topTextDisplayer.setPosn((width / 2, 10))
@@ -550,8 +549,6 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         self.highlightEnabled = False
 
     def setUpCamera(self):
-        m = self.m
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
@@ -561,10 +558,10 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
         glTranslate(self.camera.offset().x, self.camera.offset().y, -self.camera.offset().z)
 
         lightIndex = GL_LIGHT0
-        for l in self.lightEnv.lights():
+        for light in self.lightEnv.lights():
             if lightIndex > GL_LIGHT7:
                 break
-            glLightfv(lightIndex, GL_POSITION, l.position())
+            glLightfv(lightIndex, GL_POSITION, light.position())
             lightIndex += 1
 
         #         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0)
@@ -622,7 +619,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
 
         if self.textEntry.enabled:
             result = self.textEntry.result()
-            if result != None:
+            if result is not None:
                 self.textEntry.setEnabled(False)
                 if result != "":
                     self.client.remote("chat", result)
@@ -710,7 +707,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
             self.camera.setHeight(h)
 
         elif event.type == Input.CURSOR_UP:
-            if self.focusedElement == None:
+            if self.focusedElement is None:
                 return
             Sound.cursorMove()
             if self.focusedElement == self.cursor:
@@ -718,7 +715,7 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
             else:
                 self.focusedElement.moveUp()
         elif event.type == Input.CURSOR_DOWN:
-            if self.focusedElement == None:
+            if self.focusedElement is None:
                 return
             Sound.cursorMove()
             if self.focusedElement == self.cursor:
@@ -726,13 +723,13 @@ class ScenarioGUI(MainWindow.MainWindowDelegate):
             else:
                 self.focusedElement.moveDown()
         elif event.type == Input.CURSOR_LEFT:
-            if self.focusedElement == None:
+            if self.focusedElement is None:
                 return
             Sound.cursorMove()
             if self.focusedElement == self.cursor:
                 self.cursor.move(self.camera.cursorMovement(-1, 0))
         elif event.type == Input.CURSOR_RIGHT:
-            if self.focusedElement == None:
+            if self.focusedElement is None:
                 return
             Sound.cursorMove()
             if self.focusedElement == self.cursor:

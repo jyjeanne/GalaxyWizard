@@ -12,7 +12,7 @@ import main
 serverLog = logging.getLogger("gsrv")
 clientLog = logging.getLogger("gcli")
 
-import engine.netsupport
+import engine.netsupport  # noqa: E402
 
 ############################ COMMON
 
@@ -225,13 +225,13 @@ class InteractiveClient(GameClient):
         clientLog.debug("Access level set to %s" % self.accessLevel)
         if self.accessLevel == Access.CREATOR:
             # FIXME: set scenario name from in-game, not command-line only
-            df = self.remote(
+            self.remote(
                 "setScenario",
                 "demo",  # FIXME: allow setting campaign
                 self.scenarioName,
             )
             for i in range(0, self.aiPlayers):
-                ai = AIClient(self.server, self.serverPort)
+                AIClient(self.server, self.serverPort)
 
     def gotPerspective(self, perspective):
         GameClient.gotPerspective(self, perspective)
@@ -245,7 +245,7 @@ class InteractiveClient(GameClient):
         self.scenarioGUI.showMessage("<%s> %s" % (username, message))
 
     def remote_serverMessage(self, message):
-        if self.scenarioGUI != None:
+        if self.scenarioGUI is not None:
             self.scenarioGUI.showMessage("*** %s" % message)
 
     def remote_unitBeginTurn(self, unitID):
@@ -275,10 +275,10 @@ class InteractiveClient(GameClient):
 
 
 ### AI Client
-import ai.UnitAI
-import fsm
-import engine.Battle
-from twisted.internet import threads
+import ai.UnitAI  # noqa: E402
+import fsm  # noqa: E402
+import engine.Battle  # noqa: E402
+from twisted.internet import threads  # noqa: E402
 
 
 class AIFSM(fsm.FSM):
@@ -309,9 +309,9 @@ class AIFSM(fsm.FSM):
     def executeTurn(self, turn):
         self.turn = turn
         if turn.turnOrder() == engine.Battle.UnitTurn.MOVE_FIRST:
-            if turn.moveTarget() != None:
+            if turn.moveTarget() is not None:
                 self.aiClient.remote("unitMove", *turn.moveTarget())
-            if turn.action() != None:
+            if turn.action() is not None:
                 self.aiClient.remote("unitAct", turn.action().abilityID, *turn.actionTarget())
             self.aiClient.remote("unitFacing", turn.facing())
         else:
@@ -451,7 +451,7 @@ class GameState(object):
             b = self.scenario.battle()
             if b.status() != -1:
                 self.clientCommandQueue.append(("battleStatus", (b.status(),)))
-            if b.activeUnit == None:
+            if b.activeUnit is None:
                 unit = b.pickNextUnit()
                 controller = self.factions[unit.faction()]
                 self.unitState = UnitState(unit, controller)
@@ -688,7 +688,7 @@ class GameServerException(Exception):
 
 ########################################### MAIN
 
-import gui.ScenarioChooser
+import gui.ScenarioChooser  # noqa: E402
 
 window = None
 opts = None
@@ -706,7 +706,7 @@ def runMapEditor(main, mapName):
     import resources
 
     resources.map = resources.MapLoader()
-    if mapName != None:
+    if mapName is not None:
         #        try:
         m = resources.map(mapName)
     #        except Exception as e:
@@ -722,22 +722,22 @@ def runMapEditor(main, mapName):
 
 
 def startGame(server, port=None, user=None, scenario=None, multiplayer=None):
-    if port == None:
+    if port is None:
         port = opts.port if opts and hasattr(opts, "port") else 22222
-    if user == None:
+    if user is None:
         user = opts.user if opts and hasattr(opts, "user") else "Player"
-    if multiplayer == None:
+    if multiplayer is None:
         multiplayer = opts.multiplayer if opts and hasattr(opts, "multiplayer") else False
 
     # Configure the server
-    if server == None:
+    if server is None:
         server = "127.0.0.1"
-        gameServer = GameServer(port)
+        GameServer(port)
     # Then configure the client
     aiPlayers = 1
     if multiplayer:
         aiPlayers = 0
-    gameClient = InteractiveClient(server, port, user, scenario, aiPlayers, window)
+    InteractiveClient(server, port, user, scenario, aiPlayers, window)
 
 
 def run(options):

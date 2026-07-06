@@ -145,7 +145,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
                     foundGender = "unisex"
 
             # if we've found a sprite of this type, add it to the sprites
-            if foundGender != None:
+            if foundGender is not None:
                 sprites[t] = []
                 oversprites[t] = []
                 i = 1
@@ -160,7 +160,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self.setOverSprites(oversprites)
 
     def getSprites(self, spriteName):
-        if self._sprites == None:
+        if self._sprites is None:
             self._loadSprites()
         if spriteName in self._sprites:
             return self._sprites[spriteName]
@@ -171,7 +171,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
         self._overSprites = sprites
 
     def getOverSprites(self, spriteName):
-        if self._overSprites == None:
+        if self._overSprites is None:
             self._loadSprites()
         if spriteName in self._overSprites:
             return self._overSprites[spriteName]
@@ -238,21 +238,21 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def mhp(self):
         result = int(self._mhp * self._class.mhpMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.mhp()
         return result
 
     def msp(self):
         result = int(self._msp * self._class.mspMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.msp()
         return result
 
     def watk(self):
         result = int(self._watk * self._class.watkMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.watk()
 
         increase = self._statusEffects.power(Effect.Status.PLUS_WATK)
@@ -264,7 +264,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def wdef(self):
         result = int(self._wdef * self._class.wdefMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.wdef()
 
         increase = self._statusEffects.power(Effect.Status.PLUS_WDEF)
@@ -278,7 +278,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def matk(self):
         result = int(self._matk * self._class.matkMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.matk()
 
         increase = self._statusEffects.power(Effect.Status.PLUS_MATK)
@@ -290,7 +290,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def mdef(self):
         result = int(self._mdef * self._class.mdefMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.mdef()
 
         increase = self._statusEffects.power(Effect.Status.PLUS_MDEF)
@@ -302,7 +302,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def speed(self):
         result = int(self._speed * self._class.speedMult)
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.speed()
 
         increase = self._statusEffects.power(Effect.Status.HASTE)
@@ -314,7 +314,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def move(self):
         result = self._class.move
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.move()
         result += self._statusEffects.power(Effect.Status.PLUS_MOVE)
         result -= self._statusEffects.power(Effect.Status.MINUS_MOVE)
@@ -324,7 +324,7 @@ class Unit(pb.Copyable, pb.RemoteCopy):
     def jump(self):
         result = self._class.jump
         for eq in self.equipment():
-            if eq != None:
+            if eq is not None:
                 result += eq.jump()
         return result
 
@@ -496,7 +496,7 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
         self._textureStatus = []
 
     def has(self, effectType):
-        return self._effects[effectType] != None
+        return self._effects[effectType] is not None
 
     def duration(self, effectType):
         if not self.has(effectType):
@@ -519,7 +519,7 @@ class StatusEffects(pb.Copyable, pb.RemoteCopy):
         # Decrement status-effect counters
         for i in range(0, len(self._effects)):
             e = self._effects[i]
-            if e == None:
+            if e is None:
                 continue
             (duration, power) = e
             duration -= 1

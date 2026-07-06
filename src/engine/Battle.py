@@ -171,7 +171,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
         return affectedUnits, allEffectResults
 
     def unitSetFacing(self, facing):
-        if facing != None:
+        if facing is not None:
             if not (Constants.N <= facing <= Constants.NW):
                 return False
             u = self.activeUnit
@@ -180,7 +180,7 @@ class Battle(pb.Copyable, pb.RemoteCopy):
 
     def unitDone(self):
         u = self.activeUnit
-        if u == None:
+        if u is None:
             return False
         self.activeUnit = None
         u.setCT(u.ct() - 500)
@@ -200,7 +200,6 @@ class Battle(pb.Copyable, pb.RemoteCopy):
 
     def pickNextUnit(self):
         # logger.debug2('picking a unit')
-        active = [u for u in self._units if u.active()]
         self._turns += 1
         self.unitQueue = [u for u in self.unitQueue if u.active()]
         while not self.unitQueue:
@@ -275,7 +274,7 @@ class UnitTurn(object):
         return self.__str__()
 
     def __str__(self):
-        if self._action == None:
+        if self._action is None:
             return "Move: %s" % str(self._moveTarget)
         else:
             if self._turnOrder == UnitTurn.MOVE_FIRST:
@@ -331,7 +330,7 @@ class LastTeamStanding(EndingCondition):
         teamRemaining = None
         active = [u for u in battle.units() if u.active()]
         for u in active:
-            if teamRemaining == None:
+            if teamRemaining is None:
                 teamRemaining = u.faction()
             elif teamRemaining != u.faction():
                 return -1

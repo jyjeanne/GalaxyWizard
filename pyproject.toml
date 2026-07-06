@@ -43,8 +43,8 @@ select = [
 # Game data files are DSL scripts executed via exec() with names
 # (Damage, Status, ACTION, _, ...) injected into their namespace by
 # src/resources.py, so undefined-name checks do not apply.
-"src/data/**" = ["F821"]
-"src/test/data/**" = ["F821"]
+"src/data/**" = ["F821", "W291", "W293"]
+"src/test/data/**" = ["F821", "W291", "W293"]
 # OpenGL rendering code uses the conventional `from OpenGL.GL import *`
 # idiom; explicit imports of hundreds of gl* symbols are impractical.
 "src/engine/Map.py" = ["F403", "F405"]

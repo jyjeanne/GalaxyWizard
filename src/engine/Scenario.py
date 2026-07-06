@@ -110,7 +110,7 @@ def generateRandom(additionalAIUnits):
             map_.fillDistances(unit, unit.posn())
             for other in units:
                 (x, y) = other.posn()
-                if map_.squares[x][y].search == None:
+                if map_.squares[x][y].search is None:
                     return False
         return True
 

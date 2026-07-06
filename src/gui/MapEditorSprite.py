@@ -54,7 +54,7 @@ class TileColorDisplayer(TileDataDisplayer):
         # FIXME: what do we do if the different sides of the map
         # square are different colors? For now, we'll just choose
         # color[0] as the one to display...
-        if type(color) == list:
+        if isinstance(color, list):
             color = color[0]
         return "TopColor: (%1.2f, %1.2f, %1.2f)" % (color[0], color[1], color[2])
 
@@ -272,7 +272,7 @@ class TileInfoDisplayer(Sprite.TextDisplayerBox):
 
     def setShowing(self, show):
         self._showing = show
-        if show == True:
+        if show:
             sq = GUI.get().cursor.mapSquare()
             self.outputBoxes[0].setText(sq.tagName())
             tag = GUI.get().m.tags[sq.tagName()]
@@ -430,7 +430,7 @@ class EditTagDialog(Dialog):
 
     def setShowing(self, show, tagName=None):
         self._showing = show
-        if show == True and tagName != None:
+        if show and tagName is not None:
             self.title.setText("Edit Tag Dialog: " + str(tagName))
             tag = GUI.get().m.tags[tagName]
             self.tag = tag

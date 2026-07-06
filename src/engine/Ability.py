@@ -110,7 +110,7 @@ class Ability(pb.Copyable, pb.RemoteCopy):
         for x, y in affectedSquares:
             sq = map.squares[x][y]
             t = sq.unit
-            if t != None:
+            if t is not None:
                 if self._targetType == FRIENDLY_AND_HOSTILE:
                     result.append(t)
                 elif self._targetType == FRIENDLY and Faction.friendly(

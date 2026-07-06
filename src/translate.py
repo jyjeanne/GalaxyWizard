@@ -27,7 +27,7 @@ class Translate:
 
     def setLanguage(self, lang=None):
         # look if we have this language
-        if lang != None and lang in self.langDict:
+        if lang is not None and lang in self.langDict:
             self.langDict[lang].install()
         else:  # install default language
             self.langDict["en"].install()

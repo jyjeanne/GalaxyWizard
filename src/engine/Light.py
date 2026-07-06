@@ -140,7 +140,7 @@ class Environment(pb.Copyable, pb.RemoteCopy):
         return self._fogDensity
 
     def skyColor(self):
-        if self._skyColor != None:
+        if self._skyColor is not None:
             return self._skyColor
         else:
             return self._fogColor

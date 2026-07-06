@@ -114,7 +114,7 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
         )
 
     def setUnit(self, u):
-        if self.unit != None:
+        if self.unit is not None:
             raise Exception("Unit was moved into a map square that " + "already has a unit!")
         self.unit = u
         u.setPosn(self.x, self.y, self.z)
@@ -170,7 +170,7 @@ class MapSquare(pb.Copyable, pb.RemoteCopy):
     #         smooth the entire map on edits
     def setTag(self, tag=None):
         """Set the tag and update colors with variance."""
-        if tag == None:
+        if tag is None:
             tag = self.tag
         else:
             self.tag = tag
@@ -276,7 +276,6 @@ class Map(pb.Copyable, pb.RemoteCopy):
                     (0.0, 0.0, 0.0, 0.0),
                 ]
 
-                texture = "none"
                 if "color" in tag:
                     c = tag["color"]
                     if isinstance(c, tuple):  # check for old format
@@ -467,8 +466,6 @@ class Map(pb.Copyable, pb.RemoteCopy):
                     else:
                         pass  # log? raise exception?
 
-                if "texture" in tag:
-                    texture = tag["texture"]
                 waterHeight = globalWaterHeight
                 waterColor = globalWaterColor
                 if "waterHeight" in props:
@@ -719,7 +716,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
             if resultPredicate(s):
                 result.append(s)
             for newS in expand(s):
-                if newS.search == None:
+                if newS.search is None:
                     newS.search = (s.search[0] + 1, s)
                     if visitPredicate(newS):
                         q.append(newS)
@@ -731,13 +728,13 @@ class Map(pb.Copyable, pb.RemoteCopy):
     # FIXME: this should be in the AI code, not here
     def closestUnits(self, unit, faction):
         def visit(s):
-            connectedOK = s.search[1] == None or connected(s.search[1], s, unit)
+            connectedOK = s.search[1] is None or connected(s.search[1], s, unit)
             return connectedOK
 
         def resultp(s):
             for neighbor in self.getPotentialConnections(s):
                 if (
-                    neighbor.unit != None
+                    neighbor.unit is not None
                     and neighbor.unit.faction() == faction
                     and neighbor.unit.alive()
                 ):
@@ -745,30 +742,43 @@ class Map(pb.Copyable, pb.RemoteCopy):
             return False
 
         start = (unit.x(), unit.y())
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         result = self.bfs(start, expand, visit, resultp)
         return result
 
     def reachable(self, unit):
         def visit(s):
             costOK = s.search[0] <= unit.move()
-            connectedOK = s.search[1] == None or connected(s.search[1], s, unit)
+            connectedOK = s.search[1] is None or connected(s.search[1], s, unit)
             return costOK and connectedOK
 
         start = (unit.x(), unit.y())
-        resultp = lambda s: s.unit == None
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def resultp(s):
+            return s.unit is None
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         result = self.bfs(start, expand, visit, resultp)
         return [(s.x, s.y) for s in result]
 
     def fillDistances(self, unit, posn):
         def visit(s):
-            connectedOK = s.search[1] == None or connectedIgnoringUnits(s.search[1], s, unit)
+            connectedOK = s.search[1] is None or connectedIgnoringUnits(s.search[1], s, unit)
             return connectedOK
 
         start = posn
-        resultp = lambda s: s.unit == None
-        expand = lambda s: self.getPotentialConnections(s)
+
+        def resultp(s):
+            return s.unit is None
+
+        def expand(s):
+            return self.getPotentialConnections(s)
+
         self.bfs(start, expand, visit, resultp)
 
     def shortestPath(self, targetX, targetY):
@@ -783,7 +793,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
         sq = self.squares[x][y]
         getDiag = False
 
-        if "smooth" in sq.tag and sq.tag["smooth"] == True:
+        if "smooth" in sq.tag and sq.tag["smooth"]:
             # find the corner's neighbors: (x,y),(x,y+dy),(x+dx,y),(x+dx,y+dy)
             dx = 1
             dy = 1
@@ -811,7 +821,7 @@ class Map(pb.Copyable, pb.RemoteCopy):
                 ):
                     getDiag = True
                     nb.cornerHeights[corner - dx] += change
-            if getDiag == True and self.squareExists(x + dx, y + dy):
+            if getDiag and self.squareExists(x + dx, y + dy):
                 nb = self.squares[x + dx][y + dy]
                 if (
                     nb.tag == sq.tag
@@ -970,14 +980,14 @@ class MapIO(object):
                     raise ValueError(f"Invalid tile data at position ({x},{y}): '{tileData}'")
                 zdata[x, y] = int(m.group(1))
                 tileProperties[x, y]["tag"] = m.group(9) if m.group(9) else ""
-                if m.group(2) != None:
+                if m.group(2) is not None:
                     tileProperties[x, y]["cornerHeights"] = [
                         int(float(m.group(3))),
                         int(float(m.group(4))),
                         int(float(m.group(5))),
                         int(float(m.group(6))),
                     ]
-                if m.group(7) != None:
+                if m.group(7) is not None:
                     tileProperties[x, y]["waterHeight"] = int(m.group(8))
             y += 1
 
@@ -1002,7 +1012,7 @@ def connectedIgnoringUnits(sq1, sq2, unit):
 def connected(sq1, sq2, unit, ignoreUnits=False):
     if not ignoreUnits:
         if (
-            sq2.unit != None
+            sq2.unit is not None
             and sq2.unit.alive()
             and not Faction.friendly(unit.faction(), sq2.unit.faction())
         ):

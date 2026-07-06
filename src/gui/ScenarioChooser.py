@@ -67,7 +67,7 @@ class ScenarioChooser(MainWindow.MainWindowDelegate):
         if self.fsm.state == "serverAddress":
             if event.type == pygame.KEYDOWN:
                 self.addressEntry.addEvent(event)
-            if self.addressEntry.result() != None:
+            if self.addressEntry.result() is not None:
                 self.serverAddress = self.addressEntry.result()
                 self.readyToStart = True
                 self.addressEntry.setEnabled(False)

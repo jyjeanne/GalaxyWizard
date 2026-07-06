@@ -124,7 +124,7 @@ class Camera(object):
         self._adjustTranslation(timeElapsed)
 
     def _adjustTranslation(self, timeElapsed):
-        if self._scrollTarget == None:
+        if self._scrollTarget is None:
             return
         (x, y, z) = self._scrollTarget
         if Clock.get().getFPS() <= 10:
@@ -135,7 +135,7 @@ class Camera(object):
         dx = x - offsetX
         dy = y - offsetY
         dz = 0
-        if z != None:
+        if z is not None:
             dz = z - offsetZ
         speed = 5.0
         offsetX += dx * timeElapsed * speed
@@ -148,7 +148,7 @@ class Camera(object):
             self.setOffset(offsetX, offsetY, offsetZ)
 
     def scrolling(self):
-        return self._scrollTarget != None
+        return self._scrollTarget is not None
 
     def _adjustRotation(self, timeElapsed):
         if not self.needToRotate:
@@ -169,7 +169,7 @@ class Camera(object):
         self._mapRotation = self._mapRotation % 360.0
         self._changed = True
 
-    def sortSprites(self, l):
+    def sortSprites(self, sprites):
 
         def keySpritesN(s):
             return s.y
@@ -196,21 +196,21 @@ class Camera(object):
             return s.x + s.y
 
         if self.current == Constants.N:
-            l.sort(key=keySpritesN)
+            sprites.sort(key=keySpritesN)
         elif self.current == Constants.NE:
-            l.sort(key=keySpritesNE)
+            sprites.sort(key=keySpritesNE)
         elif self.current == Constants.E:
-            l.sort(key=keySpritesE)
+            sprites.sort(key=keySpritesE)
         elif self.current == Constants.SE:
-            l.sort(key=keySpritesSE)
+            sprites.sort(key=keySpritesSE)
         elif self.current == Constants.S:
-            l.sort(key=keySpritesS)
+            sprites.sort(key=keySpritesS)
         elif self.current == Constants.SW:
-            l.sort(key=keySpritesSW)
+            sprites.sort(key=keySpritesSW)
         elif self.current == Constants.W:
-            l.sort(key=keySpritesW)
+            sprites.sort(key=keySpritesW)
         elif self.current == Constants.NW:
-            l.sort(key=keySpritesNW)
+            sprites.sort(key=keySpritesNW)
 
     def cursorMovement(self, x, y):
         if self.current == Constants.N or self.current == Constants.NW:

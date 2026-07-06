@@ -29,14 +29,14 @@ class FSM(object):
     def addEntryHook(self, state, hook):
         """hook(oldState, reason) will be called whenever we
         transition to state."""
-        l = self.entryHooks.setdefault(state, [])
-        l.append(hook)
+        hooks = self.entryHooks.setdefault(state, [])
+        hooks.append(hook)
 
     def addExitHook(self, state, hook):
         """hook(newState, reason) will be called whenever we
         transition from state."""
-        l = self.exitHooks.setdefault(state, [])
-        l.append(hook)
+        hooks = self.exitHooks.setdefault(state, [])
+        hooks.append(hook)
 
     def trans(self, newState, reason=None):
         """Transitions to the given state, calling hooks as

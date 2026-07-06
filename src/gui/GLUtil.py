@@ -54,7 +54,7 @@ def cross(xxx_todo_changeme, xxx_todo_changeme1):
 
 
 def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor, minHeight):
-    if texture[1] != None:
+    if texture[1] is not None:
         glBindTexture(GL_TEXTURE_2D, texture[1])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -91,7 +91,7 @@ def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor, m
 
     glEnd()
 
-    if texture[2] != None:
+    if texture[2] is not None:
         glBindTexture(GL_TEXTURE_2D, texture[2])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -127,7 +127,7 @@ def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor, m
 
     glEnd()
 
-    if texture[3] != None:
+    if texture[3] is not None:
         glBindTexture(GL_TEXTURE_2D, texture[3])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -154,7 +154,7 @@ def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor, m
 
     glEnd()
 
-    if texture[4] != None:
+    if texture[4] is not None:
         glBindTexture(GL_TEXTURE_2D, texture[4])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -180,7 +180,7 @@ def makeCube(z, cornerHeights, texture, cornerColors, waterHeight, waterColor, m
 
     glEnd()
 
-    if texture[0] != None:
+    if texture[0] is not None:
         glBindTexture(GL_TEXTURE_2D, texture[0])
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
@@ -396,7 +396,7 @@ def createBorder(width, height, image=None):
         pygame.Rect((0, 0), (bordered.get_width(), bordered.get_height())),
         1,
     )
-    if image != None:
+    if image is not None:
         bordered.blit(image, (borderPadding, borderPadding))
     return bordered
 
@@ -464,7 +464,7 @@ def makeTexture(textureSurface, backgroundColor=None, textureID=-1):
                 break
     if needToCopy:
         newSurface = pygame.Surface((width, height)).convert_alpha()
-        if backgroundColor == None:
+        if backgroundColor is None:
             newSurface.fill((0, 0, 0, 0))
         else:
             newSurface.fill(backgroundColor)
@@ -561,10 +561,10 @@ def makeUnit(
     glEnd()
     glPopMatrix()
 
-    if wtexture != None:
-        if unitHand == None:
+    if wtexture is not None:
+        if unitHand is None:
             unitHand = (32, 45, -45, False)
-        if weaponGrip == None:
+        if weaponGrip is None:
             weaponGrip = (32, 32, -45, False)
         (gripx, gripy, gripr, weaponOrientation) = weaponGrip
         (handx, handy, handr, handOrientation) = unitHand
@@ -626,7 +626,7 @@ def makeUnit(
         glEnd()
         glPopMatrix()
 
-        if otexture != None:
+        if otexture is not None:
             glPushMatrix()
             glScale(scale, scale, scale)
             glRotatef(-ScenarioGUI.get().camera.mapRotation(), 0.0, 0.0, 1.0)
@@ -698,7 +698,7 @@ def makeStatus(texture, color=(1.0, 1.0, 1.0, 1.0)):
     glPopMatrix()
 
     # The frame change after enough time
-    if lastTime == None:
+    if lastTime is None:
         lastTime = time.time()
     elif time.time() - lastTime > 0.15:
         lastTime = time.time()

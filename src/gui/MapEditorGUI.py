@@ -322,16 +322,16 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
 
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, self.lightEnv.ambientLight())
         lightIndex = GL_LIGHT0
-        for l in self.lightEnv.lights():
+        for light in self.lightEnv.lights():
             if lightIndex > GL_LIGHT7:
                 break
             glEnable(lightIndex)
-            glLightfv(lightIndex, GL_AMBIENT, l.ambient())
-            glLightfv(lightIndex, GL_DIFFUSE, l.diffuse())
-            glLightfv(lightIndex, GL_SPECULAR, l.specular())
-            glLightf(lightIndex, GL_CONSTANT_ATTENUATION, l.constantAttenuation())
-            glLightf(lightIndex, GL_LINEAR_ATTENUATION, l.linearAttenuation())
-            glLightf(lightIndex, GL_QUADRATIC_ATTENUATION, l.quadraticAttenuation())
+            glLightfv(lightIndex, GL_AMBIENT, light.ambient())
+            glLightfv(lightIndex, GL_DIFFUSE, light.diffuse())
+            glLightfv(lightIndex, GL_SPECULAR, light.specular())
+            glLightf(lightIndex, GL_CONSTANT_ATTENUATION, light.constantAttenuation())
+            glLightf(lightIndex, GL_LINEAR_ATTENUATION, light.linearAttenuation())
+            glLightf(lightIndex, GL_QUADRATIC_ATTENUATION, light.quadraticAttenuation())
             lightIndex += 1
 
         if self.lightEnv.fogEnabled():
@@ -353,7 +353,6 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         gluPerspective(45, 1.0 * width / height, 0.2, 100.0)
         glMatrixMode(GL_MODELVIEW)
 
-        tdbWidth = 250
         tdbHeight = 8
         tdbY = MainWindow.get().size()[1] - tdbHeight * 20 - 30
         self._topTextDisplayer.setPosn((width // 2, 10))
@@ -385,8 +384,6 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         self.highlightEnabled = False
 
     def setUpCamera(self):
-        m = self.m
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
 
@@ -399,10 +396,10 @@ class MapEditorGUI(MainWindow.MainWindowDelegate):
         # glTranslate(-0.5*(m.width-1), 0.5*(m.height-1), 0.0)
 
         #        lightIndex = GL_LIGHT0
-        #        for l in self.lightEnv.lights():
+        #        for light in self.lightEnv.lights():
         #            if lightIndex > GL_LIGHT7:
         #                break
-        #            glLightfv(lightIndex, GL_POSITION, l.position())
+        #            glLightfv(lightIndex, GL_POSITION, light.position())
         #            lightIndex += 1
 
         #         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0)

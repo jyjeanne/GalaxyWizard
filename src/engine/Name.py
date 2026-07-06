@@ -29,7 +29,7 @@ def random(gender):
     name = ""
     # We loop here just in case the names file has a blank line or
     # something... don't want to return an empty name
-    while re.search(r"\w+", name) == None:
+    while re.search(r"\w+", name) is None:
         if gender == Unit.MALE:
             name = random_.choice(_maleNames)
         elif gender == Unit.FEMALE:

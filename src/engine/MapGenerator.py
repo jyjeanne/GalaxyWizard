@@ -37,7 +37,7 @@ def foreach(filter, op):
             if filter(i, j, m[i, j]):
                 old = m[i, j]
                 m[i, j] = op(m[i, j])
-                if t != None and m[i, j] != old:
+                if t is not None and m[i, j] != old:
                     mt[i, j] = t
 
 
@@ -262,7 +262,7 @@ TILE_PROPERTIES = {
                 'texture': 'marble-slight',
                 'smooth': False},
     }
-    
+
 LAYOUT = '''
 """ % (w, h, max(0, raiseAmount - random.randint(1, 8)))
     for j in range(0, h):
