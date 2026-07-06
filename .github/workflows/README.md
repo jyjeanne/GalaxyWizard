@@ -8,7 +8,7 @@ This workflow runs automatically on:
 
 ### What it does:
 
-The workflow consists of **2 jobs**:
+The workflow consists of **4 jobs**:
 
 #### Job 1: Test (Ubuntu)
 1. **Sets up Python 3.11** - Matches your development environment
@@ -25,6 +25,20 @@ The workflow consists of **2 jobs**:
 3. **Installs dependencies** - Including PyInstaller
 4. **Builds standalone .exe** - Uses `main.spec` to create `GalaxyWizard.exe`
 5. **Uploads artifact** - Executable available for download (30 days retention)
+
+#### Job 3: Build Linux Executable (requires test job to pass)
+1. **Sets up Python 3.11 on Ubuntu**
+2. **Installs Poetry** and OpenGL system libraries
+3. **Builds standalone binary** - Uses the same `main.spec` to create `GalaxyWizard`
+4. **Packages as tar.gz** - Preserves the executable permission bit
+5. **Uploads artifact** - `GalaxyWizard-Linux` (30 days retention)
+
+#### Job 4: Build macOS Executable (requires test job to pass)
+1. **Sets up Python 3.11 on macOS** (Apple Silicon runner)
+2. **Installs Poetry**
+3. **Builds standalone binary** - Uses the same `main.spec` to create `GalaxyWizard`
+4. **Packages as tar.gz** - Preserves the executable permission bit
+5. **Uploads artifact** - `GalaxyWizard-macOS` (30 days retention)
 
 ### Key differences from standard workflow:
 
@@ -52,8 +66,11 @@ After a successful workflow run:
 1. Go to the **Actions** tab in GitHub
 2. Click on the workflow run
 3. Scroll to **Artifacts** section
-4. Download `GalaxyWizard-Windows.zip`
+4. Download `GalaxyWizard-Windows`, `GalaxyWizard-Linux`, or `GalaxyWizard-macOS`
 5. Extract and run the standalone executable
+   - Linux/macOS: `tar -xzf GalaxyWizard-*.tar.gz && ./GalaxyWizard`
+   - macOS may block the unsigned binary on first launch; allow it under
+     System Settings → Privacy & Security, or run `xattr -d com.apple.quarantine GalaxyWizard`
 
 **Note:** Executables are kept for 30 days
 

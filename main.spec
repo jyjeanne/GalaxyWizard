@@ -58,7 +58,7 @@ hiddenimports += collect_submodules('ai')
 # Note: Do not include 'test' as it conflicts with Python's built-in test package
 
 a = Analysis(
-    ['src\\main.py'],
+    [os.path.join('src', 'main.py')],
     pathex=['src'],  # Add src to the Python path
     binaries=[],
     datas=data_files,

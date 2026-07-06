@@ -21,8 +21,9 @@ def build_exe():
         result = subprocess.run(
             ["pyinstaller", "main.spec", "--clean"], check=True, capture_output=False
         )
+        exe_name = "GalaxyWizard.exe" if sys.platform == "win32" else "GalaxyWizard"
         print("\n✅ Build completed successfully!")
-        print("Executable location: dist/GalaxyWizard.exe")
+        print(f"Executable location: dist/{exe_name}")
         return result.returncode
     except subprocess.CalledProcessError as e:
         print(f"\n❌ Build failed with error: {e}")
