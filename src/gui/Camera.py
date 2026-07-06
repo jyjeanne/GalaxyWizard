@@ -255,19 +255,3 @@ class Camera(object):
 
     def mouseMovement(self, x, y):
         return Geometry.rotate2d((x, y), math.radians(self._mapRotation))
-        if self.current == Constants.N:
-            return (x, y)
-        elif self.current == Constants.NW:
-            return Geometry.rotate2d((x, y), math.radians(-45))
-        elif self.current == Constants.E:
-            return (-y, x)
-        elif self.current == Constants.NE:
-            return Geometry.rotate2d((-y, x), math.radians(-45))
-        elif self.current == Constants.S:
-            return (-x, -y)
-        elif self.current == Constants.SE:
-            return Geometry.rotate2d((-x, -y), math.radians(-45))
-        elif self.current == Constants.W:
-            return (y, -x)
-        else:
-            return Geometry.rotate2d((y, -x), math.radians(-45))

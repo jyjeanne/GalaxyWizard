@@ -737,9 +737,9 @@ class TextMenu(Sprite):
             pass  # OpenGL context invalid - safe to ignore during shutdown
 
     def setSelectedOption(self, option):
-        self.selectedOption = 0
+        self.selectedOption = option
         if len(self.options) > 0 and not self.enabledOptions[0]:
-            self.moveDown(True)
+            self.moveDown()
 
     # FIXME: this should not make us enabled or showing
     def setOptions(self, options):
@@ -760,7 +760,7 @@ class TextMenu(Sprite):
         else:
             self.displayers[optionIndex].setColor((160, 160, 160))
             if optionIndex == self.selectedOption:
-                self.moveDown(True)
+                self.moveDown()
 
     def clearOptions(self):
         self.setOptions([])
@@ -778,8 +778,7 @@ class TextMenu(Sprite):
 
             glEnable(GL_LIGHTING)
 
-    # FIXME: get rid of force arg
-    def moveUp(self, force=False):
+    def moveUp(self):
         self.moveUpHelper()
         steps = 0
         while steps < len(self.options) and not self.enabledOptions[self.selectedOption]:
@@ -791,8 +790,7 @@ class TextMenu(Sprite):
         if self.selectedOption < 0:
             self.selectedOption = len(self.options) - 1
 
-    # FIXME: get rid of force arg
-    def moveDown(self, force=False):
+    def moveDown(self):
         self.moveDownHelper()
         steps = 0
         while steps < len(self.options) and not self.enabledOptions[self.selectedOption]:

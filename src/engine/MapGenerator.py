@@ -48,30 +48,30 @@ def properties(properties):
 
 # Filter functions
 def OutlinedRect(x, y, w, h):
-    return lambda sx, sy, sz: (
+    return lambda sx, sy, _sz: (
         (x <= sx < x + w and (sy == y or sy == y + h - 1))
         or (y <= sy < y + h and (sx == x or sx == x + w - 1))
     )
 
 
 def All():
-    return lambda sx, sy, sz: True
+    return lambda sx, sy, _sz: True
 
 
 def FilledRect(x, y, w, h):
-    return lambda sx, sy, sz: x <= sx < x + w and y <= sy < y + h
+    return lambda sx, sy, _sz: x <= sx < x + w and y <= sy < y + h
 
 
 def OutlinedCircle(x, y, radius):
-    return lambda sx, sy, sz: abs(x - sx) + abs(y - sy) == radius
+    return lambda sx, sy, _sz: abs(x - sx) + abs(y - sy) == radius
 
 
 def FilledCircle(x, y, radius):
-    return lambda sx, sy, sz: (x - sx) * (x - sx) + (y - sy) * (y - sy) <= radius * radius
+    return lambda sx, sy, _sz: (x - sx) * (x - sx) + (y - sy) * (y - sy) <= radius * radius
 
 
 def Single(x, y):
-    return lambda sx, sy, sz: sx == x and sy == y
+    return lambda sx, sy, _sz: sx == x and sy == y
 
 
 # Map-transformation functions
