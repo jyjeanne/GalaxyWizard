@@ -1,0 +1,676 @@
+classDiagram
+  class AddTagDialog {
+    numBoxes : int
+    state : int
+    evalResult()
+  }
+  class Animation {
+    done()
+  }
+  class AttackDisplayer {
+    done()
+    draw()
+    update(elapsedTime)
+  }
+  class BattleMenu {
+    ATTACK : int
+    DONE : int
+    MOVE : int
+    SPECIAL : int
+    selectedOption : int
+    selectedUnit : NoneType
+    moveActCancel(move, act, cancel)
+    setSelectedUnit(u)
+  }
+  class Camera {
+    current : int
+    needToRotate : bool
+    adjustCamera(timeElapsed)
+    change(amount)
+    changed()
+    cursorMovement(x, y)
+    get()
+    getCorner(corner)
+    height()
+    mapRotation()
+    mouseMovement(x, y)
+    offset()
+    pitch()
+    reset()
+    rotate(degrees)
+    scrollTo(posn)
+    scrolling()
+    set(new)
+    setHeight(z)
+    setOffset(x, y, z)
+    setPitch(pitch)
+    setRotation(degrees)
+    sortSprites(sprites)
+  }
+  class Clock {
+    fps : float, int
+    fpsUpdateInterval : float
+    lastFPSUpdate : float
+    nFrames : int
+    previousFrameTime
+    time : float
+    timeElapsed
+    getFPS()
+    getTime()
+    getTimeElapsed()
+    tick(frameRate)
+  }
+  class Cursor {
+    alpha : float
+    facingMode : bool
+    map
+    selectedUnit : NoneType
+    x
+    y
+    draw()
+    hoveredUnit()
+    mapSquare()
+    move(pos)
+    moveDown()
+    moveLeft()
+    moveRight()
+    moveUp()
+    posn()
+    posn3d()
+    selectUnit(u, playerUnit)
+    setFacingMode(facingMode)
+    setPosn(x, y)
+  }
+  class CursorPosnDisplayer {
+    cursor
+    getBorder()
+    getFont()
+    getPosn()
+    getText()
+  }
+  class DamageDisplayer {
+    done()
+    draw()
+    update(elapsedTime)
+  }
+  class Dialog {
+    borderListID : int
+    borderTexture : int
+    displayers : list
+    height : NoneType
+    inputBoxes
+    inputTitles
+    posn
+    state : int
+    title
+    width
+    draw()
+    evalResult()*
+    handleEvent(event)
+    setShowing(show)
+    update(timeElapsed)*
+  }
+  class EditTagDialog {
+    numBoxes : int
+    state : int
+    tag
+    tagName : NoneType
+    evalResult()
+    setShowing(show, tagName)
+  }
+  class Event {
+    type
+  }
+  class FPSDisplayer {
+    font
+    getBackgroundColor()
+    getFont()
+    getPosn()
+    getText()
+  }
+  class FirstHeightDisplayer {
+    getText()
+  }
+  class Input {
+    inDialog : bool
+    buttonPressed(timeElapsed, button, pressed)
+    joyAxis(number)
+    joyButton(number)
+    joyHat(number, axis)
+    setInDialog(inDialog)
+    update(timeElapsed)
+    updateGuiEvents(timeElapsed)
+  }
+  class InputBox {
+    text
+    append(c)
+    delChar()
+  }
+  class MainWindow {
+    screen
+    fps()
+    setDelegate(delegate)
+    size()
+    update()
+  }
+  class MainWindowDelegate {
+    handleEvent(event)
+    resize(size)*
+    update(timeElapsed)*
+  }
+  class MapEditorCursor {
+    CREATING_TAG : int
+    DISABLED : int
+    FREE : int
+    IN_DIALOG : int
+    SELECTED : int
+    SETTING_TAG : int
+    UNIT_SELECTED : int
+    alpha : float
+    map
+    state : int
+    unitTarget : list
+    x : NoneType
+    y : NoneType
+    canMove()
+    click()
+    disable()
+    draw()
+    handleEvent(event)
+    hoveredUnit()
+    lowerWater()
+    mapSquare()
+    minusCenterHeight()
+    minusCornerHeight(corner)
+    minusTileHeight()
+    move(pos)
+    moveDown()
+    moveLeft()
+    moveRight()
+    moveUp()
+    plusCenterHeight()
+    plusCornerHeight(corner)
+    plusTileHeight()
+    posn3d()
+    raiseWater()
+    selectSquare(x, y)
+    selectUnit(u, playerUnit)
+    setHeight(height)
+    setPosn(x, y)
+    unclick()
+    update(timeElapsed)
+  }
+  class MapEditorGUI {
+    activeDelegate
+    camera
+    cursor
+    cursorHighlightAlpha : float, int
+    cursorPosnDisplayer
+    delegates : dict
+    fgObjects : list
+    firstHeightDisplayer
+    gameObjects : list
+    highlightEnabled : bool
+    highlights : dict
+    lightEnv : Environment
+    m
+    normalObjects : list
+    secondHeightDisplayer
+    textDisplayerBox
+    thirdHeightDisplayer
+    tileColorDisplayer
+    tileTagDisplayer
+    tileTextureDisplayer
+    addTagDialog()
+    chooseTagMenu()
+    clearCenteredText()
+    clearHighlights()
+    clearTopText()
+    compileMapSquareList(sq)
+    drawBG()
+    editTagDialog()
+    handleEvent(event)
+    highlightAlpha()
+    resize(size)
+    saveDialog()
+    saveMap(filename)
+    scrollTo(pos)
+    scrolling()
+    setCenteredText(text)
+    setCursorPosn(x, y)
+    setHighlights(highlights, resetAlpha)
+    setLighting()
+    setTopMenuShowing(showing)
+    setTopText(text)
+    setUpCamera()
+    tagMenu()
+    tileInfoDisplayer()
+    topMenu()
+    update(timeElapsed)
+    updateMap()
+  }
+  class Point3D {
+    x
+    y
+    z
+    asTuple()
+  }
+  class SaveDialog {
+    numBoxes : int
+    state : int
+    evalResult()
+  }
+  class ScenarioChooser {
+    addressEntry
+    fsm
+    hostGame : NoneType
+    multiplayer : NoneType
+    readyToStart : bool
+    scenario : NoneType
+    serverAddress : NoneType, str
+    handleEvent(event)
+    resize(size)
+    result()
+    update(timeElapsed)
+  }
+  class ScenarioChooserFSM {
+    chooser
+    doNothing()*
+    enter_hostGame()
+    enter_multiplayer()
+    enter_scenario()
+    enter_serverAddress()
+  }
+  class ScenarioChooserMenu {
+    results : list
+    result()
+    update(timeElapsed)*
+  }
+  class ScenarioGUI {
+    battle
+    camera
+    chatBox1
+    chatBox2
+    chatBox3
+    chatBox4
+    chatBox5
+    client
+    cursor
+    cursorHighlightAlpha : float, int
+    cursorPosnDisplayer
+    faction
+    fgObjects : list
+    focusedElement : NoneType
+    fsm
+    gameObjects : list
+    highlightEnabled : bool
+    highlights : dict
+    lastCameraRotation : NoneType, int
+    lastUnitMove : NoneType, float
+    lightEnv
+    m
+    nextUnitMovePosn : NoneType
+    normalObjects : list
+    originalUnitPosn : NoneType
+    scenario
+    sortedMapSquares : list
+    textDisplayerBox
+    textEntry
+    unit
+    unitClassDisplayer
+    unitDisplayers : list
+    unitDisplayersDict : dict
+    unitHPDisplayer
+    unitMagicalDisplayer
+    unitMoveZDiff : NoneType
+    unitMovementDisplayer
+    unitNameDisplayer
+    unitPhysicalDisplayer
+    unitSPDisplayer
+    unitSpeedDisplayer
+    unitTarget : NoneType
+    units
+    activateUnit(unit)
+    battleMenu()
+    clearCenteredText()
+    clearHighlights()
+    clearTopText()
+    compileMapSquareList(sq)
+    done()
+    drawBG()
+    handleEvent(event)
+    highlightAlpha()
+    moveActCancel(move, act, cancel)
+    moveUnit(x, y)
+    resize(dimensions)
+    scrollTo(pos)
+    scrolling()
+    setBattleMenuShowing(showing)
+    setCenteredText(text)
+    setCursorPosn(x, y)
+    setHighlights(highlights, resetAlpha)
+    setLighting()
+    setTopText(text)
+    setUpCamera()
+    showAbilityAOE(unit, ability, posn)
+    showAbilityRange(unit, ability)
+    showActionPerformed(abilityID)
+    showActionResults(targetID, results)
+    showEffect(targetID, effect, delay)
+    showMessage(text)
+    showMovementRange(unit)
+    specialMenu()
+    unitDisplayer(unit)
+    unitMoving()
+    update(timeElapsed)
+  }
+  class ScenarioGUIFSM {
+    ability
+    gui
+    accept()
+    accept_abilityTarget()
+    accept_battleMenu()
+    accept_facing()
+    accept_moveTarget()
+    accept_opponentTurn()
+    accept_specialMenu()
+    cancel()
+    cancel_abilityTarget()
+    cancel_battleMenu()
+    cancel_facing()
+    cancel_moveTarget()
+    cancel_opponentTurn()
+    cancel_roaming()
+    cancel_specialMenu()
+    checkActResult(result)
+    checkFacingResult(result)
+    checkMoveResult(result)
+    clearEverything(oldState, reason)
+    doNothing()
+    enter_abilityTarget(oldState, ability)
+    enter_battleMenu(oldState, reason)
+    enter_disabled(oldState, reason)
+    enter_facing(oldState, reason)
+    enter_moveTarget(oldState, reason)
+    enter_opponentTurn(oldState, reason)
+    enter_roaming(oldState, reason)
+    enter_specialMenu(oldState, reason)
+    exit_facing(newState, reason)
+  }
+  class SecondHeightDisplayer {
+    getText()
+  }
+  class SpecialMenu {
+    selectedOption : int
+    selectedUnit : NoneType
+    getSelection()
+    setSelectedUnit(u)
+    update(time)
+  }
+  class Sprite {
+    draw()*
+    update(time)*
+  }
+  class TagMenu {
+    selectedSquare : NoneType
+    handleEvent(event)
+    setEnabled(enabled)
+  }
+  class TagMenu2 {
+    selectedSquare : NoneType
+    handleEvent(event)
+    setEnabled(enabled)
+  }
+  class TextDisplayer {
+    border : bool
+    centerx : bool
+    centery : bool
+    color : tuple
+    enabled : bool
+    font
+    lastColor : tuple
+    lastText : str
+    listID : int
+    posn : tuple
+    renderedSize : tuple
+    text : str
+    texture : int
+    draw()
+    getBackgroundColor()
+    getBorder()
+    getCenterX()
+    getCenterY()
+    getColor()
+    getFont()
+    getPosn()
+    getText()
+    invalidate()
+    setBorder(border)
+    setCenterX(centerx)
+    setCenterY(centery)
+    setColor(color)
+    setEnabled(enabled)
+    setFont(font)
+    setPosn(posn)
+    setText(text)
+    toggle()
+  }
+  class TextDisplayerBox {
+    borderListID : int
+    borderTexture : int
+    displayers
+    height : NoneType
+    posn
+    width
+    draw()
+    invalidate()
+    makeBorder()
+    setPosn(posn)
+    size()
+  }
+  class TextEntry {
+    events : list
+    addEvent(event)
+    result()
+    setEnabled(enabled)
+    update(timeElapsed)
+  }
+  class TextMenu {
+    box
+    cursorImage
+    cursorTexture : int
+    displayers : list
+    enabledOptions : list
+    options : list
+    posn
+    selectedOption : int
+    clearOptions()
+    draw()
+    enabled()
+    getSelection()
+    invalidate()
+    moveDown()
+    moveDownHelper()
+    moveUp()
+    moveUpHelper()
+    setEnabled(enabled)
+    setOptionEnabled(optionIndex, enabled)
+    setOptions(options)
+    setPosn(posn)
+    setSelectedOption(option)
+    setShowing(showing)
+    showing()
+    size()
+  }
+  class ThirdHeightDisplayer {
+    getText()
+  }
+  class TileColorDisplayer {
+    getText()
+  }
+  class TileDataDisplayer {
+    cursor
+    getBorder()
+    getFont()
+  }
+  class TileInfoDisplayer {
+    borderListID : int
+    borderTexture : int
+    displayers : list
+    height : NoneType
+    numBoxes : int
+    outputBoxes
+    outputTitles
+    posn
+    title
+    width
+    draw()
+    evalResult()*
+    handleEvent(event)
+    setShowing(show)
+    update(timeElapsed)*
+  }
+  class TileTagDisplayer {
+    getText()
+  }
+  class TileTextureDisplayer {
+    getText()
+  }
+  class TopMenu {
+    EDIT_TAG : int
+    NEW_TAG : int
+    SAVE : int
+    SET_TAG : int
+    TILE_INFO : int
+    selectedSquare : NoneType
+    handleEvent(event)
+    setEnabled(enabled)
+  }
+  class UnitBarDisplayer {
+    draw(width, posn)
+  }
+  class UnitClassDisplayer {
+    getText()
+  }
+  class UnitDisplayer {
+    x
+    y
+    z
+    Acting()
+    addAnimation(animation)
+    draw()
+    getX()
+    getY()
+    getZ()
+    isActing()
+    notActing()
+    resetSlide()
+    setPosn(x, y, z)
+    slide(x, y, z)
+    update(elapsedTime)
+  }
+  class UnitHPDisplayer {
+    draw()
+    getText()
+  }
+  class UnitMagicalDisplayer {
+    getText()
+  }
+  class UnitMovementDisplayer {
+    getText()
+  }
+  class UnitNameDisplayer {
+    getText()
+  }
+  class UnitPhysicalDisplayer {
+    getText()
+  }
+  class UnitSPDisplayer {
+    draw()
+    getText()
+  }
+  class UnitSpeedDisplayer {
+    getText()
+  }
+  class UnitStatsDisplayer {
+    cursor
+    getBorder()
+    getFont()
+  }
+  Cursor --|> Sprite
+  MapEditorCursor --|> Sprite
+  MapEditorGUI --|> MainWindowDelegate
+  AddTagDialog --|> Dialog
+  Dialog --|> TextDisplayerBox
+  EditTagDialog --|> Dialog
+  FirstHeightDisplayer --|> TileDataDisplayer
+  InputBox --|> TextDisplayer
+  SaveDialog --|> Dialog
+  SecondHeightDisplayer --|> TileDataDisplayer
+  TagMenu --|> TextMenu
+  TagMenu2 --|> TextMenu
+  ThirdHeightDisplayer --|> TileDataDisplayer
+  TileColorDisplayer --|> TileDataDisplayer
+  TileDataDisplayer --|> TextDisplayer
+  TileInfoDisplayer --|> TextDisplayerBox
+  TileTagDisplayer --|> TileDataDisplayer
+  TileTextureDisplayer --|> TileDataDisplayer
+  TopMenu --|> TextMenu
+  ScenarioChooser --|> MainWindowDelegate
+  ScenarioChooserMenu --|> TextMenu
+  ScenarioGUI --|> MainWindowDelegate
+  Animation --|> Sprite
+  AttackDisplayer --|> Animation
+  BattleMenu --|> TextMenu
+  CursorPosnDisplayer --|> TextDisplayer
+  DamageDisplayer --|> Animation
+  FPSDisplayer --|> TextDisplayer
+  SpecialMenu --|> TextMenu
+  TextDisplayer --|> Sprite
+  TextDisplayerBox --|> Sprite
+  TextEntry --|> TextDisplayer
+  TextMenu --|> Sprite
+  UnitBarDisplayer --|> Sprite
+  UnitClassDisplayer --|> UnitStatsDisplayer
+  UnitDisplayer --|> Sprite
+  UnitHPDisplayer --|> UnitStatsDisplayer
+  UnitMagicalDisplayer --|> UnitStatsDisplayer
+  UnitMovementDisplayer --|> UnitStatsDisplayer
+  UnitNameDisplayer --|> UnitStatsDisplayer
+  UnitPhysicalDisplayer --|> UnitStatsDisplayer
+  UnitSPDisplayer --|> UnitStatsDisplayer
+  UnitSpeedDisplayer --|> UnitStatsDisplayer
+  UnitStatsDisplayer --|> TextDisplayer
+  Camera --* MapEditorGUI : camera
+  Camera --* ScenarioGUI : camera
+  Cursor --* ScenarioGUI : cursor
+  MapEditorCursor --* MapEditorGUI : cursor
+  FirstHeightDisplayer --* MapEditorGUI : firstHeightDisplayer
+  SecondHeightDisplayer --* MapEditorGUI : secondHeightDisplayer
+  ThirdHeightDisplayer --* MapEditorGUI : thirdHeightDisplayer
+  TileColorDisplayer --* MapEditorGUI : tileColorDisplayer
+  TileTagDisplayer --* MapEditorGUI : tileTagDisplayer
+  TileTextureDisplayer --* MapEditorGUI : tileTextureDisplayer
+  ScenarioChooserFSM --* ScenarioChooser : fsm
+  ScenarioGUIFSM --* ScenarioGUI : fsm
+  CursorPosnDisplayer --* MapEditorGUI : cursorPosnDisplayer
+  CursorPosnDisplayer --* ScenarioGUI : cursorPosnDisplayer
+  TextDisplayer --* TileInfoDisplayer : title
+  TextDisplayer --* ScenarioGUI : chatBox1
+  TextDisplayer --* ScenarioGUI : chatBox2
+  TextDisplayer --* ScenarioGUI : chatBox3
+  TextDisplayer --* ScenarioGUI : chatBox4
+  TextDisplayer --* ScenarioGUI : chatBox5
+  TextDisplayerBox --* MapEditorGUI : textDisplayerBox
+  TextDisplayerBox --* ScenarioGUI : textDisplayerBox
+  TextDisplayerBox --* TextMenu : box
+  TextEntry --* ScenarioChooser : addressEntry
+  TextEntry --* ScenarioGUI : textEntry
+  UnitClassDisplayer --* ScenarioGUI : unitClassDisplayer
+  UnitHPDisplayer --* ScenarioGUI : unitHPDisplayer
+  UnitMagicalDisplayer --* ScenarioGUI : unitMagicalDisplayer
+  UnitMovementDisplayer --* ScenarioGUI : unitMovementDisplayer
+  UnitNameDisplayer --* ScenarioGUI : unitNameDisplayer
+  UnitPhysicalDisplayer --* ScenarioGUI : unitPhysicalDisplayer
+  UnitSPDisplayer --* ScenarioGUI : unitSPDisplayer
+  UnitSpeedDisplayer --* ScenarioGUI : unitSpeedDisplayer

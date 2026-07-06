@@ -16,6 +16,8 @@ NOTE: See the [GalaxyWizard github repository](https://github.com/jyjeanne/Galax
 
 ## For Designers and Developers
 
+[Architecture](architecture.md) - Auto-generated UML diagrams of the codebase (rendered with Mermaid on GitHub).
+
 [Design overview](design-overview.md) - Learn the basic structure of a GalaxyWizard campaign.
 
 [Directory structure](directory-structure.md) - Learn where to put your files.

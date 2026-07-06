@@ -1,0 +1,115 @@
+classDiagram
+  class ai {
+  }
+  class UnitAI {
+  }
+  class constants {
+  }
+  class engine {
+  }
+  class Ability {
+  }
+  class Battle {
+  }
+  class Class {
+  }
+  class Effect {
+  }
+  class Equipment {
+  }
+  class Faction {
+  }
+  class Light {
+  }
+  class Map {
+  }
+  class MapGenerator {
+  }
+  class Name {
+  }
+  class Range {
+  }
+  class Scenario {
+  }
+  class Unit {
+  }
+  class netsupport {
+  }
+  class fsm {
+  }
+  class gui {
+  }
+  class Camera {
+  }
+  class Clock {
+  }
+  class Cursor {
+  }
+  class GLUtil {
+  }
+  class Geometry {
+  }
+  class Input {
+  }
+  class MainWindow {
+  }
+  class MapEditorCursor {
+  }
+  class MapEditorGUI {
+  }
+  class MapEditorSprite {
+  }
+  class ScenarioChooser {
+  }
+  class ScenarioGUI {
+  }
+  class Sprite {
+  }
+  class log {
+  }
+  class main {
+  }
+  class resources {
+  }
+  class sound {
+  }
+  class translate {
+  }
+  class twistedmain {
+  }
+  class util {
+  }
+  UnitAI --> engine
+  Ability --> engine
+  Battle --> engine
+  Battle --> gui
+  Class --> engine
+  Effect --> engine
+  Effect --> gui
+  Map --> engine
+  MapGenerator --> engine
+  Name --> engine
+  Scenario --> engine
+  Scenario --> Faction
+  Unit --> engine
+  netsupport --> engine
+  Camera --> gui
+  Cursor --> gui
+  Cursor --> Sprite
+  GLUtil --> constants
+  GLUtil --> gui
+  MainWindow --> gui
+  MapEditorCursor --> gui
+  MapEditorGUI --> engine
+  MapEditorGUI --> gui
+  MapEditorSprite --> gui
+  ScenarioChooser --> gui
+  ScenarioGUI --> engine
+  ScenarioGUI --> gui
+  Sprite --> engine
+  Sprite --> gui
+  main --> translate
+  resources --> gui
+  twistedmain --> UnitAI
+  twistedmain --> MainWindow
+  twistedmain --> ScenarioGUI

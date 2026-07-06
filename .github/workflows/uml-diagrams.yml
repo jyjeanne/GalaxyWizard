@@ -1,0 +1,49 @@
+# Regenerates the UML diagrams in doc/ whenever the source code changes,
+# and commits the result back to the repository so that
+# doc/architecture.md always matches the code on main.
+
+name: UML Diagrams
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "src/**/*.py"
+      - "generate_uml.py"
+      - ".github/workflows/uml-diagrams.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # pyreverse analyses the sources statically, so pylint is the only
+      # dependency needed — no game dependencies required.
+      - name: Install pylint (provides pyreverse)
+        run: pip install "pylint>=4.0"
+
+      - name: Generate UML diagrams
+        run: python generate_uml.py
+
+      - name: Commit updated diagrams
+        run: |
+          if git diff --quiet -- doc/architecture.md doc/uml; then
+            echo "UML diagrams are already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add doc/architecture.md doc/uml
+          git commit -m "docs: regenerate UML diagrams from source"
+          git push

@@ -10,6 +10,7 @@ packages = [{include = "src"}]
 [tool.poetry.scripts]
 galaxywizard = "src.main:main"
 galaxywizard-build = "build_scripts:build_exe"
+galaxywizard-uml = "generate_uml:main"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
@@ -26,6 +27,8 @@ pyinstaller = "^6.3.0"
 ruff = "^0.15.8"
 pyright = "^1.1.411"
 vulture = "^2.16"
+# Provides pyreverse for UML diagram generation (see generate_uml.py)
+pylint = "^4.0"
 
 [tool.coverage.run]
 source = ["src"]
