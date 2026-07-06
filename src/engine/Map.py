@@ -845,11 +845,13 @@ class Map(pb.Copyable, pb.RemoteCopy):
 
 
 class MapIO(object):
+    @staticmethod
     def load(mapname):
         with open(mapname, "r") as mapfile:
             text = mapfile.read()
         return MapIO.loadString(mapname, text)
 
+    @staticmethod
     def loadString(mapname, text):
         """Load map data from string using safe literal evaluation.
 
@@ -1000,9 +1002,6 @@ class MapIO(object):
         m = Map(width, height, zdata, tileProperties, waterHeight, waterColor, tags)
         m.setLoadString(text)
         return m
-
-    load = staticmethod(load)
-    loadString = staticmethod(loadString)
 
 
 def connectedIgnoringUnits(sq1, sq2, unit):

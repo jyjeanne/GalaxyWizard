@@ -24,6 +24,33 @@ pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 pyinstaller = "^6.3.0"
 ruff = "^0.15.8"
+pyright = "^1.1.411"
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "basic"
+include = ["src", "tests", "build_scripts.py"]
+# Game data files are DSL scripts executed via exec() with names injected
+# into their namespace by src/resources.py; they are not importable modules.
+exclude = ["src/data", "src/test/data", "**/__pycache__"]
+# Modules import each other relative to src (e.g. "from gui import Sprite").
+extraPaths = ["src"]
+
+# The codebase predates type annotations, so the checks below drown real
+# problems in inference noise (singletons typed as "X | None", base classes
+# reading attributes defined only in subclasses, PyOpenGL's union-typed
+# constants). They are kept visible as warnings; definite-bug categories
+# (undefined names, call signatures, missing self, ...) remain errors.
+reportOptionalMemberAccess = "warning"
+reportOptionalSubscript = "warning"
+reportOptionalOperand = "warning"
+reportAttributeAccessIssue = "warning"
+reportOperatorIssue = "warning"
+reportArgumentType = "warning"
+reportIndexIssue = "warning"
+# `from OpenGL.GL import *` is the conventional PyOpenGL idiom (see the
+# matching per-file ignores in [tool.ruff.lint.per-file-ignores]).
+reportWildcardImportFromLibrary = "none"
 
 [tool.ruff]
 target-version = "py311"

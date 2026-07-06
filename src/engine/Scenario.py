@@ -130,6 +130,7 @@ def generateRandom(additionalAIUnits):
 
 
 class ScenarioIO(object):
+    @staticmethod
     def load(scenarioFilename):
         with open(scenarioFilename, "r") as scenarioFile:
             scenarioText = scenarioFile.read()
@@ -188,5 +189,3 @@ class ScenarioIO(object):
         battle = Battle.Battle(endingConditions, units, m)
 
         return Scenario(m, units, lightEnv, battle, None, music)
-
-    load = staticmethod(load)
