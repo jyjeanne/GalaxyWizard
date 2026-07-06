@@ -486,7 +486,9 @@ class Unit(pb.Copyable, pb.RemoteCopy):
 
 class StatusEffects(pb.Copyable, pb.RemoteCopy):
     def __init__(self):
-        self._effects = [None for i in range(0, Effect.Status.NUM_TYPES)]
+        self._effects: list[tuple[int, float] | None] = [
+            None for i in range(0, Effect.Status.NUM_TYPES)
+        ]
         self._colorStatus = []
         self._textureStatus = []
 

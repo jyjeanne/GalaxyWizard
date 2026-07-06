@@ -143,7 +143,7 @@ class Base(object):
         timeElapsed = time.time() - startTime
         logger.debug("%s finished (%.2fs elasped)" % (name, timeElapsed))
 
-    def calc(self, battle, unit):
+    def calc(self, battle):
         """@return an instance of Battle.UnitTurn."""
         return Battle.UnitTurn()
 

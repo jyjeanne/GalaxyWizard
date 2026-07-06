@@ -22,7 +22,6 @@ import logging
 from engine import Effect
 import constants as Constants
 from twisted.spread import pb
-import gui
 
 logger = logging.getLogger("batt")
 
@@ -215,6 +214,11 @@ class Battle(pb.Copyable, pb.RemoteCopy):
             defender.removeDefender(u)
         u._defending.clear()
 
+        # Imported lazily: the engine package must not pull in the gui
+        # package at import time.
+        from gui import ScenarioGUI
+        from gui import Sprite
+
         # Apply status effects at beginning of turn
         # Regeneration effect
         if u.statusEffects().has(Effect.Status.REGEN):
@@ -223,8 +227,8 @@ class Battle(pb.Copyable, pb.RemoteCopy):
             damage = int(damage)
             damage = min(u.mhp() - u.hp(), damage)
             u.damageHP(-damage, Effect.HEALING)
-            ud = gui.ScenarioGUI.get().unitDisplayer(u)
-            ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.BENEFICIAL, 0.5))
+            ud = ScenarioGUI.get().unitDisplayer(u)
+            ud.addAnimation(Sprite.DamageDisplayer(damage, Sprite.BENEFICIAL, 0.5))
 
         # Poison effect
         if u.statusEffects().has(Effect.Status.POISON):
@@ -233,8 +237,8 @@ class Battle(pb.Copyable, pb.RemoteCopy):
             damage = int(damage)
             damage = min(u.hp(), damage)
             u.damageHP(damage, Effect.PHYSICAL)
-            ud = gui.ScenarioGUI.get().unitDisplayer(u)
-            ud.addAnimation(gui.Sprite.DamageDisplayer(damage, gui.Sprite.NEGATIVE, 0.5))
+            ud = ScenarioGUI.get().unitDisplayer(u)
+            ud.addAnimation(Sprite.DamageDisplayer(damage, Sprite.NEGATIVE, 0.5))
 
         return u
 
@@ -296,6 +300,7 @@ class EndingCondition(pb.Copyable, pb.RemoteCopy):
         """@return: True iff the ending condition is met."""
         return False
 
+    @staticmethod
     def description():
         return ""
 
@@ -310,6 +315,7 @@ class DefeatAllEnemies(EndingCondition):
                 return False
         return True
 
+    @staticmethod
     def description():
         return "Defeat all enemies!"
 

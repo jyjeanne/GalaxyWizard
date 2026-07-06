@@ -233,7 +233,7 @@ class DamageSP(Effect):
         # Damage target and display results
         damage = self.calcDamage(attack, defense, target.sp())
         target.damageSP(damage)
-        return [DamageSPResult(damage)]
+        return [DamageSPResult(target, damage)]
 
 
 class DrainLife(Effect):
@@ -382,10 +382,13 @@ class Status(Effect):
         ("Tripped"),
     ]
 
-    effectTextures = [None for i in range(0, NUM_TYPES)]
+    effectTextures: list[tuple[float, float, float, float] | None] = [
+        None for i in range(0, NUM_TYPES)
+    ]
     effectTextures[FREEZE] = (0.0, 0.6, 0.9, 1.0)
     effectTextures[POISON] = (0.2, 0.8, 0.1, 1.0)
 
+    @staticmethod
     def beneficial(effectType):
         return (
             effectType == Status.HASTE
@@ -398,12 +401,9 @@ class Status(Effect):
             or effectType == Status.REGEN
         )
 
-    beneficial = staticmethod(beneficial)
-
+    @staticmethod
     def isColor(effectType):
         return effectType == Status.FREEZE or effectType == Status.POISON
-
-    isColor = staticmethod(isColor)
 
     def __init__(self, effectType, power=1.0, hit=1.0, duration=1, damageType=MAGICAL):
         self._effectType = effectType

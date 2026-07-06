@@ -37,6 +37,6 @@ class UnitCreationTestCase(unittest.TestCase):
     def testUnitPosition(self):
         """Test unit positioning"""
         unit = Unit.Unit(Unit.FEMALE)
-        unit.setPosn(5, 10)
+        unit.setPosn(5, 10, 0)
         self.assertEqual(unit.x(), 5)
         self.assertEqual(unit.y(), 10)

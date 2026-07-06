@@ -86,7 +86,7 @@ class TestAIBase(unittest.TestCase):
         battle = Battle([NEVER_ENDING], units, self.test_map)
 
         ai = Base(unit)
-        result = ai.calc(battle, unit)
+        result = ai.calc(battle)
 
         # Base AI should return a UnitTurn (no-op)
         self.assertIsInstance(result, UnitTurn)
