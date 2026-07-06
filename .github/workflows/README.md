@@ -34,7 +34,7 @@ The workflow consists of **4 jobs**:
 5. **Uploads artifact** - `GalaxyWizard-Linux` (30 days retention)
 
 #### Job 4: Build macOS Executable (requires test job to pass)
-1. **Sets up Python 3.11 on macOS** (Apple Silicon runner)
+1. **Sets up Python 3.11 on macOS** (`macos-latest` runner)
 2. **Installs Poetry**
 3. **Builds standalone binary** - Uses the same `main.spec` to create `GalaxyWizard`
 4. **Packages as tar.gz** - Preserves the executable permission bit
