@@ -113,3 +113,106 @@ jobs:
         name: GalaxyWizard-Windows
         path: dist/GalaxyWizard.exe
         retention-days: 30
+
+  build-linux:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Configure Poetry
+      run: |
+        poetry config virtualenvs.create true
+        poetry config virtualenvs.in-project true
+
+    - name: Cache Poetry dependencies
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgl1-mesa-dev libglu1-mesa-dev
+
+    - name: Install dependencies
+      run: |
+        poetry install --no-interaction --no-ansi
+
+    - name: Build Linux executable
+      run: |
+        poetry run pyinstaller main.spec --clean --noconfirm
+
+    - name: Package Linux executable
+      # tar preserves the executable permission bit, which a plain
+      # artifact upload would strip
+      run: |
+        tar -czf GalaxyWizard-Linux.tar.gz -C dist GalaxyWizard
+
+    - name: Upload Linux executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: GalaxyWizard-Linux
+        path: GalaxyWizard-Linux.tar.gz
+        retention-days: 30
+
+  build-macos:
+    needs: test
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Configure Poetry
+      run: |
+        poetry config virtualenvs.create true
+        poetry config virtualenvs.in-project true
+
+    - name: Cache Poetry dependencies
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      run: |
+        poetry install --no-interaction --no-ansi
+
+    - name: Build macOS executable
+      run: |
+        poetry run pyinstaller main.spec --clean --noconfirm
+
+    - name: Package macOS executable
+      # tar preserves the executable permission bit, which a plain
+      # artifact upload would strip
+      run: |
+        tar -czf GalaxyWizard-macOS.tar.gz -C dist GalaxyWizard
+
+    - name: Upload macOS executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: GalaxyWizard-macOS
+        path: GalaxyWizard-macOS.tar.gz
+        retention-days: 30
