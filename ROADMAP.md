@@ -23,6 +23,27 @@ any unchecked item.
 
 ---
 
+## How to Read the Estimates 📐
+
+Every phase below includes an **Effort & cost** table. Assumptions:
+
+- **Effort** is in **dev-days**: one focused day of work by a developer already
+  familiar with Python; ranges cover best case → realistic case. A hobbyist
+  contributing 2 days/week completes ~8 dev-days/month.
+- **Complexity** rates technical risk, not size: 🟢 routine, 🟡 needs design
+  care, 🔴 hard/risky (unknowns, cross-cutting changes, or specialist skills).
+- **Skills** flags where general Python experience is not enough
+  (OpenGL/GLSL, netcode, game design, art).
+- **Cost (outsourced)** is illustrative only, at a blended freelance rate of
+  **€350/dev-day** — useful for comparing phases, or for budgeting if parts
+  are ever contracted out. For a volunteer project the real currency is
+  contributor time.
+
+Estimates cover implementation + tests + documentation, but **not** the
+creation of new art/audio assets (see Open Questions below).
+
+---
+
 ## Phase 1 — Engine Foundation 🏗️
 
 *Goal: pay down 2006-era technical debt so every later feature is easier to build.*
@@ -68,6 +89,30 @@ any unchecked item.
       meaningful baseline; keep the existing pytest + coverage setup honest.
 - [ ] Headless engine tests (no OpenGL context) enabled by 1.2 decoupling.
 - [ ] Performance benchmarks: frame time on a 40×40 map with 20 units.
+
+### Effort & cost — Phase 1
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 1.1 Rendering modernization | 25–35 | 🔴 | OpenGL 3.3+, GLSL, profiling | €8.8k–12.3k |
+| 1.2 Architecture cleanup | 15–25 | 🟡 | Refactoring at scale, Twisted | €5.3k–8.8k |
+| 1.3 Safe, stable data formats | 10–15 | 🟡 | Schema design | €3.5k–5.3k |
+| 1.4 Quality infrastructure | 8–12 | 🟢 | pytest, CI | €2.8k–4.2k |
+| **Total** | **58–87** | | | **€20k–30k** |
+
+**Duration:** ~3–4 months for one full-time dev; 8–11 months for a hobbyist
+at 2 days/week. 1.3 and 1.4 can run in parallel with 1.1 by a second
+contributor.
+
+**Key risks:**
+- *Renderer rewrite stalls the project* (🔴): mitigate by migrating one
+  draw path at a time behind a `--legacy-gl` fallback flag, keeping the game
+  shippable at every commit.
+- *PyOpenGL performance ceiling*: if VBO batching still can't hold 60 fps on
+  large maps, evaluate `moderngl` as the GL binding before writing more
+  renderer code (decision point at end of 1.1 batching work).
+- *Hidden Twisted coupling* in `Unit`/`Effect` serialization may make 1.2
+  larger than estimated; time-box a 2-day spike first to map the coupling.
 
 **Milestone:** the demo scenarios run identically, but on the new renderer,
 with the engine importable without pygame/OpenGL/Twisted.
@@ -118,6 +163,29 @@ HEALING, plus physical types) — give each a signature look:
 - [ ] Post-processing pass (optional, shader-based): bloom for magic,
       vignette, damage flash.
 
+### Effort & cost — Phase 2
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 2.1 Particle system core | 10–15 | 🟡 | GLSL, blending/perf | €3.5k–5.3k |
+| 2.2 Magic effects by school | 10–15 | 🟡 | VFX design eye | €3.5k–5.3k |
+| 2.3 Combat feedback & juice | 6–10 | 🟢 | Animation/easing | €2.1k–3.5k |
+| 2.4 World & atmosphere | 10–15 | 🟡 | GLSL (post-processing) | €3.5k–5.3k |
+| **Total** | **36–55** | | | **€12.6k–19.3k** |
+
+**Duration:** ~2–2.5 months full-time. Requires 1.1 (shader pipeline) and the
+event bus from 1.2; does **not** need 1.3, so it can start before the data
+migration finishes.
+
+**Key risks:**
+- *Effects need artistic taste, not just code*: the difference between
+  "particles" and "beautiful" is iteration time. Budget ~30% of 2.2 for
+  tuning; recruit a contributor with VFX/art sensibility if possible.
+- *Particle textures/sprites must come from somewhere*: plan on CC0/CC-BY
+  packs (e.g. Kenney, OpenGameArt) — flagged in Open Questions.
+- *Post-processing (2.4) on old GPUs*: make bloom/vignette strictly optional
+  with auto-detection and a settings toggle.
+
 **Milestone:** casting Fireball looks and feels like a fireball — telegraph,
 projectile, explosion, numbers, shake — all data-driven.
 
@@ -155,6 +223,27 @@ projectile, explosion, numbers, shake — all data-driven.
 ### 3.4 Playtest loop
 - [ ] "Test Battle" button: jump from editor into a skirmish on the current
       map with placeholder units, then return to editing.
+
+### Effort & cost — Phase 3
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 3.1 Editor usability | 12–18 | 🟡 | UX for tools | €4.2k–6.3k |
+| 3.2 Map features | 8–12 | 🟢 | — | €2.8k–4.2k |
+| 3.3 Procedural generation | 5–8 | 🟡 | Procgen algorithms | €1.8k–2.8k |
+| 3.4 Playtest loop | 2–4 | 🟢 | — | €0.7k–1.4k |
+| **Total** | **27–42** | | | **€9.5k–14.7k** |
+
+**Duration:** ~1.5–2 months full-time. Only hard dependency is the map file
+format from 1.3 (saving in the new format); brush/undo work can start on the
+current `.py` format and switch later.
+
+**Key risks:**
+- *Undo/redo retrofitted late is painful*: implement the command pattern
+  **first** in 3.1 so every subsequent tool is undoable by construction.
+- *Editor UI debt*: the current editor uses ad-hoc menus; consider a minimal
+  immediate-mode UI helper (or `pygame_gui`) before building panels/palettes,
+  otherwise each panel is bespoke OpenGL text layout.
 
 **Milestone:** create, texture, decorate, and playtest a map without
 touching a text editor.
@@ -194,6 +283,28 @@ currently hand-written Python in `src/data/core/classes`, `abilities`,
       learned-ability trees.
 - [ ] Status effects framework: poison, slow, haste, shield, charm — with
       icons, durations, and VFX hooks.
+
+### Effort & cost — Phase 4
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 4.1 Class & unit designer | 10–15 | 🟡 | UI, game balance | €3.5k–5.3k |
+| 4.2 Ability designer | 8–12 | 🟡 | UI | €2.8k–4.2k |
+| 4.3 Equipment designer | 3–5 | 🟢 | — | €1.1k–1.8k |
+| 4.4 Progression systems | 8–12 | 🟡 | Game design | €2.8k–4.2k |
+| **Total** | **29–44** | | | **€10.2k–15.4k** |
+
+**Duration:** ~1.5–2 months full-time. Hard dependencies: 1.3 (editors write
+the declarative format) and 2.2 (assigning VFX to abilities). Reuses the UI
+foundation chosen in Phase 3 — building it there first is why Phase 4 comes
+after.
+
+**Key risks:**
+- *Status effects (4.4) touch everything*: `Battle`, `Unit`, AI, serialization,
+  and UI all need to understand them. Design the framework on paper (issue +
+  review) before coding; this is the item most likely to overrun.
+- *Balance tooling is open-ended*: time-box the balance dashboard; a simple
+  side-by-side table delivers 80% of the value.
 
 **Milestone:** build a brand-new class with a custom ability and matching
 visual effect entirely in-game, and use it in a skirmish.
@@ -237,6 +348,31 @@ persistent parties, and branching.*
 ### 5.4 Flagship content
 - [ ] Ship a 10–12 battle official campaign exercising every feature —
       it doubles as the tutorial and the reference example for creators.
+
+### Effort & cost — Phase 5
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 5.1 Campaign engine | 15–20 | 🟡 | State/save design | €5.3k–7k |
+| 5.2 Story & dialogue | 10–15 | 🟡 | — | €3.5k–5.3k |
+| 5.3 Campaign editor | 12–18 | 🟡 | Node-graph UI | €4.2k–6.3k |
+| 5.4 Flagship campaign content | 15–25 | 🟡 | Writing, game design | €5.3k–8.8k |
+| **Total** | **52–78** | | | **€18.2k–27.3k** |
+
+**Duration:** ~2.5–4 months full-time — the largest phase. Hard dependencies:
+save system (1.3), scripted battle events extend `Battle.py` (cleaner after
+1.2). 5.4 is content, not code: writers and scenario designers can own it in
+parallel once 5.1–5.2 land.
+
+**Key risks:**
+- *Save-game compatibility*: campaign saves persist across game updates;
+  version the format from day one and write migration tests, or early
+  adopters lose their campaigns.
+- *Scope creep in dialogue/cutscenes*: cap 5.2 at portraits + choices +
+  triggers; branching dialogue trees and full cutscene scripting are
+  post-roadmap.
+- *Flagship campaign needs writing talent*: recruit for narrative early; code
+  being done doesn't make the campaign good.
 
 **Milestone:** play a saved, branching, multi-battle campaign with a
 persistent party, created entirely with the campaign editor.
@@ -282,6 +418,29 @@ persistent party, created entirely with the campaign editor.
       (disables shake/flash from Phase 2.3).
 - [ ] In-game settings menu (currently config-file only).
 
+### Effort & cost — Phase 6
+
+| Work package | Effort (dev-days) | Complexity | Skills beyond Python | Cost (outsourced) |
+|---|---|---|---|---|
+| 6.1 Modding & sharing | 8–12 | 🟡 | Packaging, docs | €2.8k–4.2k |
+| 6.2 Multiplayer revival | 15–25 | 🔴 | Netcode, Twisted | €5.3k–8.8k |
+| 6.3 Audio | 5–8 | 🟢 | Sound design | €1.8k–2.8k |
+| 6.4 AI improvements | 8–12 | 🟡 | Game AI | €2.8k–4.2k |
+| 6.5 Accessibility & polish | 6–10 | 🟢 | UX | €2.1k–3.5k |
+| **Total** | **42–67** | | | **€14.7k–23.5k** |
+
+**Duration:** ~2–3 months full-time, but 6.1/6.3/6.4/6.5 are independent of
+each other and of 6.2 — ideal for parallel contributors.
+
+**Key risks:**
+- *Multiplayer (6.2) is the riskiest item on the whole roadmap*: legacy
+  Twisted `pb` code, no test coverage, and desync bugs are notoriously hard.
+  Start with a 3-day spike to assess whether to fix the existing netcode or
+  rebuild on deterministic lockstep; hot-seat play is the cheap fallback that
+  still delivers "play with a friend".
+- *Mod loading executes third-party content*: with 1.3 done, standard mods
+  are pure data (safe); clearly gate/label mods that ship Python scripts.
+
 ---
 
 ## Suggested Sequence & Priorities
@@ -299,6 +458,77 @@ Within each phase, items are roughly ordered; the first unchecked item is
 usually the right next task. Phases can overlap — e.g. VFX work (2) can
 start as soon as the shader pipeline (1.1) lands, without waiting for the
 data-format migration (1.3).
+
+---
+
+## Total Budget & Timeline Scenarios 💰
+
+### Overall effort
+
+| Phase | Effort (dev-days) | Cost (outsourced, €350/day) |
+|---|---|---|
+| 1 — Engine Foundation | 58–87 | €20.3k–30.5k |
+| 2 — Visual Effects | 36–55 | €12.6k–19.3k |
+| 3 — Map Creator | 27–42 | €9.5k–14.7k |
+| 4 — Character Creator | 29–44 | €10.2k–15.4k |
+| 5 — Campaign Creator | 52–78 | €18.2k–27.3k |
+| 6 — Modding & Community | 42–67 | €14.7k–23.5k |
+| **Full roadmap** | **244–373** | **€85k–131k** |
+
+### Timeline by team size
+
+| Team | Phase 1+2 (playable payoff) | Full roadmap |
+|---|---|---|
+| Solo hobbyist (~2 days/week) | 10–15 months | 2.5–4 years |
+| One full-time developer | 4–6 months | 12–18 months |
+| 2–3 regular contributors | 3–4 months | 8–14 months |
+
+**Practical reading:** for a volunteer project the realistic near-term target
+is **Phases 1–3** (~121–184 dev-days) — a modern engine, spectacular magic,
+and a great map editor. That alone is a compelling release ("GalaxyWizard
+1.0"), and Phases 4–6 can be re-planned afterwards with community input.
+
+### Where estimates are most likely wrong
+
+- 🔴 items (renderer rewrite, multiplayer) carry the widest variance —
+  each has a recommended time-boxed spike before committing.
+- Content work (5.4 flagship campaign) scales with ambition, not code.
+- No art/audio production is budgeted (see below).
+
+---
+
+## Open Questions / Missing Information ❓
+
+Decisions needed before (or during) the phases that depend on them:
+
+1. **Minimum OpenGL version** (Phase 1.1): OpenGL 3.3 core is the sane
+   shader baseline, but drops some very old hardware. Decide the support
+   floor before writing shaders. *Owner: maintainer. Needed by: start of 1.1.*
+2. **GL binding**: stay on PyOpenGL or adopt `moderngl` (cleaner API, faster,
+   but a new dependency)? Decision point after the 1.1 batching spike.
+3. **Data format choice** (1.3): YAML (human-friendly, needs `pyyaml`) vs
+   JSON (stdlib, noisier to hand-edit) vs TOML. Recommendation: YAML for
+   authored content, JSON for saves.
+4. **UI toolkit for editors** (Phases 3–5): keep bespoke OpenGL UI, adopt
+   `pygame_gui`, or embed an immediate-mode UI (e.g. imgui bindings)? This
+   choice shapes ~40 dev-days of editor work — decide at the start of Phase 3.
+5. **Art & audio pipeline**: who produces particle textures, portraits,
+   props, and per-school sound effects? Options: CC0/CC-BY packs (Kenney,
+   OpenGameArt), commissioned art (budget separately, roughly €2k–5k for a
+   coherent pack), or AI-assisted generation with license review.
+6. **Multiplayer scope** (6.2): real-time online, async/PBEM, or hot-seat
+   first? Determines whether the 3-day netcode spike targets Twisted repair
+   or a rebuild.
+7. **Target platforms & distribution**: PyInstaller builds exist for
+   Win/Linux/macOS — is itch.io/Steam distribution a goal? Steam adds
+   achievements/workshop opportunities but also QA overhead.
+8. **Python version window**: currently `>=3.11,<3.13`; widen to 3.13+ as
+   dependencies (numpy pin at 1.24.1 is old) allow — a small 1.4 task.
+9. **Funding**: if any budget exists (sponsorware, OpenCollective, grants),
+   the highest-leverage spends are commissioned art (Q5) and a contracted
+   renderer specialist for 1.1.
+
+---
 
 ## Contributing
 
