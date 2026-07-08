@@ -55,7 +55,9 @@ creation of new art/audio assets (see Open Questions below).
 - [ ] Introduce a minimal shader pipeline targeting **OpenGL 3.3 core /
       GLSL 330** via **moderngl** (decision D1/D2): one program for terrain,
       one for sprites/billboards, one for UI. The existing PyOpenGL path
-      remains untouched as a `--legacy-gl` fallback during the transition.
+      remains untouched as a `--legacy-gl` fallback during the transition —
+      selected at startup (one context per launch, legacy 2.1 or core 3.3;
+      macOS forbids mixing them), with migration done per render pass.
 - [ ] Batch map-tile geometry into a single mesh per chunk instead of
       per-tile draw calls (big win for large maps in `Map.py`/`GLUtil.py`).
 - [ ] Texture atlas support so tile/sprite textures bind once per frame.
@@ -511,7 +513,7 @@ resolved by the maintainer on **2026-07-08**:
 | # | Question | Decision | Consequences |
 |---|---|---|---|
 | D1 | Minimum OpenGL version | **OpenGL 3.3 core / GLSL 330** | Clean shader baseline; hardware from ~2010 supported. Shaders in 1.1/2.4 target GLSL 330. |
-| D2 | GL binding | **moderngl** for the new renderer | New dependency added in 1.1; existing PyOpenGL code stays as the `--legacy-gl` fallback until migration completes, then is removed. |
+| D2 | GL binding | **moderngl** for the new renderer | New dependencies (`moderngl` + `glcontext`) added in 1.1; existing PyOpenGL code stays as the `--legacy-gl` fallback until migration completes, then is removed. `--legacy-gl` is a **startup-time renderer selection**, never per-frame mixing: on macOS a GL context is either legacy (2.1, fixed-function) or core (3.3+, legacy calls forbidden), so the game creates one context or the other at launch. Migration proceeds per render pass (terrain → sprites → UI), not per draw call. The binding choice is isolated inside the 1.1 `Renderer` module, so it stays cheaply reversible. |
 | D3 | Content data format | **YAML for authored content, JSON for saves** | `pyyaml` dependency; schemas + converters in 1.3; editors (Phases 3–5) read/write YAML. Python DSL kept only for advanced scripted scenarios. |
 | D4 | Editor UI toolkit | **Dear ImGui (pyimgui)** | Used for creator tools only (map/character/campaign editors); in-game HUD stays bespoke. 2–3 day integration task at the start of Phase 3. |
 | D5 | Art & audio sourcing | **Curated CC0/CC-BY packs** (Kenney, OpenGameArt, freesound) | No art budget required; add a `CREDITS.md` tracking licenses/attribution; a style-curation pass is part of each VFX/content task. Commissioning can be revisited post-Phase 2 if funding appears (see D9). |
