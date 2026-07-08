@@ -52,9 +52,10 @@ creation of new art/audio assets (see Open Questions below).
 - [ ] Replace immediate-mode OpenGL (`glBegin`/`glVertex`, ~88 call sites in
       `src/gui/GLUtil.py`) with vertex buffer objects (VBOs) and a small
       renderer abstraction (`Renderer` class owning meshes, textures, draw calls).
-- [ ] Introduce a minimal shader pipeline (GLSL): one program for terrain,
-      one for sprites/billboards, one for UI. Keep a fixed-function fallback
-      flag during the transition.
+- [ ] Introduce a minimal shader pipeline targeting **OpenGL 3.3 core /
+      GLSL 330** via **moderngl** (decision D1/D2): one program for terrain,
+      one for sprites/billboards, one for UI. The existing PyOpenGL path
+      remains untouched as a `--legacy-gl` fallback during the transition.
 - [ ] Batch map-tile geometry into a single mesh per chunk instead of
       per-tile draw calls (big win for large maps in `Map.py`/`GLUtil.py`).
 - [ ] Texture atlas support so tile/sprite textures bind once per frame.
@@ -76,9 +77,10 @@ creation of new art/audio assets (see Open Questions below).
 
 ### 1.3 Safe, stable data formats
 - [ ] Replace `exec()`-based Python data files (maps, scenarios, classes,
-      abilities in `src/data/`) with a declarative format (YAML or JSON with
-      a schema). Python files remain supported for advanced scripting, but
-      standard content becomes data, not code.
+      abilities in `src/data/`) with a declarative format — **YAML for
+      hand-authored content, JSON for machine-written saves** (decision D3),
+      each with a schema. Python files remain supported for advanced
+      scripting, but standard content becomes data, not code.
 - [ ] Write converters: existing `src/data/demo/maps/*.py` and
       `scenarios/*.py` auto-migrate to the new format.
 - [ ] Versioned save-game format (currently no save/load mid-battle).
@@ -241,9 +243,10 @@ current `.py` format and switch later.
 **Key risks:**
 - *Undo/redo retrofitted late is painful*: implement the command pattern
   **first** in 3.1 so every subsequent tool is undoable by construction.
-- *Editor UI debt*: the current editor uses ad-hoc menus; consider a minimal
-  immediate-mode UI helper (or `pygame_gui`) before building panels/palettes,
-  otherwise each panel is bespoke OpenGL text layout.
+- *Editor UI debt*: the current editor uses ad-hoc menus; per decision D4,
+  build all editor panels/palettes on **Dear ImGui (pyimgui)** from the start
+  of Phase 3 rather than bespoke OpenGL text layout. Budget 2–3 days to
+  integrate ImGui with the pygame/moderngl context before the first panel.
 
 **Milestone:** create, texture, decorate, and playtest a map without
 touching a text editor.
@@ -391,13 +394,16 @@ persistent party, created entirely with the campaign editor.
       tutorials, example mods).
 
 ### 6.2 Multiplayer revival
-- [ ] Audit and stabilize the Twisted-based multiplayer
-      (`engine/netsupport.py`, `twistedmain.py`) on the post-Phase-1
-      architecture.
-- [ ] Lobby flow: host/join, map & army selection, ready checks.
-- [ ] Deterministic simulation + command-passing to reduce sync bugs;
+Per decision D6, **hot-seat ships first**; online play is a follow-up
+decision taken only after hot-seat lands and the community asks for it.
+- [ ] Hot-seat play: two human factions on one machine, with clean
+      turn/faction hand-off and hidden-info handling (turn-transition screen).
+- [ ] *(Deferred — post hot-seat)* Audit the Twisted-based multiplayer
+      (`engine/netsupport.py`, `twistedmain.py`) via a 3-day spike: repair
+      vs rebuild on deterministic lockstep.
+- [ ] *(Deferred)* Lobby flow: host/join, map & army selection, ready checks.
+- [ ] *(Deferred)* Deterministic simulation + command-passing;
       reconnection support.
-- [ ] Async/hot-seat play as a low-infrastructure alternative.
 
 ### 6.3 Audio
 - [ ] Positional sound effects tied to the VFX event system (Phase 2.1).
@@ -497,36 +503,25 @@ and a great map editor. That alone is a compelling release ("GalaxyWizard
 
 ---
 
-## Open Questions / Missing Information ❓
+## Decision Log ✅
 
-Decisions needed before (or during) the phases that depend on them:
+The open questions identified in the first draft of this roadmap were
+resolved by the maintainer on **2026-07-08**:
 
-1. **Minimum OpenGL version** (Phase 1.1): OpenGL 3.3 core is the sane
-   shader baseline, but drops some very old hardware. Decide the support
-   floor before writing shaders. *Owner: maintainer. Needed by: start of 1.1.*
-2. **GL binding**: stay on PyOpenGL or adopt `moderngl` (cleaner API, faster,
-   but a new dependency)? Decision point after the 1.1 batching spike.
-3. **Data format choice** (1.3): YAML (human-friendly, needs `pyyaml`) vs
-   JSON (stdlib, noisier to hand-edit) vs TOML. Recommendation: YAML for
-   authored content, JSON for saves.
-4. **UI toolkit for editors** (Phases 3–5): keep bespoke OpenGL UI, adopt
-   `pygame_gui`, or embed an immediate-mode UI (e.g. imgui bindings)? This
-   choice shapes ~40 dev-days of editor work — decide at the start of Phase 3.
-5. **Art & audio pipeline**: who produces particle textures, portraits,
-   props, and per-school sound effects? Options: CC0/CC-BY packs (Kenney,
-   OpenGameArt), commissioned art (budget separately, roughly €2k–5k for a
-   coherent pack), or AI-assisted generation with license review.
-6. **Multiplayer scope** (6.2): real-time online, async/PBEM, or hot-seat
-   first? Determines whether the 3-day netcode spike targets Twisted repair
-   or a rebuild.
-7. **Target platforms & distribution**: PyInstaller builds exist for
-   Win/Linux/macOS — is itch.io/Steam distribution a goal? Steam adds
-   achievements/workshop opportunities but also QA overhead.
-8. **Python version window**: currently `>=3.11,<3.13`; widen to 3.13+ as
-   dependencies (numpy pin at 1.24.1 is old) allow — a small 1.4 task.
-9. **Funding**: if any budget exists (sponsorware, OpenCollective, grants),
-   the highest-leverage spends are commissioned art (Q5) and a contracted
-   renderer specialist for 1.1.
+| # | Question | Decision | Consequences |
+|---|---|---|---|
+| D1 | Minimum OpenGL version | **OpenGL 3.3 core / GLSL 330** | Clean shader baseline; hardware from ~2010 supported. Shaders in 1.1/2.4 target GLSL 330. |
+| D2 | GL binding | **moderngl** for the new renderer | New dependency added in 1.1; existing PyOpenGL code stays as the `--legacy-gl` fallback until migration completes, then is removed. |
+| D3 | Content data format | **YAML for authored content, JSON for saves** | `pyyaml` dependency; schemas + converters in 1.3; editors (Phases 3–5) read/write YAML. Python DSL kept only for advanced scripted scenarios. |
+| D4 | Editor UI toolkit | **Dear ImGui (pyimgui)** | Used for creator tools only (map/character/campaign editors); in-game HUD stays bespoke. 2–3 day integration task at the start of Phase 3. |
+| D5 | Art & audio sourcing | **Curated CC0/CC-BY packs** (Kenney, OpenGameArt, freesound) | No art budget required; add a `CREDITS.md` tracking licenses/attribution; a style-curation pass is part of each VFX/content task. Commissioning can be revisited post-Phase 2 if funding appears (see D9). |
+| D6 | Multiplayer scope | **Hot-seat first; online deferred** | 6.2 rescoped: hot-seat ships in Phase 6; Twisted repair-vs-rebuild spike happens only if/when the community asks for online play. Reduces Phase 6 risk substantially. |
+| D7 | Distribution | **GitHub Releases + itch.io** | Existing PyInstaller builds published on both; itch.io page created around the Phase 2 milestone (first visually compelling build). Steam reconsidered at 1.0. |
+| D8 | Python version window | **Keep `>=3.11,<3.13` now; widen to 3.13+ in 1.4** | Requires unpinning numpy 1.24.1 (→ ≥1.26/2.x) and re-testing PyOpenGL_accelerate; tracked as a Phase 1.4 task. |
+| D9 | Funding | **GitHub Sponsors + volunteer core** | Low-admin setup; any income prioritized toward commissioned art (upgrade of D5) and/or contracting renderer expertise for 1.1. |
+
+Revisit points: D5 and D9 after the Phase 2 milestone (does the game look
+good enough with free assets?); D6 after hot-seat ships; D7 (Steam) at 1.0.
 
 ---
 
